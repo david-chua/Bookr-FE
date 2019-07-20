@@ -59,8 +59,6 @@ table {
 .navbar{
   text-align: center;
   font-size: 1.7em;
-
-
 }
 
 .navbar-nav{
@@ -74,23 +72,48 @@ table {
   width: 100%;
 }
 
-.nav-link{
+.navbar-light .navbar-nav .nav-link{
   text-align: center;
-  width: 100%;
-}
+  width: 300px;
+  border-radius: 20px;
 
+}
+.navContainer{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 .btn{
   font-size: inherit;
   background-color: #65AFFF;
+}
+
+.form-inline{
+  flex-flow: nowrap;
 }
 
 .form-control{
   font-size: 1em;
 }
 
-@media(max-width: 800px){
+.nav-pills{
+  color: none;
+}
+
+.navbar-light .navbar-nav .nav-link.active, .nav-pills .nav-link.active{
+  background-color: #65AFFF;
+  color: #F4FFF8;
+}
+
+@media(max-width: 1000px){
   .form-inline{
     width: 100%;
     justify-content: center;
+  }
+
+  .navbar-light .navbar-nav .nav-link{
+    text-align: center;
+    width: 100%;
+
   }
 }

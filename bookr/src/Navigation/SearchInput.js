@@ -11,10 +11,16 @@ class Search extends React.Component{
     }
   }
 
+  searchInputChange = e => {
+    this.setState({
+      input: e.target.value
+    })
+  }
+  
   render(){
     return(
       <Form inline>
-        <Form.Control type="text" placeholder="Search for a book" value={this.state.input} className="mr-sm-2" />
+        <Form.Control type="text" onChange={this.searchInputChange} placeholder="Search for a book" value={this.state.input} className="mr-sm-2" />
         <Button type="submit">Search</Button>
       </Form>
     )

@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-
+import { LinkContainer } from 'react-router-bootstrap';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Search from './SearchInput';
@@ -14,24 +14,26 @@ class NavBar extends React.Component{
   render(){
     const props = this.props;
     return(
-      <Navbar collapseOnSelect expand="lg" className="justify-content-space-around">
-        <Nav justify>
-          <Nav.Item>
-            <Nav.Link href="/">Home</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link href="/settings">Settings</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link href="/books">Books</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            {props.loggedIn? (
-                <Nav.Link to="/">Logout</Nav.Link>
-            ): (
-                <Nav.Link to="/login">Log In</Nav.Link>
-            )}
-          </Nav.Item>
+      <Navbar collapseOnSelect expand="lg">
+        <Nav className="navContainer">
+          <LinkContainer exact to="/">
+            <Nav.Link>Home</Nav.Link>
+          </LinkContainer>
+          <LinkContainer exact to="/settings">
+            <Nav.Link>Settings</Nav.Link>
+          </LinkContainer>
+          <LinkContainer exact to="/books">
+            <Nav.Link>Books</Nav.Link>
+          </LinkContainer>
+          {props.loggedIn? (
+            <LinkContainer to="/">
+              <Nav.Link >Logout</Nav.Link>
+            </LinkContainer>
+          ): (
+            <LinkContainer to="/login">
+              <Nav.Link >Log In</Nav.Link>
+            </LinkContainer>
+          )}
           <Search/>
         </Nav>
       </Navbar>
