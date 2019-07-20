@@ -1,7 +1,13 @@
 import { REGISTER_USER, LOGIN_USER } from '../actions/usersActions';
 
 const initialState = {
-  user: []
+  currentUser: [],
+  loggedIn: false,
+  fetchingUser: false,
+  addingUser: false,
+  updatingUser: false,
+  deletingUser: false,
+  error: null
 }
 
 
