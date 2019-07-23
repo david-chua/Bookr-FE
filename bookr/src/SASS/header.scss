@@ -1,0 +1,73 @@
+.nav{
+  text-align: center;
+}
+
+.navbar{
+  padding-top: 30px;
+  text-align: center;
+  font-size: 1.7em;
+  font-family: $Liberata;
+}
+
+.navbar-nav{
+  text-align: center;
+  width: 100%;
+}
+
+.nav-item{
+  width: 100%;
+}
+
+.navbar-light .navbar-nav .nav-link{
+  text-align: center;
+  width: 100px;
+}
+.navContainer{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.btn{
+  font-size: inherit;
+  background-color: $french-sky-blue;
+}
+
+.form-inline{
+  flex-flow: nowrap;
+}
+
+.form-control{
+  font-size: 1em;
+}
+
+.nav-pills{
+  color: none;
+}
+
+.navbar-light .navbar-nav .nav-link.active, .nav-pills .nav-link.active{
+  text-decoration: none;
+  position: relative;
+}
+
+.navbar-light .navbar-nav .nav-link.active:after, .nav-pills .nav-link.active:after {
+    content: '';
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 1px;
+
+    border-width: 0 0 1px;
+    border-style: solid;
+}
+
+@media(max-width: $mediaTabletWidth){
+  .form-inline{
+    width: 100%;
+    justify-content: center;
+  }
+
+  .navbar-light .navbar-nav .nav-link{
+    text-align: center;
+    width: 100%;
+  }
+}

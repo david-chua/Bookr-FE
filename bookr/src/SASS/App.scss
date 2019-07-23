@@ -1,3 +1,4 @@
+@import './variables.scss';
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -50,70 +51,4 @@ table {
 .App{
   text-align: center;
   color: #1D282D;
-}
-
-.nav{
-  text-align: center;
-}
-
-.navbar{
-  text-align: center;
-  font-size: 1.7em;
-}
-
-.navbar-nav{
-  text-align: center;
-  width: 100%;
-  align-items: baseline;
-  align-self: baseline;
-}
-
-.nav-item{
-  width: 100%;
-}
-
-.navbar-light .navbar-nav .nav-link{
-  text-align: center;
-  width: 300px;
-  border-radius: 20px;
-
-}
-.navContainer{
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-.btn{
-  font-size: inherit;
-  background-color: #65AFFF;
-}
-
-.form-inline{
-  flex-flow: nowrap;
-}
-
-.form-control{
-  font-size: 1em;
-}
-
-.nav-pills{
-  color: none;
-}
-
-.navbar-light .navbar-nav .nav-link.active, .nav-pills .nav-link.active{
-  background-color: #65AFFF;
-  color: #F4FFF8;
-}
-
-@media(max-width: 1000px){
-  .form-inline{
-    width: 100%;
-    justify-content: center;
-  }
-
-  .navbar-light .navbar-nav .nav-link{
-    text-align: center;
-    width: 100%;
-
-  }
 }

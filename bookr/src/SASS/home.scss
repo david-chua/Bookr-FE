@@ -1,0 +1,88 @@
+.homeContainer{
+  margin-top: 25px;
+}
+
+.jumbotron{
+  padding: 0;
+  height: 100vh;
+  min-height: 1000px;
+  width: 100vw;
+  background-image: url('./../public/images/home.jpeg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.headline{
+  margin: 0 auto;
+  text-shadow: 3px 3px 6px #000000;
+  position: relative;
+  color: $mint-cream;
+  font-size: 5em;
+  font-family: $Courgette;
+  top: 40%;
+  left: 0%;
+}
+
+.bookrInfo{
+  min-height: 500px;
+  height: 50vh;
+  display: flex;
+  align-items: center;
+
+  h2{
+    color: $dark_gunmetal;
+    font-size: 3em;
+    font-family: $Liberata;
+  }
+}
+
+.bookrInfoImage{
+  width: 50%;
+}
+
+.capabilities{
+  width: 100%;
+  background-color: $french-sky-blue;
+  min-height: 500px;
+  height: 50vh;
+
+  h2{
+    color: $mint-cream;
+    line-height: 3em;
+    font-size: 3em;
+
+  }
+}
+
+.icon_container{
+  display: flex;
+  justify-content: space-around;
+}
+
+.icon_info{
+  width: 50%;
+  img{
+    width: 150px;
+    height: 150px;
+  }
+
+  h3{
+    color: $mint-cream;
+    font-size: 2em;
+    padding-top: 30px;
+  }
+}
+
+
+@media(max-width: $mediaSmallDesktopWidth){
+  .headline{
+    width: 90%;
+    top: 45%;
+  }
+}
+
+@media(max-width: $mediaTabletWidth){
+  .headline{
+    top: 32%;
+  }
+}
