@@ -1,5 +1,4 @@
 import React from 'react';
-import home from './public/images/home.jpeg';
 import readerIcon from './public/images/reader.png';
 import collection from './public/images/collection.png';
 import discussion from './public/images/discussion.png';
@@ -34,19 +33,19 @@ class Home extends React.Component{
         <section className="capabilities">
           <h2>Discover Bookr</h2>
           <div className="icon_container">
-            <div className="icon_info">
+            <div className="icon_info col-sm-6 col-md-3">
               <img src={read} alt="reader icon" />
-              <h3>Create a list of book's you've read</h3>
+              <h3>Create a list of books you've read</h3>
             </div>
-            <div className="icon_info">
+            <div sm={6} className="icon_info col-sm-6 col-md-3">
               <img src={collection} alt="reader icon" />
               <h3>Gather a collection of books you own and love</h3>
             </div>
-            <div className="icon_info">
+            <div sm={6} className="icon_info col-sm-6 col-md-3">
               <img src={sharing} alt="reader icon" />
               <h3>Share books among friends</h3>
             </div>
-            <div className="icon_info">
+            <div sm={6} className="icon_info col-sm-6 col-md-3">
               <img src={discussion} alt="reader icon" />
               <h3>Discuss books with friends and colleagues</h3>
             </div>
