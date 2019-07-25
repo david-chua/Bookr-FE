@@ -18,20 +18,20 @@ class NavBar extends React.Component{
   }
 
   componentDidMount(){
-    const idToken = "hello"
-    const client = new ApolloClient({
-      uri: "http://localhost:9090",
-      headers: {authorization: idToken }
-    })
-
-    client.query({
-      query: GET_USERS
-    })
-    .then(response => {
-      console.log(response)
-      this.setState({users: response.data.getUsers})
-      console.log(this.state)
-    })
+    // const idToken = "hello"
+    // const client = new ApolloClient({
+    //   uri: "http://localhost:9090",
+    //   headers: {authorization: idToken }
+    // })
+    //
+    // client.query({
+    //   query: GET_USERS
+    // })
+    // .then(response => {
+    //   console.log(response)
+    //   this.setState({users: response.data.getUsers})
+    //   console.log(this.state)
+    // })
   }
 
   render(){
