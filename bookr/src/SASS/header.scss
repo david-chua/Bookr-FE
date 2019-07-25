@@ -2,6 +2,21 @@
   text-align: center;
 }
 
+.topNav{
+  padding: 10px 0 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.loginLink{
+  padding-right: 30px;
+}
+
+.LogoContainer{
+  padding-left: 30px;
+}
+
 .navbar{
   padding-top: 30px;
   text-align: center;
