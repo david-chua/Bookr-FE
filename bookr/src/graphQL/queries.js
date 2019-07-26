@@ -12,8 +12,8 @@ export const GET_USERS = gql`
 `;
 
 export const USER_EXIST = gql`
-  query getUsersBy($param: String!, $value: String!){
-    getUsersBy(param: $param, value: $value){
+  query getUserBy($param: String!, $value: String!){
+    getUserBy(param: $param, value: $value){
       id
       email
       first_name
