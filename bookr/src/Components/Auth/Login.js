@@ -8,8 +8,9 @@ import Button from 'react-bootstrap/Button';
 
 
 import LoginForm from "./LoginForm";
+import RegisterForm from "./RegisterForm";
 import { USER_EXIST } from "../../graphQL/queries";
-import { ADD_USER_MUTATION } from "../../graphQL/mutations";
+import { ADD_USER_MUTATION, LOGIN_JWT } from "../../graphQL/mutations";
 
 class LogInOrRegister extends React.Component {
   constructor(props){
@@ -18,7 +19,7 @@ class LogInOrRegister extends React.Component {
       email: "",
       password: "",
       toHome: false,
-      checkExistence: 1,
+      checkExistence: 3,
 
     }
   }
@@ -38,6 +39,12 @@ class LogInOrRegister extends React.Component {
       password: this.state.password
     }
     this.loginUser(registeredUser, "jwt");
+  }
+
+  registerPage = () => {
+    this.setState({
+      checkExistence: 3
+    })
   }
 
   handleChange = e => {
@@ -98,7 +105,6 @@ class LogInOrRegister extends React.Component {
           }
         })
         .then(response => {
-          console.log('response', response)
           if (response.data.getUserBy){
             this.setState({ toHome: true });
           } else {
@@ -112,10 +118,24 @@ class LogInOrRegister extends React.Component {
         })
         .catch(err =>  console.log(err));
     } else if (auth === "jwt"){
-      email = userInfo.email;
-      password = userInfo.password;
-      console.log('userInfo', userInfo);
-      console.log('password', password)
+      const client = new ApolloClient({
+        uri: "http://localhost:9090"
+      });
+      client
+        .mutate({
+          mutation: LOGIN_JWT,
+          variables: {
+            input: userInfo
+          }
+        })
+        .then(response => {
+          localStorage.setItem("idToken", response.data.loginUser.token);
+          localStorage.setItem("currentUserId", response.data.loginUser.id)
+          this.setState({ toHome: true });
+        })
+        .catch(error => {
+          console.log('jwt error', error)
+        })
     } else {
       console.log('login using one of the options');
     }
@@ -148,18 +168,18 @@ class LogInOrRegister extends React.Component {
             </div>
             <div className="manualLogin">
               <Form onSubmit={this.onRegularLogin}>
-                <Form.Group controlId="formBasicEmail">
+                <Form.Group>
                   <Form.Label className="loginEmail">Enter Email </Form.Label>
                   <Form.Control onChange={this.handleChange} value={this.state.email} name="email" type="text" placeholder="Enter email" />
                 </Form.Group>
-                <Form.Group controlId="formBasicPassword">
+                <Form.Group>
                   <Form.Label className="loginPassword">Enter Password</Form.Label>
-                  <Form.Control onChange={this.handleChange} value={this.state.password} name="password" type="text" placeholder="Enter password" />
+                  <Form.Control onChange={this.handleChange} value={this.state.password} name="password" type="password" placeholder="Enter password" />
                 </Form.Group>
                 <Button className="signupBtn" type="submit"> Submit</Button>
               </Form>
             </div>
-            <Button className="signupBtn" type="button">Sign up manually</Button>
+            <Button onClick={this.registerPage} className="signupBtn" type="button">Sign up manually</Button>
           </div>
           }
           { this.state.checkExistence === 2 &&
@@ -167,6 +187,12 @@ class LogInOrRegister extends React.Component {
               addUser={this.createUser}
               handleChange={this.handleChange}
               props={this.state}
+              />
+          }
+
+          { this.state.checkExistence === 3 &&
+            <RegisterForm
+              addUser={this.createUser}
               />
           }
 

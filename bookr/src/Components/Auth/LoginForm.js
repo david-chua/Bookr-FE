@@ -56,7 +56,7 @@ class LoginForm extends React.Component{
               <Form.Label className="registerGoogle">Enter Password</Form.Label>
               <Form.Control onChange={this.handleChange} value={this.state.password} name="password" type="password" placeholder="Enter password" />
             </Form.Group>
-            <Form.Group controlId="formBasicPassword">
+            <Form.Group>
               <Form.Label className="registerGoogle">Confirm Password</Form.Label>
               <Form.Control onChange={this.handleChange} value={this.state.confirmPassword} name="confirmPassword" type="password" placeholder="Confirm password" />
             </Form.Group>

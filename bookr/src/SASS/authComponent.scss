@@ -61,6 +61,27 @@
   }
 }
 
+.registerForm{
+  display: flex;
+  flex-direction: column;
+  width:100%;
+  align-items: center;
+  height: 500px;
+  overflow: auto;
+
+  .registerValues{
+    width: 300px;
+    font-size: 1.3em;
+    padding: 10px 0 10px 0;
+  }
+
+  .registerSelect{
+    .form-control{
+      font-size: 1.3em;
+    }
+  }
+}
+
 .signupBtn{
   font-size: 1.3em;
   margin-top: 20px;
