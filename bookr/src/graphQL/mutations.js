@@ -9,7 +9,7 @@ export const ADD_USER_MUTATION = gql`
   }
 `;
 
-export const LOGIN_JWT = gql`
+export const LOGIN_JWT_MUTATION = gql`
   mutation loginUser($input: LoginInput!){
     loginUser(input: $input){
       id

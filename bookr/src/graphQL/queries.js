@@ -24,3 +24,15 @@ export const USER_EXIST = gql`
     }
   }
 `;
+
+export const GET_CURRENT_USER_QUERY = gql`
+  {
+    getCurrentUser {
+      id
+      first_name
+      last_name
+      email
+      userType
+    }
+  }
+`;

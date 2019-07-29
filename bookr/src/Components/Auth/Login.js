@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import ApolloClient from "apollo-boost";
@@ -10,7 +11,8 @@ import Button from 'react-bootstrap/Button';
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import { USER_EXIST } from "../../graphQL/queries";
-import { ADD_USER_MUTATION, LOGIN_JWT } from "../../graphQL/mutations";
+import { ADD_USER_MUTATION, LOGIN_JWT_MUTATION } from "../../graphQL/mutations";
+import { googleLogin} from '../../actions/usersActions';
 
 class LogInOrRegister extends React.Component {
   constructor(props){
@@ -81,48 +83,67 @@ class LogInOrRegister extends React.Component {
   };
 
   loginUser = async(userInfo, auth) => {
-    let email, last_name, first_name, idToken, password;
+    let email, last_name, first_name, token, password;
 
     if (auth === "google"){
       email = userInfo.profileObj.email;
       last_name = userInfo.profileObj.familyName;
       first_name = userInfo.profileObj.givenName;
-      idToken = userInfo.getAuthResponse().id_token;
+      token = userInfo.getAuthResponse().id_token;
 
-      localStorage.setItem("token", idToken);
-      const client = new ApolloClient({
-        uri: "http://localhost:9090",
-        headers: { authorization: idToken }
-      });
+      localStorage.setItem("token", token);
+      /// new code
+      this.props.googleLogin(email, last_name, first_name, token);
+      console.log('here',this.props);
+      if (!this.props.error){
+        this.setState({
+          toHome: true
+        })
+      } else {
+        this.setState({
+          checkExistence: 2,
+          email: email,
+          last_name: last_name,
+          first_name: first_name
+        })
+      }
 
-      client
-        .query({
-          query: USER_EXIST,
-          variables: {
-            param: "email",
-            value: email
-          }
-        })
-        .then(response => {
-          if (response.data.getUserBy){
-            this.setState({ toHome: true });
-          } else {
-            this.setState({
-              checkExistence: 2,
-              email: email,
-              last_name: last_name,
-              first_name: first_name
-            })
-          }
-        })
-        .catch(err =>  console.log(err));
+      console.log('this.state', this.state)
+      console.log('this.props', this.props)
+      // working nonredux code
+      // const client = new ApolloClient({
+      //   uri: "http://localhost:9090",
+      //   headers: { authorization: token }
+      // });
+      //
+      // client
+      //   .query({
+      //     query: USER_EXIST,
+      //     variables: {
+      //       param: "email",
+      //       value: email
+      //     }
+      //   })
+      //   .then(response => {
+      //     if (response.data.getUserBy){
+      //       this.setState({ toHome: true });
+      //     } else {
+      //       this.setState({
+      //         checkExistence: 2,
+      //         email: email,
+      //         last_name: last_name,
+      //         first_name: first_name
+      //       })
+      //     }
+      //   })
+      //   .catch(err =>  console.log(err));
     } else if (auth === "jwt"){
       const client = new ApolloClient({
         uri: "http://localhost:9090",
       });
       const login = await client
         .mutate({
-          mutation: LOGIN_JWT,
+          mutation: LOGIN_JWT_MUTATION,
           variables: {
             input: userInfo
           }
@@ -207,15 +228,21 @@ class LogInOrRegister extends React.Component {
               addUser={this.createUser}
               />
           }
-
-
         </div>
       </div>
     )
   }
 }
 
-export default LogInOrRegister;
+const mapStateToProps = function(state){
+  return {
+    currentUser: state.users.currentUser,
+    loggedIn: state.users.loggedIn,
+    error: state.users.error
+  }
+}
+
+export default connect(mapStateToProps, {googleLogin})(LogInOrRegister);
 
 // Redirect
 
