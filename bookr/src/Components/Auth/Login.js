@@ -176,6 +176,13 @@ class LogInOrRegister extends React.Component {
     }
   };
 
+
+  // componentDidUpdate(prevState, prevProps){
+  //   if (prevProps.loggedIn !==this.props.loggedIn){
+  //     console.log(this.props.loggedIn)
+  //   }
+  // }
+
   render(){
     const { from } = this.props.location || { from : { pathname: "/" } };
     if (this.state.toHome === true){
