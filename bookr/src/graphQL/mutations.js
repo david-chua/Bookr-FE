@@ -13,7 +13,8 @@ export const LOGIN_JWT = gql`
   mutation loginUser($input: LoginInput!){
     loginUser(input: $input){
       id
-      token 
+      email
+      token
     }
   }
 `;

@@ -19,8 +19,7 @@ class LogInOrRegister extends React.Component {
       email: "",
       password: "",
       toHome: false,
-      checkExistence: 3,
-
+      checkExistence: 1,
     }
   }
 
@@ -119,29 +118,42 @@ class LogInOrRegister extends React.Component {
         .catch(err =>  console.log(err));
     } else if (auth === "jwt"){
       const client = new ApolloClient({
-        uri: "http://localhost:9090"
+        uri: "http://localhost:9090",
       });
-      client
+      const login = await client
         .mutate({
           mutation: LOGIN_JWT,
           variables: {
             input: userInfo
           }
         })
-        .then(response => {
-          localStorage.setItem("idToken", response.data.loginUser.token);
-          localStorage.setItem("currentUserId", response.data.loginUser.id)
-          this.setState({ toHome: true });
+      localStorage.setItem("token", login.data.loginUser.token);
+      const token = localStorage.getItem("token");
+      const jwtClient = new ApolloClient({
+        uri: "http://localhost:9090",
+        headers: { authorization: token}
+      })
+      const checkUser = await jwtClient.query({
+        query: USER_EXIST,
+        variables: {
+          param: "email",
+          value: login.data.loginUser.email
+        }
+      })
+      if (checkUser){
+        this.setState({ toHome: true });
+      } else {
+        this.setState({
+        checkExistence: 2,
+          email: email,
+          last_name: last_name,
+          first_name: first_name
         })
-        .catch(error => {
-          console.log('jwt error', error)
-        })
+      }
     } else {
       console.log('login using one of the options');
     }
   };
-
-
 
   render(){
     const { from } = this.props.location || { from : { pathname: "/" } };
@@ -204,3 +216,39 @@ class LogInOrRegister extends React.Component {
 }
 
 export default LogInOrRegister;
+
+// Redirect
+
+
+        // .then(response => {
+        //   localStorage.setItem("idToken", response.data.loginUser.token);
+        //   const idToken = localStorage.getItem('idToken');
+        //   const client = new ApolloClient({
+        //     uri: "http://localhost:9090",
+        //     headers: { authorization: idToken }
+        //   });
+        //   client
+        //     .query({
+        //       query: USER_EXIST,
+        //       variables: {
+        //         param: "email",
+        //         value: response.data.loginUser.email
+        //       }
+        //     })
+        //     .then(response => {
+        //       if (response.data.getUserBy){
+        //         this.setState({ toHome: true });
+        //       } else {
+        //         this.setState({
+        //           checkExistence: 2,
+        //           email: email,
+        //           last_name: last_name,
+        //           first_name: first_name
+        //         })
+        //       }
+        //     })
+        //     .catch(err =>  console.log(err));
+        // })
+        // .catch(error => {
+        //   console.log('jwt error', error)
+        // })
