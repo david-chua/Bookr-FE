@@ -1,4 +1,4 @@
-import { REGISTER_USER, LOGIN_GOOGLE, LOGIN_JWT, FETCHING_DATA, LOGIN_GOOGLE_ERROR, ERROR } from '../actions/usersActions';
+import { REGISTER_USER, MAIN_LOGIN_PAGE, REGISTER_PAGE, LOGIN_GOOGLE, LOGIN_JWT, FETCHING_DATA, LOGIN_GOOGLE_ERROR, LOGIN_JWT_ERROR, SIGN_IN_ERROR, ERROR } from '../actions/usersActions';
 
 const initialState = {
   currentUser: [],
@@ -10,7 +10,7 @@ const initialState = {
   updatingUser: false,
   deletingUser: false,
   checkExistence: 1,
-  error: null  
+  error: null
 }
 
 
@@ -20,6 +20,21 @@ export default function users(state = initialState, action){
       return {
         ...state,
         fetchingData: true
+      }
+    case REGISTER_PAGE:
+      return {
+        ...state,
+        checkExistence: 3
+      }
+    case MAIN_LOGIN_PAGE:
+      return {
+        ...state,
+        checkExistence: 1
+      }
+    case REGISTER_USER:
+      return {
+        ...state,
+        fetchingData: false,
       }
     case LOGIN_GOOGLE:
       return {
@@ -47,6 +62,26 @@ export default function users(state = initialState, action){
         fetchingData: false,
         currentUser: null,
         checkExistence: 2,
+        error: action.payload
+      }
+    case LOGIN_JWT_ERROR:
+      return {
+        ...state,
+        toHome: false,
+        loggedIn: false,
+        fetchingData: false,
+        currentUser: null,
+        checkExistence: 3,
+        error: action.payload
+      }
+    case SIGN_IN_ERROR:
+      return {
+        ...state,
+        toHome: false,
+        loggedIn: false,
+        fetchingData: false,
+        currentUser: null,
+        checkExistence: 1,
         error: action.payload
       }
     case ERROR:

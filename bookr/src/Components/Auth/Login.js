@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
-import ApolloClient from "apollo-boost";
 import logo from "../../public/images/logo.png";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -10,9 +9,7 @@ import Button from 'react-bootstrap/Button';
 
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
-import { USER_EXIST } from "../../graphQL/queries";
-import { ADD_USER_MUTATION, LOGIN_JWT_MUTATION } from "../../graphQL/mutations";
-import { googleLogin} from '../../actions/usersActions';
+import { googleLogin, jwtLogin, signInError, registerPage ,registerUser} from '../../actions/usersActions';
 
 class LogInOrRegister extends React.Component {
   constructor(props){
@@ -21,8 +18,7 @@ class LogInOrRegister extends React.Component {
       email: "",
       first_name: "",
       last_name: "",
-      password: "",
-      checkExistence: 1,
+      password: ""
     }
   }
 
@@ -43,12 +39,6 @@ class LogInOrRegister extends React.Component {
     this.loginUser(registeredUser, "jwt");
   }
 
-  registerPage = () => {
-    this.setState({
-      checkExistence: 3
-    })
-  }
-
   handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value
@@ -63,28 +53,11 @@ class LogInOrRegister extends React.Component {
       first_name: this.state.first_name,
       last_name: this.state.last_name
     };
-    const client = new ApolloClient({
-      uri: "http://localhost:9090"
-    });
-
-    client
-      .mutate({
-        mutation: ADD_USER_MUTATION,
-        variables: {
-          input: newUser
-        }
-      })
-      .then(response => {
-        console.log(response);
-        this.setState({ toHome: !this.state.toHome })
-      })
-      .catch(err =>
-        console.log("There was a problem creating the user account. ", err)
-      );
+    this.props.registerUser(newUser);
   };
 
   loginUser = async(userInfo, auth) => {
-    let email, last_name, first_name, token, password;
+    let email, last_name, first_name, token;
     if (auth === "google"){
       email = userInfo.profileObj.email;
       last_name = userInfo.profileObj.familyName;
@@ -98,47 +71,13 @@ class LogInOrRegister extends React.Component {
       localStorage.setItem("token", token);
       this.props.googleLogin(email, last_name, first_name, token);
     } else if (auth === "jwt"){
-      const client = new ApolloClient({
-        uri: "http://localhost:9090",
-      });
-      const login = await client
-        .mutate({
-          mutation: LOGIN_JWT_MUTATION,
-          variables: {
-            input: userInfo
-          }
-        })
-      localStorage.setItem("token", login.data.loginUser.token);
-      const token = localStorage.getItem("token");
-      const jwtClient = new ApolloClient({
-        uri: "http://localhost:9090",
-        headers: { authorization: token}
-      })
-      const checkUser = await jwtClient.query({
-        query: USER_EXIST,
-        variables: {
-          param: "email",
-          value: login.data.loginUser.email
-        }
-      })
-      if (checkUser){
-        this.setState({ toHome: true });
-      } else {
-        this.setState({
-        checkExistence: 2,
-          email: email,
-          last_name: last_name,
-          first_name: first_name
-        })
-      }
+      this.props.jwtLogin(userInfo.email, userInfo.password)
     } else {
-      console.log('login using one of the options');
+      this.props.signInError()
     }
   };
 
   render(){
-    console.log('current props', this.props)
-    console.log('currnetState', this.state)
     const { from } = this.props.location || { from : { pathname: "/" } };
     if (this.props.toHome === true){
       return <Redirect to={from} />;
@@ -151,6 +90,7 @@ class LogInOrRegister extends React.Component {
           </div>
           { this.props.checkExistence === 1 &&
           <div className="googleLogin">
+            { this.props.error && <h1> {this.props.error}</h1>}
             <h1> Login to your account!</h1>
             <div className="googleAuth">
               <GoogleLogin
@@ -174,7 +114,7 @@ class LogInOrRegister extends React.Component {
                 <Button className="signupBtn" type="submit"> Submit</Button>
               </Form>
             </div>
-            <Button onClick={this.registerPage} className="signupBtn" type="button">Sign up manually</Button>
+            <Button onClick={() => this.props.registerPage()} className="signupBtn" type="button">Sign up manually</Button>
           </div>
           }
           { this.props.checkExistence === 2 &&
@@ -197,7 +137,6 @@ class LogInOrRegister extends React.Component {
 }
 
 const mapStateToProps = state => {
-  console.log('mstp', state)
   return {
     currentUser: state.users.currentUser,
     loggedIn: state.users.loggedIn,
@@ -207,40 +146,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, {googleLogin})(LogInOrRegister);
-
-// Redirect
-
-
-        // .then(response => {
-        //   localStorage.setItem("idToken", response.data.loginUser.token);
-        //   const idToken = localStorage.getItem('idToken');
-        //   const client = new ApolloClient({
-        //     uri: "http://localhost:9090",
-        //     headers: { authorization: idToken }
-        //   });
-        //   client
-        //     .query({
-        //       query: USER_EXIST,
-        //       variables: {
-        //         param: "email",
-        //         value: response.data.loginUser.email
-        //       }
-        //     })
-        //     .then(response => {
-        //       if (response.data.getUserBy){
-        //         this.setState({ toHome: true });
-        //       } else {
-        //         this.setState({
-        //           checkExistence: 2,
-        //           email: email,
-        //           last_name: last_name,
-        //           first_name: first_name
-        //         })
-        //       }
-        //     })
-        //     .catch(err =>  console.log(err));
-        // })
-        // .catch(error => {
-        //   console.log('jwt error', error)
-        // })
+export default connect(mapStateToProps, {googleLogin, jwtLogin, registerPage, signInError, registerUser})(LogInOrRegister);

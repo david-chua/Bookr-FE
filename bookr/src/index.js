@@ -5,27 +5,18 @@ import App from './App';
 import { BrowserRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { ApolloProvider } from 'react-apollo';
-import { ApolloClient } from 'apollo-client';
-import { createHttpLink } from 'apollo-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+// import { ApolloProvider } from 'react-apollo';
+// import { ApolloClient } from 'apollo-client';
+// import { createHttpLink } from 'apollo-link-http';
+// import { InMemoryCache } from 'apollo-cache-inmemory';
 import rootReducer from './reducers';
 import * as serviceWorker from './serviceWorker';
 import './SASS/index.scss';
 
-// const httpLink = createHttpLink({
-//   url: "http://localhost:9090"
-// })
-//
-// const client = new ApolloClient({
-//   link: httpLink,
-//   cache: new InMemoryCache()
-// });
-
 const store = createStore(
-  rootReducer, 
+  rootReducer,
   applyMiddleware(thunk, logger)
 );
 

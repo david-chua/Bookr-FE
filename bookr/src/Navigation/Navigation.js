@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
 import logo from './../public/images/logo.png';
 
 const Navigation = props => {

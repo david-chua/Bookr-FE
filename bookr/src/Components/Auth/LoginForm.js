@@ -42,7 +42,6 @@ class LoginForm extends React.Component{
   }
 
   render(){
-    const { error } = this.state;
     return(
       <div>
         { this.props.addUser ? (
