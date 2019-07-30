@@ -19,8 +19,9 @@ class LogInOrRegister extends React.Component {
     super(props);
     this.state ={
       email: "",
+      first_name: "",
+      last_name: "",
       password: "",
-      toHome: false,
       checkExistence: 1,
     }
   }
@@ -84,59 +85,18 @@ class LogInOrRegister extends React.Component {
 
   loginUser = async(userInfo, auth) => {
     let email, last_name, first_name, token, password;
-
     if (auth === "google"){
       email = userInfo.profileObj.email;
       last_name = userInfo.profileObj.familyName;
       first_name = userInfo.profileObj.givenName;
       token = userInfo.getAuthResponse().id_token;
-
+      this.setState({
+        email: email,
+        last_name: last_name,
+        first_name: first_name
+      })
       localStorage.setItem("token", token);
-      /// new code
       this.props.googleLogin(email, last_name, first_name, token);
-      console.log('here',this.props);
-      if (!this.props.error){
-        this.setState({
-          toHome: true
-        })
-      } else {
-        this.setState({
-          checkExistence: 2,
-          email: email,
-          last_name: last_name,
-          first_name: first_name
-        })
-      }
-
-      console.log('this.state', this.state)
-      console.log('this.props', this.props)
-      // working nonredux code
-      // const client = new ApolloClient({
-      //   uri: "http://localhost:9090",
-      //   headers: { authorization: token }
-      // });
-      //
-      // client
-      //   .query({
-      //     query: USER_EXIST,
-      //     variables: {
-      //       param: "email",
-      //       value: email
-      //     }
-      //   })
-      //   .then(response => {
-      //     if (response.data.getUserBy){
-      //       this.setState({ toHome: true });
-      //     } else {
-      //       this.setState({
-      //         checkExistence: 2,
-      //         email: email,
-      //         last_name: last_name,
-      //         first_name: first_name
-      //       })
-      //     }
-      //   })
-      //   .catch(err =>  console.log(err));
     } else if (auth === "jwt"){
       const client = new ApolloClient({
         uri: "http://localhost:9090",
@@ -176,16 +136,11 @@ class LogInOrRegister extends React.Component {
     }
   };
 
-
-  // componentDidUpdate(prevState, prevProps){
-  //   if (prevProps.loggedIn !==this.props.loggedIn){
-  //     console.log(this.props.loggedIn)
-  //   }
-  // }
-
   render(){
+    console.log('current props', this.props)
+    console.log('currnetState', this.state)
     const { from } = this.props.location || { from : { pathname: "/" } };
-    if (this.state.toHome === true){
+    if (this.props.toHome === true){
       return <Redirect to={from} />;
     }
     return(
@@ -194,7 +149,7 @@ class LogInOrRegister extends React.Component {
           <div className="logoContainer">
             <img src={logo} alt={logo} />
           </div>
-          { this.state.checkExistence === 1 &&
+          { this.props.checkExistence === 1 &&
           <div className="googleLogin">
             <h1> Login to your account!</h1>
             <div className="googleAuth">
@@ -222,7 +177,7 @@ class LogInOrRegister extends React.Component {
             <Button onClick={this.registerPage} className="signupBtn" type="button">Sign up manually</Button>
           </div>
           }
-          { this.state.checkExistence === 2 &&
+          { this.props.checkExistence === 2 &&
             <LoginForm
               addUser={this.createUser}
               handleChange={this.handleChange}
@@ -230,7 +185,7 @@ class LogInOrRegister extends React.Component {
               />
           }
 
-          { this.state.checkExistence === 3 &&
+          { this.props.checkExistence === 3 &&
             <RegisterForm
               addUser={this.createUser}
               />
@@ -241,10 +196,13 @@ class LogInOrRegister extends React.Component {
   }
 }
 
-const mapStateToProps = function(state){
+const mapStateToProps = state => {
+  console.log('mstp', state)
   return {
     currentUser: state.users.currentUser,
     loggedIn: state.users.loggedIn,
+    toHome: state.users.toHome,
+    checkExistence: state.users.checkExistence,
     error: state.users.error
   }
 }
