@@ -3,6 +3,7 @@ import { Route, Redirect, withRouter } from "react-router-dom";
 import ApolloClient from "apollo-boost";
 import Navigation from './Navigation/Navigation';
 import Home from './Home';
+import News from './Components/News/News';
 import Settings from './Components/Settings/Settings';
 import Books from './Components/Books/Books';
 import LogInOrRegister from "./Components/Auth/Login";
@@ -50,6 +51,7 @@ function App() {
     <div className="App">
       <Navigation />
       <Route exact path="/" render={() => <Home />} />
+      <Route exact path="/news" render={() => <News />} />
       <Route exact path="/login" render={() => <LogInOrRegister />} />
       <PrivateRoute exact path="/settings" render={() => <Settings />} />
       <Route exact path="/books" render={() => <Books />} />
