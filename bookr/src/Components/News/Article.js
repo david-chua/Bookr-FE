@@ -9,7 +9,7 @@ const Article = props => {
       </div>
         <img className="articleImage" src={props.article.urlToImage} alt="article" />
         <section className="articleInfo">
-          <h3 className="author"> {props.article.author} </h3>
+          <h3 className="author"> {props.article.author ? props.article.author : "No Author"} </h3>
           <h3 className="sourceName"> {props.article.source.name}</h3>
           <h3 className="desc"> {props.article.description}</h3>
         </section>

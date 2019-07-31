@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from "react-redux";
 
 class Settings extends React.Component{
   constructor(props){
@@ -9,12 +10,21 @@ class Settings extends React.Component{
   }
 
   render(){
+    console.log(this.props);
     return(
-      <div>
-        <h1> Settings </h1>
+      <div className="settingsContainer">
+        <h1> Welcome  {this.props.currentUser.first_name}</h1>
       </div>
     )
   }
 }
 
-export default Settings;
+const mapStateToProps = state => {
+  return {
+    currentUser: state.users.currentUser,
+    loggedIn: state.users.loggedIn
+  }
+}
+
+
+export default connect(mapStateToProps, {})(Settings);

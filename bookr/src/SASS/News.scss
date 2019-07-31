@@ -1,3 +1,9 @@
+.bookrNews{
+  margin-top: 30px;
+  font-size: 4em;
+  font-weight: bold;
+  font-family: $Courgette;
+}
 .NewsContainer{
   width: 100%;
   display: flex;
@@ -14,7 +20,7 @@
 .articleContainer{
   width: 33%;
   height: 700px;
-  // border: 1px solid $dark_gunmetal;
+  padding-top: 30px;
 
   h1{
     width: 80%;
@@ -24,21 +30,37 @@
     font-family: $Liberata;
     line-height: 1.3em;
   }
+
+  a{
+    color: $dark_gunmetal;
+  }
 }
 
 .articleContainer:nth-child(odd){
   background-color: $dark_gunmetal;
   color: $mint-cream;
+  text-decoration: none;
+
+  a{
+    color: $mint-cream;
+  }
 }
 
 .articleTitleContainer{
   height:100px;
 }
+
 .articleLink{
   text-decoration: none;
-  color: $dark_gunmetal;
-
 }
+
+// .articleLink > h1:nth-of-type(odd){
+//   color: $mint-cream;
+// }
+//
+// .articleLink > h1:nth-of-type(even){
+//   color: $mint-cream;
+// }
 
 .articleImage{
   width: 90%;
@@ -62,4 +84,11 @@
 .desc{
   width: 90%;
   margin: 30px auto 0px;
+}
+
+@media(max-width: $bootstrapMD){
+  .articleContainer{
+    width: 90%;
+    height: 600px;
+  }
 }

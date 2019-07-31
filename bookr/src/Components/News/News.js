@@ -13,7 +13,7 @@ class News extends React.Component{
   }
 
   componentDidMount(){
-    axios.get(`https://newsapi.org/v2/everything?q=literary&domains=nytimes.com,wsj.com&apiKey=${REACT_APP_NEWS_API_KEY}`)
+    axios.get(`https://newsapi.org/v2/everything?q=(books AND authors)&domains=nytimes.com,wsj.com&apiKey=${REACT_APP_NEWS_API_KEY}`)
       .then(response => {
         this.setState({
           articles: response.data.articles
@@ -24,13 +24,14 @@ class News extends React.Component{
       })
   }
   render(){
-     console.log('articles', this.state.articles);
-     console.log('process.env', process.env);
     return(
-      <div className="NewsContainer">
-        { this.state.articles.map(article => {
-          return <Article key={article.url} article={article} />
-        })}
+      <div>
+        <h1 className="bookrNews"> Bookr News </h1>
+        <div className="NewsContainer">
+          { this.state.articles.map(article => {
+            return <Article key={article.url} article={article} />
+          })}
+        </div>
       </div>
     )
   }
