@@ -4,27 +4,42 @@ import editIcon from '../../public/images/editIcon.png';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import { editUser } from '../../actions/usersActions';
+import { editUser, editPassword } from '../../actions/usersActions';
 
 class Settings extends React.Component{
   constructor(props){
     super(props)
     this.state ={
-        editing: false
+        editing: false,
+        editingPW: false,
+        password: '',
+        confirmPassword: '',
+        oldPassword: ''
     }
   }
 
   openEdit = () => {
-    console.log('open edit');
     this.setState({
       editing: true,
+      editingPW: false,
       first_name: this.props.currentUser.first_name,
       last_name: this.props.currentUser.last_name,
       email: this.props.currentUser.email,
       username: this.props.currentUser.username,
       gender: this.props.currentUser.gender,
-      password: '',
-      confirmPassword: ''
+    })
+  }
+
+  openEditPW = () => {
+    this.setState({
+      editingPW: true,
+      editng: false
+    })
+  }
+
+  closeEditPW = () => {
+    this.setState({
+      editingPW: false
     })
   }
 
@@ -40,40 +55,102 @@ class Settings extends React.Component{
     });
   }
 
+
+  editInfo = e => {
+    e.preventDefault();
+    const id = this.props.currentUser.id;
+    const userInfo = {
+      first_name: this.state.first_name,
+      last_name: this.state.last_name,
+      email: this.state.email,
+      username: this.state.username
+    }
+    this.props.editUser(id, userInfo);
+    this.setState({
+      editing: false
+    })
+  }
+
+  editPassword = e => {
+    e.preventDefault();
+    const id = this.props.currentUser.id;
+    const input = {
+      oldPassword: this.state.oldPassword,
+      newPassword: this.state.password
+    }
+    if (this.state.password === this.state.confirmPassword){
+        console.log('input', input);
+        this.props.editPassword(id, input);
+    } else {
+      console.log('password not matching');
+    }
+  }
+
   render(){
-    console.log(this.state);
-    console.log(this.props);
     return(
       <div className="settingsContainer">
+      <Modal show={this.state.editingPW} onHide={this.closeEdit}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit User Info</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group>
+              <Form.Label className="registerGoogle">Current Password</Form.Label>
+              <Form.Control onChange={this.handleChange} value={this.state.oldPassword} name="oldPassword" type="password" placeholder="Enter Current Password" />
+            </Form.Group>
+            <Form.Group >
+              <Form.Label className="registerGoogle">New Password</Form.Label>
+              <Form.Control onChange={this.handleChange} value={this.state.password} name="password" type="password" placeholder="Enter New Password" />
+            </Form.Group>
+            <Form.Group >
+              <Form.Label className="registerGoogle">Confirm New Password</Form.Label>
+              <Form.Control onChange={this.handleChange} value={this.state.confirmPassword} name="confirmPassword" type="password" placeholder="Confirm New Password" />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={this.closeEditPW}>
+            Close
+          </Button>
+          <Button variant="primary" type="button" onClick={this.editPassword}>
+            Save Changes
+          </Button>
+
+        </Modal.Footer>
+      </Modal>
         <Modal show={this.state.editing} onHide={this.closeEdit}>
           <Modal.Header closeButton>
             <Modal.Title>Edit User Info</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form.Group >
-              <Form.Label className="registerGoogle">Enter First Name</Form.Label>
-              <Form.Control onChange={this.handleChange} value={this.state.first_name} name="first_name" type="text" placeholder="Edit First Name" />
-            </Form.Group>
-            <Form.Group >
-              <Form.Label className="registerGoogle">Enter First Name</Form.Label>
-              <Form.Control onChange={this.handleChange} value={this.state.last_name} name="last_name" type="text" placeholder="Edit Last Name" />
-            </Form.Group>
-            <Form.Group >
-              <Form.Label className="registerGoogle">Enter First Name</Form.Label>
-              <Form.Control onChange={this.handleChange} value={this.state.email} name="email" type="text" placeholder="Edit Email" />
-            </Form.Group>
-            <Form.Group >
-              <Form.Label className="registerGoogle">Enter First Name</Form.Label>
-              <Form.Control onChange={this.handleChange} value={this.state.username} name="username" type="text" placeholder="Edit Username" />
-            </Form.Group>
+            <Form>
+              <Form.Group>
+                <Form.Label className="registerGoogle">Edit First Name</Form.Label>
+                <Form.Control onChange={this.handleChange} value={this.state.first_name} name="first_name" type="text" placeholder="Edit First Name" />
+              </Form.Group>
+              <Form.Group >
+                <Form.Label className="registerGoogle">edit Last Name</Form.Label>
+                <Form.Control onChange={this.handleChange} value={this.state.last_name} name="last_name" type="text" placeholder="Edit Last Name" />
+              </Form.Group>
+              <Form.Group >
+                <Form.Label className="registerGoogle">Edit Email Name</Form.Label>
+                <Form.Control onChange={this.handleChange} value={this.state.email} name="email" type="text" placeholder="Edit Email" />
+              </Form.Group>
+              <Form.Group >
+                <Form.Label className="registerGoogle">Edit Username</Form.Label>
+                <Form.Control onChange={this.handleChange} value={this.state.username} name="username" type="text" placeholder="Edit Username" />
+              </Form.Group>
+            </Form>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.closeEdit}>
               Close
             </Button>
-            <Button variant="primary" onClick={this.closeEdit}>
+            <Button variant="primary" type="button" onClick={this.editInfo}>
               Save Changes
             </Button>
+
           </Modal.Footer>
         </Modal>
         <div className="settingOptions">
@@ -87,9 +164,13 @@ class Settings extends React.Component{
             <h1> Account Information </h1>
             <img onClick={this.openEdit} className="editIcon" src={editIcon} alt="edit icon"/>
           </div>
+          <div className="accountPasswordEdit">
+            <h2> Edit Password</h2>
+            <img onClick={this.openEditPW} className="editPWIcon" src={editIcon} alt="edit password icon" />
+          </div>
           <div className="accountInformation">
             <h2> Name: </h2>
-            <h3>{this.props.currentUser.first_name} {this.props.currentUser.last_name}</h3>
+            <h3>{this.props.currentUser.first_name}{'  '}{this.props.currentUser.last_name}</h3>
           </div>
           <div className="accountInformation">
             <h2> Username </h2>
@@ -121,7 +202,7 @@ const mapStateToProps = state => {
 }
 
 
-export default connect(mapStateToProps, {})(Settings);
+export default connect(mapStateToProps, {editUser, editPassword})(Settings);
 
 
 //Currently no subscription plans

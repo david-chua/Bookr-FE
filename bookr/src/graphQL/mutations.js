@@ -33,3 +33,18 @@ export const EDIT_USER_MUTATION = gql`
     }
   }
 `;
+
+export const EDIT_PASSWORD_MUTATION = gql`
+  mutation updatePassword($id: ID!, $input: passwordInput!){
+    updatePassword(id: $id, input: $input){
+      id
+      email
+      username
+      first_name
+      last_name
+      gender
+      avatar
+      userType
+    }
+  }
+`;

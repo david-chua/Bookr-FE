@@ -1,6 +1,6 @@
 import ApolloClient from "apollo-boost";
 import { USER_EXIST } from "../graphQL/queries";
-import { ADD_USER_MUTATION, LOGIN_JWT_MUTATION, EDIT_USER_MUTATION } from "../graphQL/mutations";
+import { ADD_USER_MUTATION, LOGIN_JWT_MUTATION, EDIT_PASSWORD_MUTATION, EDIT_USER_MUTATION } from "../graphQL/mutations";
 
 export const FETCHING_DATA = "FETCHING_DATA";
 export const REGISTER_USER = "REGISTER_USER";
@@ -12,6 +12,7 @@ export const LOGIN_JWT_ERROR = "LOGIN_JWT_ERROR";
 export const SIGN_IN_ERROR = "SIGN_IN_ERROR";
 export const REGISTER_PAGE = "REGISTER_PAGE";
 export const EDIT_USER_INFO = "EDIT_USER_INFO";
+export const EDIT_PASSWORD = "EDIT_PASSWORD";
 export const ERROR = "ERROR";
 export const LOG_OUT = "LOG_OUT";
 
@@ -216,7 +217,7 @@ export function editUser(id, userInfo) {
       headers: { authorization: token}
     });
     client.mutate({
-      mutation: EDIT_USER_INFO,
+      mutation: EDIT_USER_MUTATION,
       variables: ({
         id: id,
         input: userInfo
@@ -224,13 +225,36 @@ export function editUser(id, userInfo) {
     })
     .then(response => {
       console.log('edit response', response)
-      // dispatch({
-      //   type: EDIT_USER_INFO,
-      //   payload:
-      // })
+      dispatch({
+        type: EDIT_USER_INFO,
+        payload: response.data.updateUser
+      })
     })
     .catch(error => {
       console.log('edit error', error);
+    })
+  }
+}
+
+export function editPassword(id, input){
+  return dispatch => {
+    const token = localStorage.getItem("token");
+    const client = new ApolloClient({
+      uri: "http://localhost:9090",
+      headers: { authorization: token}
+    });
+    client.mutate({
+      mutation: EDIT_PASSWORD_MUTATION,
+      variables: ({
+        id: id,
+        input: input
+      })
+    })
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.log(error);
     })
   }
 }
