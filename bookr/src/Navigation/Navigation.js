@@ -1,12 +1,20 @@
 import React from 'react'
 import NavBar from './NavBar';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import Nav from 'react-bootstrap/Nav';
 import logo from './../public/images/logo.png';
+import { logOut } from '../actions/usersActions';
 
 const Navigation = props => {
+
+  const loggingOut = () => {
+    props.logOut();
+    return <Redirect to={"/login"} />;
+  }
+
+  console.log(props);
     return(
       <div>
         <section>
@@ -15,9 +23,9 @@ const Navigation = props => {
               <img src={logo} alt="bookr logo" />
             </div>
               {props.loggedIn? (
-                <LinkContainer className="loginLink" to="/">
+                <div onClick={loggingOut}>
                   <Nav.Link >Logout</Nav.Link>
-                </LinkContainer>
+                </div>
               ): (
                 <LinkContainer className="loginLink" to="/login">
                   <Nav.Link >Log In</Nav.Link>
@@ -32,8 +40,9 @@ const Navigation = props => {
 
 const mapStateToProps = function(state){
   return{
-    loggedIn: state.users.loggedIn
+    loggedIn: state.users.loggedIn,
+    toHome: state.users.toHome
   }
 }
 
-export default withRouter(connect(mapStateToProps)(Navigation));
+export default withRouter(connect(mapStateToProps, { logOut })(Navigation));

@@ -21,6 +21,7 @@ export const USER_EXIST = gql`
       gender
       avatar
       userType
+      username
     }
   }
 `;

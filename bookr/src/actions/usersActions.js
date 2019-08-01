@@ -1,6 +1,6 @@
 import ApolloClient from "apollo-boost";
 import { USER_EXIST } from "../graphQL/queries";
-import { ADD_USER_MUTATION, LOGIN_JWT_MUTATION } from "../graphQL/mutations";
+import { ADD_USER_MUTATION, LOGIN_JWT_MUTATION, EDIT_USER_MUTATION } from "../graphQL/mutations";
 
 export const FETCHING_DATA = "FETCHING_DATA";
 export const REGISTER_USER = "REGISTER_USER";
@@ -11,7 +11,9 @@ export const LOGIN_GOOGLE_ERROR = "LOGIN_GOOGLE_ERROR";
 export const LOGIN_JWT_ERROR = "LOGIN_JWT_ERROR";
 export const SIGN_IN_ERROR = "SIGN_IN_ERROR";
 export const REGISTER_PAGE = "REGISTER_PAGE";
+export const EDIT_USER_INFO = "EDIT_USER_INFO";
 export const ERROR = "ERROR";
+export const LOG_OUT = "LOG_OUT";
 
 export function googleLogin(email, last_name, first_name, token){
   return dispatch => {
@@ -191,6 +193,44 @@ export function registerUser(newUser){
           type: ERROR,
           payload: "Unable to create an account"
       });
+    })
+  }
+}
+
+export function logOut(){
+  console.log('logging out')
+  return dispatch => {
+    localStorage.removeItem("token");
+    dispatch({
+      type: LOG_OUT
+    })
+  }
+}
+
+export function editUser(id, userInfo) {
+  return dispatch => {
+    dispatch({type: FETCHING_DATA})
+    const token = localStorage.getItem("token");
+    const client = new ApolloClient({
+      uri: "http://localhost:9090",
+      headers: { authorization: token}
+    });
+    client.mutate({
+      mutation: EDIT_USER_INFO,
+      variables: ({
+        id: id,
+        input: userInfo
+      })
+    })
+    .then(response => {
+      console.log('edit response', response)
+      // dispatch({
+      //   type: EDIT_USER_INFO,
+      //   payload:
+      // })
+    })
+    .catch(error => {
+      console.log('edit error', error);
     })
   }
 }

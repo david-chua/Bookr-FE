@@ -1,4 +1,59 @@
 .settingsContainer{
-  height: 100vh;
-  min-height: 700px;
+  height: 70vh;
+  max-height: 600px;
+  display: flex;
+  margin: 50px 10%;
+  justify-content: space-around;
+}
+
+.editIcon{
+  width: 25px;
+  height: 25px;
+}
+
+.settingOptions{
+  width: 30%;
+  min-width: 400px;
+  height: 400px;
+  background-color: $french-sky-blue;
+  color: $mint-cream;
+  border-radius: 10px;
+  font-size: 1.3em;
+}
+
+.settingOption{
+  padding: 30px 0;
+  padding-bottom: 30px;
+  border-bottom: 1px solid $mint-cream;
+}
+
+.accountInfo{
+  width: 40%;
+  min-width: 400px;
+  height: 400px;
+  margin: 0px
+}
+
+.accountInfoTitle{
+  font-size: 1.8em;
+  display: flex;
+  justify-content: center;
+
+  h1{
+    padding-right: 10px;
+  }
+}
+
+.accountInformation{
+  padding: 30px 0 0;
+  h2{
+    line-height: 1.3em;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  h3{
+    padding-top: 5px;
+    font-size: 1.2em;
+  }
 }

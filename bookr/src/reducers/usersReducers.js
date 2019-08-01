@@ -1,4 +1,4 @@
-import { REGISTER_USER, MAIN_LOGIN_PAGE, REGISTER_PAGE, LOGIN_GOOGLE, LOGIN_JWT, FETCHING_DATA, LOGIN_GOOGLE_ERROR, LOGIN_JWT_ERROR, SIGN_IN_ERROR, ERROR } from '../actions/usersActions';
+import { EDIT_USER_INFO, REGISTER_USER, MAIN_LOGIN_PAGE, REGISTER_PAGE, LOGIN_GOOGLE, LOGIN_JWT, LOG_OUT, FETCHING_DATA, LOGIN_GOOGLE_ERROR, LOGIN_JWT_ERROR, SIGN_IN_ERROR, ERROR } from '../actions/usersActions';
 
 const initialState = {
   currentUser: [],
@@ -20,6 +20,13 @@ export default function users(state = initialState, action){
       return {
         ...state,
         fetchingData: true
+      }
+    case EDIT_USER_INFO:
+      return {
+        ...state,
+        fetchingData: false,
+        currentUser: action.payload,
+        error: null
       }
     case REGISTER_PAGE:
       return {
@@ -83,6 +90,13 @@ export default function users(state = initialState, action){
         currentUser: null,
         checkExistence: 1,
         error: action.payload
+      }
+    case LOG_OUT:
+      return {
+        ...state,
+        loggedIn: false,
+        toHome: false,
+        currentUser: null,
       }
     case ERROR:
       return {

@@ -18,3 +18,18 @@ export const LOGIN_JWT_MUTATION = gql`
     }
   }
 `;
+
+export const EDIT_USER_MUTATION = gql`
+  mutation updateUser($id: ID!, $input: UserInput!){
+    updateUser(id: $id, input: $input){
+      id
+      email
+      username
+      first_name
+      last_name
+      gender
+      avatar
+      userType
+    }
+  }
+`;
