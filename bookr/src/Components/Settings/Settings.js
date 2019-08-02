@@ -14,7 +14,9 @@ class Settings extends React.Component{
         editingPW: false,
         password: '',
         confirmPassword: '',
-        oldPassword: ''
+        oldPassword: '',
+        message: '',
+        error: ''
     }
   }
 
@@ -71,7 +73,7 @@ class Settings extends React.Component{
     })
   }
 
-  editPassword = e => {
+  editPassword = async e => {
     e.preventDefault();
     const id = this.props.currentUser.id;
     const input = {
@@ -79,11 +81,29 @@ class Settings extends React.Component{
       newPassword: this.state.password
     }
     if (this.state.password === this.state.confirmPassword){
-        console.log('input', input);
         this.props.editPassword(id, input);
+        await this.setState({
+          editingPW: false,
+          message: 'your password has been updated'
+        })
+        console.log(this.state);
     } else {
-      console.log('password not matching');
+      this.setState({
+        error: "Passwords do not match",
+        editingPW: false,
+        oldPassword: '',
+        password: '',
+        confirmPassword: ''
+      });
     }
+  }
+
+  componentDidUpdate(){
+    setTimeout(() => this.setState({message:'', error: ''}), 9000);
+  }
+
+  componentWillUnmount(){
+    setTimeout(() => this.setState({message:'', error: ''}), 9000);
   }
 
   render(){
@@ -169,6 +189,9 @@ class Settings extends React.Component{
             <img onClick={this.openEditPW} className="editPWIcon" src={editIcon} alt="edit password icon" />
           </div>
           <div className="accountInformation">
+            {this.state.message ? <h4 className="successMessage"> {this.state.message} </h4> : null}
+            {this.state.error ? <h4 className="errorMessage"> {this.state.error} </h4> : null}
+            {this.props.graphqlError ? <h4 className="errorMessage"> {this.props.graphqlError} </h4> : null}
             <h2> Name: </h2>
             <h3>{this.props.currentUser.first_name}{'  '}{this.props.currentUser.last_name}</h3>
           </div>
@@ -197,7 +220,8 @@ class Settings extends React.Component{
 const mapStateToProps = state => {
   return {
     currentUser: state.users.currentUser,
-    loggedIn: state.users.loggedIn
+    loggedIn: state.users.loggedIn,
+    graphqlError: state.users.error,
   }
 }
 
