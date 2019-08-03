@@ -55,12 +55,12 @@ const PrivateRoute = ({ component: Component, render, ...rest }) => {
 
 
 const App = (props) => {
-  const handleShow = () =>{
-    props.openModal()
+  const handleShow = async () =>{
+    await props.openModal()
   }
 
-  const handleClose = () => {
-    props.closeModal()
+  const handleClose = async () => {
+    await props.closeModal()
   }
 
   return (
@@ -71,9 +71,16 @@ const App = (props) => {
 
       <Modal show={props.openSearchModal} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Search Results</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        { props.error && <Modal.Body> {props.error}</Modal.Body>}
+        { !props.searchResult &&
+        <Modal.Body> Unfortunately, I can't seem to find that book.</Modal.Body> }
+
+        { props.searchResult && props.searchResult.length !== 0 ?
+          <Modal.Body>You have results!!</Modal.Body> :
+          <Modal.Body> Please Search for a book</Modal.Body>
+        }
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close

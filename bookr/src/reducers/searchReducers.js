@@ -43,6 +43,8 @@ export default function search(state = initialState, action){
       return {
         ...state,
         openSearchModal: false,
+        searchResult: [],
+        error: null
       }
     default:
       return state;
