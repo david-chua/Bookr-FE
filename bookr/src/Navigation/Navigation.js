@@ -11,7 +11,7 @@ const Navigation = props => {
 
   const loggingOut = () => {
     props.logOut();
-    return <Redirect to={"/login"} />;
+    props.history.push('/');
   }
 
   console.log(props);
