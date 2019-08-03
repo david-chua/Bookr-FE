@@ -2,7 +2,6 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-
 class Search extends React.Component{
   constructor(props){
     super(props)
@@ -16,7 +15,7 @@ class Search extends React.Component{
       input: e.target.value
     })
   }
-  
+
   render(){
     return(
       <Form inline>

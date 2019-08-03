@@ -14,28 +14,27 @@ const Navigation = props => {
     props.history.push('/');
   }
 
-  console.log(props);
-    return(
-      <div>
-        <section>
-          <div className="topNav">
-            <div className="LogoContainer">
-              <img src={logo} alt="bookr logo" />
-            </div>
-              {props.loggedIn? (
-                <div onClick={loggingOut}>
-                  <Nav.Link >Logout</Nav.Link>
-                </div>
-              ): (
-                <LinkContainer className="loginLink" to="/login">
-                  <Nav.Link >Log In</Nav.Link>
-                </LinkContainer>
-              )}
+  return(
+    <div>
+      <section>
+        <div className="topNav">
+          <div className="LogoContainer">
+            <img src={logo} alt="bookr logo" />
           </div>
-          <NavBar />
-        </section>
-      </div>
-    )
+          {props.loggedIn? (
+            <div onClick={loggingOut}>
+              <Nav.Link >Logout</Nav.Link>
+            </div>
+          ): (
+            <LinkContainer className="loginLink" to="/login">
+              <Nav.Link >Log In</Nav.Link>
+            </LinkContainer>
+          )}
+        </div>
+        <NavBar />
+      </section>
+    </div>
+  )
 }
 
 const mapStateToProps = function(state){

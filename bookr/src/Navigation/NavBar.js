@@ -5,34 +5,26 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Search from './SearchInput';
 
-class NavBar extends React.Component{
-  constructor(props){
-    super(props)
-    this.state = {
-    }
-  }
-
-  render(){
-    return(
-      <Navbar collapseOnSelect expand="lg">
-        <Nav className="navContainer">
-          <LinkContainer exact to="/">
-            <Nav.Link>Home</Nav.Link>
-          </LinkContainer>
-          <LinkContainer exact to="/news">
-            <Nav.Link>News</Nav.Link>
-          </LinkContainer>
-          <LinkContainer exact to="/books">
-            <Nav.Link>Books</Nav.Link>
-          </LinkContainer>
-          <LinkContainer exact to="/settings">
-            <Nav.Link>Settings</Nav.Link>
-          </LinkContainer>
-          <Search/>
-        </Nav>
-      </Navbar>
-    )
-  }
+const NavBar = props => {
+  return(
+    <Navbar collapseOnSelect expand="lg">
+      <Nav className="navContainer">
+        <LinkContainer exact to="/">
+          <Nav.Link>Home</Nav.Link>
+        </LinkContainer>
+        <LinkContainer exact to="/news">
+          <Nav.Link>News</Nav.Link>
+        </LinkContainer>
+        <LinkContainer exact to="/books">
+          <Nav.Link>Books</Nav.Link>
+        </LinkContainer>
+        <LinkContainer exact to="/settings">
+          <Nav.Link>Settings</Nav.Link>
+        </LinkContainer>
+        <Search/>
+      </Nav>
+    </Navbar>
+  )
 }
 
 export default withRouter(NavBar);
