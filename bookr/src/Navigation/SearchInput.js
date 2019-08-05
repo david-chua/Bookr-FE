@@ -20,11 +20,12 @@ class Search extends React.Component{
   }
   searchBook = () => {
     this.props.searchBook(this.state.input);
-    console.log(this.props.searchResult)
+    this.setState({
+      input: ''
+    })
   }
 
   render(){
-    console.log(this.props.searchResult)
     return(
       <Form inline>
         <Form.Control type="text" onChange={this.searchInputChange} placeholder="Search for a book" value={this.state.input} className="mr-sm-2" />

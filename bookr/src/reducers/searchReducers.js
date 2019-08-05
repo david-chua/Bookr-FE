@@ -1,11 +1,13 @@
-import {FETCHING_DATA, SEARCH_BOOK, OPEN_MODAL, CLOSE_MODAL, SEARCH_ERROR}from '../actions/searchActions';
+import {FETCHING_DATA, SEARCH_BOOK, OPEN_MODAL, CLOSE_MODAL, SEARCH_ERROR, OPEN_SINGLE_BOOK_MODAL, CLOSE_SINGLE_BOOK_MODAL}from '../actions/searchActions';
 
 const initialState = {
   fetchingData: false,
   input: '',
   openSearchModal: false,
+  openSingleBookModal: false,
   searchValue: '',
   searchResult: [],
+  singleBook: [],
   error: null
 }
 
@@ -21,6 +23,7 @@ export default function search(state = initialState, action){
         ...state,
         fetchingData: false,
         openSearchModal: true,
+        openSingleBookModal: false,
         searchResult: action.payload,
         error: null,
         input: '',
@@ -30,6 +33,7 @@ export default function search(state = initialState, action){
         ...state,
         fetchingData: false,
         openSearchModal: true,
+        openSingleBookModal: false,
         searchResult: [],
         error: action.payload,
         input: ''
@@ -37,13 +41,32 @@ export default function search(state = initialState, action){
     case OPEN_MODAL:
       return {
         ...state,
-        openSearchModal: true
+        openSearchModal: true,
+        openSingleBookModal: false,
       }
     case CLOSE_MODAL:
       return {
         ...state,
         openSearchModal: false,
         searchResult: [],
+        error: null
+      }
+    case OPEN_SINGLE_BOOK_MODAL:
+      return {
+        ...state,
+        openSearchModal: false,
+        openSingleBookModal: true,
+        searchResult: [],
+        singleBook: action.payload,
+        error: null
+      }
+    case CLOSE_SINGLE_BOOK_MODAL:
+      return {
+        ...state,
+        openSearchModal: false,
+        openSingleBookModal: false,
+        searchResult: [],
+        singleBook: [],
         error: null
       }
     default:

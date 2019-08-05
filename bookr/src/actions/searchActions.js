@@ -5,6 +5,8 @@ export const SEARCH_BOOK = "SEARCH_BOOK";
 export const SEARCH_ERROR = "SEARCH_ERROR";
 export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
+export const OPEN_SINGLE_BOOK_MODAL = "OPEN_SINGLE_BOOK_MODAL";
+export const CLOSE_SINGLE_BOOK_MODAL = "CLOSE_SINGLE_BOOK_MODAL";
 
 export function openModal(){
   return dispatch => {

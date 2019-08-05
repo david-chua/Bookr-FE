@@ -8,6 +8,7 @@ import News from './Components/News/News';
 import Settings from './Components/Settings/Settings';
 import Books from './Components/Books/Books';
 import LogInOrRegister from "./Components/Auth/Login";
+import SearchResult from "./Components/SearchResult/SearchResult";
 import Footer from './Footer';
 import { GET_CURRENT_USER_QUERY } from './graphQL/queries';
 import { openModal, closeModal } from './actions/searchActions';
@@ -78,7 +79,11 @@ const App = (props) => {
         <Modal.Body> Unfortunately, I can't seem to find that book.</Modal.Body> }
 
         { props.searchResult && props.searchResult.length !== 0 ?
-          <Modal.Body>You have results!!</Modal.Body> :
+          <Modal.Body>
+          {props.searchResult.map(result =>{
+            return <SearchResult key={result.id} result={result} />
+          })}
+          </Modal.Body> :
           <Modal.Body> Please Search for a book</Modal.Body>
         }
         <Modal.Footer>
