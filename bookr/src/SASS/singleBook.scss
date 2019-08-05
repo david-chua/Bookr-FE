@@ -1,0 +1,16 @@
+.singleBookContainer{
+  display: flex;
+}
+
+.singleBookInfo{
+  margin-left: 15px;
+}
+
+.singleBookContainer div h1 span, .singleBookDescription h1 span {
+  font-weight: bold;
+  line-height: 1.5em;
+}
+
+.singleBookModal .modal-dialog .modal-content{
+  min-width: 600px;
+}

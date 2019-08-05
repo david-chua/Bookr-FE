@@ -1,10 +1,10 @@
-import {FETCHING_DATA, SEARCH_BOOK, OPEN_MODAL, CLOSE_MODAL, SEARCH_ERROR, OPEN_SINGLE_BOOK_MODAL, CLOSE_SINGLE_BOOK_MODAL}from '../actions/searchActions';
+import {FETCHING_DATA, SEARCH_BOOK, OPEN_MODAL, CLOSE_MODAL, SEARCH_ERROR, SET_BOOK, OPEN_BOOK_MODAL, CLOSE_BOOK_MODAL}from '../actions/searchActions';
 
 const initialState = {
   fetchingData: false,
   input: '',
   openSearchModal: false,
-  openSingleBookModal: false,
+  openBook: false,
   searchValue: '',
   searchResult: [],
   singleBook: [],
@@ -23,8 +23,9 @@ export default function search(state = initialState, action){
         ...state,
         fetchingData: false,
         openSearchModal: true,
-        openSingleBookModal: false,
+        openBook: false,
         searchResult: action.payload,
+        singleBook: '',
         error: null,
         input: '',
       }
@@ -33,8 +34,9 @@ export default function search(state = initialState, action){
         ...state,
         fetchingData: false,
         openSearchModal: true,
-        openSingleBookModal: false,
+        openBook: false,
         searchResult: [],
+        singleBook: [],
         error: action.payload,
         input: ''
       }
@@ -42,29 +44,33 @@ export default function search(state = initialState, action){
       return {
         ...state,
         openSearchModal: true,
-        openSingleBookModal: false,
+        openBook: false,
       }
     case CLOSE_MODAL:
       return {
         ...state,
         openSearchModal: false,
         searchResult: [],
+        singleBook: [],
         error: null
       }
-    case OPEN_SINGLE_BOOK_MODAL:
+    case SET_BOOK:
+      return {
+        ...state,
+        singleBook: action.payload
+      }
+    case OPEN_BOOK_MODAL:
       return {
         ...state,
         openSearchModal: false,
-        openSingleBookModal: true,
-        searchResult: [],
-        singleBook: action.payload,
+        openBook: true,
         error: null
       }
-    case CLOSE_SINGLE_BOOK_MODAL:
+    case CLOSE_BOOK_MODAL:
       return {
         ...state,
         openSearchModal: false,
-        openSingleBookModal: false,
+        openBook: false,
         searchResult: [],
         singleBook: [],
         error: null

@@ -5,8 +5,9 @@ export const SEARCH_BOOK = "SEARCH_BOOK";
 export const SEARCH_ERROR = "SEARCH_ERROR";
 export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
-export const OPEN_SINGLE_BOOK_MODAL = "OPEN_SINGLE_BOOK_MODAL";
-export const CLOSE_SINGLE_BOOK_MODAL = "CLOSE_SINGLE_BOOK_MODAL";
+export const OPEN_BOOK_MODAL = "OPEN_BOOK_MODAL";
+export const CLOSE_BOOK_MODAL = "CLOSE_BOOK_MODAL";
+export const SET_BOOK = "SET_BOOK";
 
 export function openModal(){
   return dispatch => {
@@ -20,6 +21,31 @@ export function closeModal(){
   return dispatch => {
     dispatch({
       type: CLOSE_MODAL
+    })
+  }
+}
+
+export function openBookModal(){
+  return dispatch => {
+    dispatch({
+      type: OPEN_BOOK_MODAL
+    })
+  }
+}
+
+export function setBook(book){
+  return dispatch => {
+    dispatch({
+      type: SET_BOOK,
+      payload: book
+    })
+  }
+}
+
+export function closeBookModal(){
+  return dispatch => {
+    dispatch({
+      type: CLOSE_BOOK_MODAL
     })
   }
 }
