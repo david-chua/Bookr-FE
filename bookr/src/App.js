@@ -1,7 +1,8 @@
-import React from 'react';
+import  React, {useState} from 'react';
 import { Route, Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import moment from "moment";
+import ReactStars from 'react-stars';
 import ApolloClient from "apollo-boost";
 import Navigation from './Navigation/Navigation';
 import Home from './Home';
@@ -71,6 +72,13 @@ const App = (props) => {
     console.log('handle book close');
   }
 
+  const handleChange = e => {
+    e.preventDefault();
+    const { name, value } = e.target
+    setValues({...values, [name]: value})
+  }
+
+  const [ values, setValues ] = useState({rating: 0, review: ''})
   return (
     <div className="App">
       <Button variant="primary" onClick={handleShow}>
@@ -98,6 +106,26 @@ const App = (props) => {
           <div className="singleBookDescription">
             <h1><span> Description: </span></h1>
             <p> {props.singleBook.volumeInfo ? props.singleBook.volumeInfo.description : "This book has no description" } </p>
+          </div>
+          <div className="reviewForm">
+            <h1> Add your review </h1>
+            <div>
+              <h2> Rating: </h2>
+              <ReactStars
+                count={5}
+                color2={'#E57452'}
+                size={25}
+                name={"rating"}
+                onChage={handleChange}
+                value={values.rating}
+                />
+            </div>
+            <Form>
+              <Form.Group controlId="exampleForm.ControlTextarea1">
+              <Form.Control onChange={handleChange} value={values.review} name={"review"}
+             as="textarea" rows="4" placeholder="Add your review"/>
+              </Form.Group>
+            </Form>
           </div>
 
         </Modal.Body>
