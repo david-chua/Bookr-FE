@@ -59,6 +59,7 @@ const PrivateRoute = ({ component: Component, render, ...rest }) => {
 
 
 const App = (props) => {
+
   const handleShow = async () =>{
     await props.openModal()
   }
@@ -69,16 +70,37 @@ const App = (props) => {
 
   const handleBookClose = () => {
     props.closeBookModal()
-    console.log('handle book close');
   }
 
-  const handleChange = e => {
-    e.preventDefault();
-    const { name, value } = e.target
-    setValues({...values, [name]: value})
+  const handleInputChange = e => {
+      const {name, value} = e.target
+      setValues({...values, [name]: value})
   }
 
-  const [ values, setValues ] = useState({rating: 0, review: ''})
+  const ratingChange = newRating => {
+    setValues({...values, "rating": newRating})
+  }
+
+  const [values, setValues] = useState({review: '', rating: 0})
+
+  const addReview = () => {
+    const bookInfo = {
+      title: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.title: "No title",
+      author: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.authors.join(', '): "Author unknown",
+      publisher: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.publisher : "Publisher Unknown",
+      image: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.imageLinks.smallThumbnail : null,
+      book_api_id: props.singleBook.id,
+      category: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.categories.join(', '): "Category Unknown",
+      description: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.description : "This book has no description",
+      list_price: props.singleBook.saleInfo.retailPrice ? props.singleBook.saleInfo.retailPrice.amount : null
+    }
+    console.log('values.rating', values.rating)
+    console.log('values.review', values.review)
+    console.log('user id', props.currentUser.id);
+    console.log('bookInfo', bookInfo);
+  }
+
+
   return (
     <div className="App">
       <Button variant="primary" onClick={handleShow}>
@@ -92,7 +114,7 @@ const App = (props) => {
         <Modal.Body>
           <div className="singleBookContainer">
             <div>
-              <img src={props.singleBook.volumeInfo ? props.singleBook.volumeInfo.imageLinks.smallThumbnail : noCover } />
+              <img className="singleBookImage" src={props.singleBook.volumeInfo.imageLinks ? props.singleBook.volumeInfo.imageLinks.smallThumbnail : noCover } />
             </div>
             <div className="singleBookInfo">
               <h1><span> Title: </span> {props.singleBook.volumeInfo ? props.singleBook.volumeInfo.title: "No title"}</h1>
@@ -109,24 +131,27 @@ const App = (props) => {
           </div>
           <div className="reviewForm">
             <h1> Add your review </h1>
-            <div>
+            <div className="reactRating">
               <h2> Rating: </h2>
               <ReactStars
+                className="reactStars"
                 count={5}
-                color2={'#E57452'}
+                color2={'#FFC914'}
                 size={25}
-                name={"rating"}
-                onChage={handleChange}
+                onChange={ratingChange}
                 value={values.rating}
                 />
             </div>
             <Form>
               <Form.Group controlId="exampleForm.ControlTextarea1">
-              <Form.Control onChange={handleChange} value={values.review} name={"review"}
-             as="textarea" rows="4" placeholder="Add your review"/>
+              <Form.Control onChange={handleInputChange} value={values.review} name="review"
+              as="textarea" rows="4" placeholder="Add your review"/>
               </Form.Group>
             </Form>
           </div>
+          <Button variant="primary" onClick={addReview}>
+            Add Review
+          </Button>
 
         </Modal.Body>
         <Modal.Footer>
@@ -139,7 +164,7 @@ const App = (props) => {
           <Button variant="primary" onClick={handleBookClose}>
             Add to Read
           </Button>
-          <Button variant="secondary" onClick={handleBookClose}>
+          <Button variant="secondary" onClick={handleShow}>
             Back to Results
           </Button>
 
@@ -185,6 +210,7 @@ const App = (props) => {
 
 const mapStateToProps = state => {
   return {
+    currentUser: state.users.currentUser,
     fetchingData: state.search.fetchingData,
     input: state.search.input,
     openSearchModal: state.search.openSearchModal,

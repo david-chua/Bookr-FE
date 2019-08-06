@@ -24,7 +24,6 @@ class News extends React.Component{
       })
   }
   render(){
-    console.log(process.env)
     return(
       <div>
         <h1 className="bookrNews"> Bookr News </h1>
