@@ -3,6 +3,8 @@ import { ADDING_BOOK, DELETING_BOOK, BOOK_ADDED, BOOK_DELETED, BOOK_ERROR } from
 const initialState = {
   addingBook: false,
   bookAdded: false,
+  bookExistBoolean: false,
+  book: [],
   success: null,
   error: null
 }
@@ -15,15 +17,16 @@ export default function book(state = initialState, action){
         addingBook: true,
         bookAdded: false,
       }
-    case REVIEW_ADDED:
+    case BOOK_ADDED:
       return{
         ...state,
         addingBook: false,
         error: false,
         bookAdded: true,
-        success: action.payload
+        book: action.payload,
+        success: 'successfully added book'
       }
-    case REVIEW_ERROR:
+    case BOOK_ERROR:
       return{
         ...state,
         addingBook: false,

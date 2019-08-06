@@ -37,3 +37,12 @@ export const GET_CURRENT_USER_QUERY = gql`
     }
   }
 `;
+
+export const BOOK_EXIST_CHECK = gql`
+  query {
+    getBooks{
+    id
+    book_api_id
+    }
+  }
+`;

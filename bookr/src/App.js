@@ -1,4 +1,4 @@
-import  React, {useState} from 'react';
+import  React, {useState, useEffect} from 'react';
 import { Route, Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import moment from "moment";
@@ -13,8 +13,9 @@ import LogInOrRegister from "./Components/Auth/Login";
 import SearchResult from "./Components/SearchResult/SearchResult";
 import Footer from './Footer';
 import noCover from "./public/images/noCover.jpg";
-import { GET_CURRENT_USER_QUERY } from './graphQL/queries';
+import { GET_CURRENT_USER_QUERY, BOOK_EXIST_CHECK } from './graphQL/queries';
 import { openModal, closeModal, openBookModal, closeBookModal } from './actions/searchActions';
+import { addBook } from './actions/bookActions';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -83,7 +84,39 @@ const App = (props) => {
 
   const [values, setValues] = useState({review: '', rating: 0})
 
-  const addReview = () => {
+  const checkIfBookExist = async (book_api_id) => {
+    const client = new ApolloClient({
+      uri: "http://localhost:9090"
+    });
+    try {
+      const bookCheck = await client.query({query: BOOK_EXIST_CHECK});
+      const filteredBook = bookCheck.data.getBooks.some(book => {
+        return book.book_api_id === book_api_id
+      })
+      return filteredBook;
+    }
+    catch (error) {
+      console.log('error)')
+    }
+  }
+
+  const getExistingBook = async (book_api_id) => {
+    const client = new ApolloClient({
+      uri: "http://localhost:9090"
+    });
+    try {
+      const bookCheck = await client.query({query: BOOK_EXIST_CHECK});
+      const filteredBook = bookCheck.data.getBooks.filter(book => {
+        return book.book_api_id === book_api_id
+      })
+      return parseInt(filteredBook[0].id);
+    }
+    catch (error) {
+      console.log('error)')
+    }
+  }
+
+  const addReview = async () => {
     const bookInfo = {
       title: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.title: "No title",
       author: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.authors.join(', '): "Author unknown",
@@ -94,12 +127,24 @@ const App = (props) => {
       description: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.description : "This book has no description",
       list_price: props.singleBook.saleInfo.retailPrice ? props.singleBook.saleInfo.retailPrice.amount : null
     }
-    console.log('values.rating', values.rating)
-    console.log('values.review', values.review)
-    console.log('user id', props.currentUser.id);
-    console.log('bookInfo', bookInfo);
-  }
 
+    const initiateCheck = await checkIfBookExist(bookInfo.book_api_id);
+    if (initiateCheck) {
+      console.log('it exists')
+      const bookId = await getExistingBook(bookInfo.book_api_id)
+      console.log(bookId, typeof(bookId))
+      const userId = parseInt(props.currentUser.id)
+    } else {
+      console.log('i need to add this')
+      props.addBook(bookInfo);
+    }
+    // props.addBook(bookInfo);
+    // console.log(props.bookSuccess, 'success')
+    // console.log('values.rating', values.rating)
+    // console.log('values.review', values.review)
+    // console.log('user id', props.currentUser.id);
+    // console.log('bookInfo', bookInfo);
+  }
 
   return (
     <div className="App">
@@ -114,7 +159,7 @@ const App = (props) => {
         <Modal.Body>
           <div className="singleBookContainer">
             <div>
-              <img className="singleBookImage" src={props.singleBook.volumeInfo.imageLinks ? props.singleBook.volumeInfo.imageLinks.smallThumbnail : noCover } />
+              <img className="singleBookImage" src={props.singleBook.volumeInfo && props.singleBook.volumeInfo.imageLinks ? props.singleBook.volumeInfo.imageLinks.smallThumbnail : noCover } />
             </div>
             <div className="singleBookInfo">
               <h1><span> Title: </span> {props.singleBook.volumeInfo ? props.singleBook.volumeInfo.title: "No title"}</h1>
@@ -218,8 +263,10 @@ const mapStateToProps = state => {
     searchValue: state.search.searchValue,
     searchResult: state.search.searchResult,
     singleBook: state.search.singleBook,
-    error: state.search.error
+    error: state.search.error,
+    bookError: state.book.error,
+    bookSuccess: state.book.success
   }
 }
 
-export default withRouter(connect(mapStateToProps, {openModal, closeModal, openBookModal, closeBookModal})(App));
+export default withRouter(connect(mapStateToProps, {openModal, closeModal, openBookModal, closeBookModal, addBook})(App));

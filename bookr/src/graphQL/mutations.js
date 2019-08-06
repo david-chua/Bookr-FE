@@ -48,3 +48,13 @@ export const EDIT_PASSWORD_MUTATION = gql`
     }
   }
 `;
+
+export const ADD_BOOK_MUTATION = gql`
+  mutation addUser($input: BookInput!){
+    addBook(input: $input){
+      id
+      title
+      book_api_id
+    }
+  }
+`;
