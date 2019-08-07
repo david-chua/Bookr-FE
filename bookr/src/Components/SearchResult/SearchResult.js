@@ -2,7 +2,6 @@ import React from 'react';
 import moment from 'moment';
 import { connect } from "react-redux";
 import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 import noCover from "../../public/images/noCover.jpg";
 import { setBook, openBookModal, closeBookModal } from '../../actions/searchActions';
 
@@ -21,10 +20,8 @@ class SearchResult extends React.Component{
   }
 
   render(){
-    console.log('props', this.props)
     const book = this.props.result.volumeInfo;
     const trimmedDescription = book.description ? book.description.substring(0, 150) : "no description here";
-    console.log(trimmedDescription);
     return(
       <div className="searchResultsContainer">
         <div className="searchResultBookImage">

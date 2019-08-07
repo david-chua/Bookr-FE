@@ -50,11 +50,21 @@ export const EDIT_PASSWORD_MUTATION = gql`
 `;
 
 export const ADD_BOOK_MUTATION = gql`
-  mutation addUser($input: BookInput!){
+  mutation addBook($input: BookInput!){
     addBook(input: $input){
       id
       title
       book_api_id
+    }
+  }
+`;
+
+export const ADD_REVIEW_MUTATION = gql`
+  mutation addReview($input: ReviewInput!){
+    addReview(input: $input){
+      id
+      content
+      rating
     }
   }
 `;

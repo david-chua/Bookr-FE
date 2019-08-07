@@ -46,3 +46,16 @@ export const BOOK_EXIST_CHECK = gql`
     }
   }
 `;
+
+export const REVIEW_EXIST_BY_USER_ID = gql`
+  query getReviewsByUserId($userId: ID! ){
+    getReviewsByUserId(userId: $userId ){
+      id
+      content
+      book_id{
+        id
+        title
+      }
+    }
+  }
+`;

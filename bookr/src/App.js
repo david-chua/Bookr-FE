@@ -1,4 +1,4 @@
-import  React, {useState, useEffect} from 'react';
+import  React, {useState } from 'react';
 import { Route, Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import moment from "moment";
@@ -13,9 +13,10 @@ import LogInOrRegister from "./Components/Auth/Login";
 import SearchResult from "./Components/SearchResult/SearchResult";
 import Footer from './Footer';
 import noCover from "./public/images/noCover.jpg";
-import { GET_CURRENT_USER_QUERY, BOOK_EXIST_CHECK } from './graphQL/queries';
+import { GET_CURRENT_USER_QUERY, BOOK_EXIST_CHECK, REVIEW_EXIST_BY_USER_ID } from './graphQL/queries';
 import { openModal, closeModal, openBookModal, closeBookModal } from './actions/searchActions';
 import { addBook } from './actions/bookActions';
+import { addReview } from './actions/reviewActions';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -109,10 +110,26 @@ const App = (props) => {
       const filteredBook = bookCheck.data.getBooks.filter(book => {
         return book.book_api_id === book_api_id
       })
-      return parseInt(filteredBook[0].id);
+      return filteredBook[0].id
     }
     catch (error) {
       console.log('error)')
+    }
+  }
+
+  const checkIfUserReviewed = async (user_id, book_id) => {
+    const client = new ApolloClient({
+      uri: "http://localhost:9090"
+    });
+    try {
+      const reviewCheck = await client.query({query: REVIEW_EXIST_BY_USER_ID, variables: {userId: user_id}});
+      const filteredReview = reviewCheck.data.getReviewsByUserId.some(review => {
+        return review.book_id.id === book_id
+      })
+      return filteredReview
+    }
+    catch (error){
+      console.log(error)
     }
   }
 
@@ -121,29 +138,52 @@ const App = (props) => {
       title: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.title: "No title",
       author: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.authors.join(', '): "Author unknown",
       publisher: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.publisher : "Publisher Unknown",
-      image: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.imageLinks.smallThumbnail : null,
+      image: props.singleBook.volumeInfo.imageLinks? props.singleBook.volumeInfo.imageLinks.smallThumbnail :"No Image",
       book_api_id: props.singleBook.id,
-      category: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.categories.join(', '): "Category Unknown",
+      category: props.singleBook.volumeInfo.categories ? props.singleBook.volumeInfo.categories.join(', '): "Category Unknown",
       description: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.description : "This book has no description",
       list_price: props.singleBook.saleInfo.retailPrice ? props.singleBook.saleInfo.retailPrice.amount : null
     }
 
     const initiateCheck = await checkIfBookExist(bookInfo.book_api_id);
     if (initiateCheck) {
-      console.log('it exists')
       const bookId = await getExistingBook(bookInfo.book_api_id)
-      console.log(bookId, typeof(bookId))
-      const userId = parseInt(props.currentUser.id)
+      const userId = props.currentUser.id
+      if (values.rating && values.review){
+        let newReview = {
+          book_id: bookId,
+          user_id: userId,
+          rating: parseFloat(values.rating),
+          content: values.review
+        }
+        const reviewCheck = await checkIfUserReviewed(userId, bookId);
+        console.log(reviewCheck, 'reviewCheck function');
+        if (reviewCheck) {
+          console.log('You have already reviewed this book')
+        } else {
+          props.addReview(newReview);
+        }
+      } else{
+        console.log('you need to have a rating and a review');
+      }
     } else {
-      console.log('i need to add this')
-      props.addBook(bookInfo);
+      try {
+        props.addBook(bookInfo)
+        let newId = parseInt(props.bookId) + 1
+        if (values.rating && values.review){
+          let newBookReview = {
+            book_id: newId,
+            user_id: props.currentUser.id,
+            rating: parseFloat(values.rating),
+            content: values.review
+          }
+          props.addReview(newBookReview);
+        }
+      }
+      catch(error){
+        console.log('you need to have a rating and a review');
+      }
     }
-    // props.addBook(bookInfo);
-    // console.log(props.bookSuccess, 'success')
-    // console.log('values.rating', values.rating)
-    // console.log('values.review', values.review)
-    // console.log('user id', props.currentUser.id);
-    // console.log('bookInfo', bookInfo);
   }
 
   return (
@@ -159,7 +199,7 @@ const App = (props) => {
         <Modal.Body>
           <div className="singleBookContainer">
             <div>
-              <img className="singleBookImage" src={props.singleBook.volumeInfo && props.singleBook.volumeInfo.imageLinks ? props.singleBook.volumeInfo.imageLinks.smallThumbnail : noCover } />
+              <img className="singleBookImage" src={props.singleBook.volumeInfo && props.singleBook.volumeInfo.imageLinks ? props.singleBook.volumeInfo.imageLinks.smallThumbnail : noCover } alt={props.singleBook.volumeInfo ? props.singleBook.volumeInfo.title: "No title"}  />
             </div>
             <div className="singleBookInfo">
               <h1><span> Title: </span> {props.singleBook.volumeInfo ? props.singleBook.volumeInfo.title: "No title"}</h1>
@@ -167,7 +207,7 @@ const App = (props) => {
               <h1><span> Published: </span> {props.singleBook.volumeInfo ? moment(props.singleBook.volumeInfo.publishedDate).format("MMMM DD, YYYY") : "Publish date unknown"}</h1>
               <h1><span> Publisher: </span> {props.singleBook.volumeInfo ? props.singleBook.volumeInfo.publisher : "Publisher Unknown"} </h1>
               <h1><span> ISBN: </span>{props.singleBook.volumeInfo  ? props.singleBook.volumeInfo.industryIdentifiers[0].identifier : "no isbn"}</h1>
-              <a target="_blank" href={props.singleBook.volumeInfo ? props.singleBook.volumeInfo.infoLink : null}><Button> Buy now </Button></a>
+              <a target="_blank" rel="noopener noreferrer" href={props.singleBook.volumeInfo ? props.singleBook.volumeInfo.infoLink : null}><Button> Buy now </Button></a>
             </div>
           </div>
           <div className="singleBookDescription">
@@ -264,9 +304,10 @@ const mapStateToProps = state => {
     searchResult: state.search.searchResult,
     singleBook: state.search.singleBook,
     error: state.search.error,
+    bookId: state.book.book.id,
     bookError: state.book.error,
     bookSuccess: state.book.success
   }
 }
 
-export default withRouter(connect(mapStateToProps, {openModal, closeModal, openBookModal, closeBookModal, addBook})(App));
+export default withRouter(connect(mapStateToProps, {openModal, closeModal, openBookModal, closeBookModal, addBook, addReview})(App));

@@ -24,7 +24,6 @@ export function addBook(book){
         }
       })
       .then(response => {
-        console.log('success', response)
         dispatch({
           type: BOOK_ADDED,
           payload: response.data.addBook

@@ -3,6 +3,7 @@ import { ADDING_REVIEW, EDITING_REVIEW, DELETING_REVIEW, REVIEW_ADDED, REVIEW_DE
 const initialState = {
   addingReview: false,
   reviewAdded: false,
+  review: [],
   success: null,
   error: null
 }
@@ -21,7 +22,8 @@ export default function review(state = initialState, action){
         addingReview: false,
         error: false,
         reviewAdded: true,
-        success: action.payload
+        review: action.payload,
+        success: 'Review successfully added'
       }
     case REVIEW_ERROR:
       return{
