@@ -73,7 +73,6 @@ export function jwtLogin(email, password){
       })
       .then(response => {
         localStorage.setItem("token", response.data.loginUser.token);
-        console.log('login response', response);
         const token = localStorage.getItem("token");
         const jwtClient = new ApolloClient({
           uri: "http://localhost:9090",
@@ -88,7 +87,6 @@ export function jwtLogin(email, password){
             }
           })
           .then(response => {
-            console.log('user exist response', response)
             dispatch({
               type: LOGIN_JWT,
               payload: response.data.getUserBy

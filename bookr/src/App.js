@@ -1,4 +1,4 @@
-import  React, {useState } from 'react';
+import  React, {useState, useEffect } from 'react';
 import { Route, Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import moment from "moment";
@@ -13,10 +13,11 @@ import LogInOrRegister from "./Components/Auth/Login";
 import SearchResult from "./Components/SearchResult/SearchResult";
 import Footer from './Footer';
 import noCover from "./public/images/noCover.jpg";
-import { GET_CURRENT_USER_QUERY, BOOK_EXIST_CHECK, REVIEW_EXIST_BY_USER_ID } from './graphQL/queries';
+import { GET_CURRENT_USER_QUERY, BOOK_EXIST_CHECK, REVIEW_EXIST_BY_USER_ID, BOOK_OWNED_EXIST_IN_USER, BOOK_READ_EXIST_IN_USER, FAVORITE_BOOK_EXIST_IN_USER} from './graphQL/queries';
 import { openModal, closeModal, openBookModal, closeBookModal } from './actions/searchActions';
 import { addBook, successAdd } from './actions/bookActions';
 import { addReview } from './actions/reviewActions';
+import { addToOwn, addToRead, addToFavorite } from './actions/categoryActions';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -84,6 +85,7 @@ const App = (props) => {
   }
 
   const [values, setValues] = useState({review: '', rating: 0})
+  const [infoMessage, setInfoValues] = useState({message: "" })
 
   const checkIfBookExist = async (book_api_id) => {
     const client = new ApolloClient({
@@ -185,6 +187,18 @@ const App = (props) => {
     }
   }
 
+  const toOwn = async e => {
+    addToCategory("own")
+  }
+
+  const toRead = async e =>{
+    addToCategory("read")
+  }
+
+  const toFavorites = async e => {
+    addToCategory("favorites")
+  }
+
   const addToCategory = async(type) => {
     const bookInfo = {
       title: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.title: "No title",
@@ -200,64 +214,139 @@ const App = (props) => {
     const initiateCheck = await checkIfBookExist(bookInfo.book_api_id);
     if (initiateCheck){
      const bookId = await getExistingBook(bookInfo.book_api_id)
+     const userId = props.currentUser.id
+     const addingToOwn = {
+       user_id: userId,
+       book_id: bookId,
+       borrowed: false
+     }
+     const regularAdd = {
+       user_id: userId,
+       book_id: bookId,
+     }
+
      switch(type){
        case "own":
-         console.log('I want to own')
-         const owned = await checkIfInCategory(type)
+         const owned = await checkIfInCategory(type, userId, bookId)
          if (owned){
-           console.log('already owned')
+           setInfoValues({message: "You already own this book"})
+           setTimeout(() => setInfoValues({message: ""}), 3000);
          } else {
-           console.log("i'll add this")
-           //addToOwn
+           props.addToOwn(addingToOwn);
          }
          break
        case "favorites":
-         console.log("It's a favorite")
-         checkIfInCategory(type)
+         const favorited = await checkIfInCategory(type, userId, bookId)
+         if (favorited){
+           setInfoValues({message: "You already favorited this book"})
+           setTimeout(() => setInfoValues({message: ""}), 3000);
+         } else {
+           props.addToFavorite(regularAdd);
+         }
          break
        case "read":
-         console.log("I've read this'")
-         checkIfInCategory(type)
+         const read = await checkIfInCategory(type, userId, bookId)
+         if (read){
+           setInfoValues({message: "You already read this book"})
+           setTimeout(() => setInfoValues({message: ""}), 3000);
+         } else {
+           props.addToRead(regularAdd);
+         }
          break
        default:
-         console.log('return a type')
+         return
      }
     } else {
       props.addBook(bookInfo)
-
-      // check if ownership exist
-
       const bookId = await getExistingBook(bookInfo.book_api_id)
-      //add review
+      const userId = props.currentUser.id
+      const addingToOwn = {
+        user_id: userId,
+        book_id: bookId,
+        borrowed: false
+      }
+      const regularAdd = {
+        user_id: userId,
+        book_id: bookId,
+      }
+      switch(type){
+        case "own":
+          props.addToOwn(addingToOwn);
+          break
+        case "favorites":
+          props.addToFavorite(regularAdd);
+          break
+        case "read":
+          props.addToRead(regularAdd);
+          break
+        default:
+          return
+      }
     }
   }
 
-  const toOwn = async e => {
-    addToCategory("own")
+  const existInOwn = async (user_id, book_id) => {
+    const client = new ApolloClient({
+      uri: "http://localhost:9090"
+    });
+    try {
+      const ownedCheck = await client.query({query: BOOK_OWNED_EXIST_IN_USER, variables: {userId: user_id}});
+      const filteredOwned = ownedCheck.data.getBooksOwnedByUserId.some(owned => {
+        return owned.book_id.id === book_id
+      })
+      return filteredOwned
+    }
+    catch (error){
+      console.log(error)
+    }
   }
 
-  const toRead = async e =>{
-    addToCategory("read")
+  const existInRead = async (user_id, book_id) => {
+    const client = new ApolloClient({
+      uri: "http://localhost:9090"
+    });
+    try {
+      const readCheck = await client.query({query: BOOK_READ_EXIST_IN_USER, variables: {userId: user_id}});
+      const filteredRead = readCheck.data.getBooksReadByUserId.some(owned => {
+        return owned.book_id.id === book_id
+      })
+      return filteredRead
+    }
+    catch (error){
+      console.log(error)
+    }
   }
 
-  const toFavorites = async e => {
-    addToCategory("favorites")
+  const existInFavorite = async (user_id, book_id) => {
+    const client = new ApolloClient({
+      uri: "http://localhost:9090"
+    });
+    try {
+      const favoriteCheck = await client.query({query: FAVORITE_BOOK_EXIST_IN_USER, variables: {userId: user_id}});
+      const filteredFavorite = favoriteCheck.data.getFavoriteBooksByUserId.some(owned => {
+        return owned.book_id.id === book_id
+      })
+      return filteredFavorite
+    }
+    catch (error){
+      console.log(error)
+    }
   }
 
-  const checkIfInCategory = async (type) => {
+  const checkIfInCategory = async (type, user_id, book_id) => {
     switch(type){
       case "own":
-        console.log('Checking if type is own?')
-        return false
-        // break
+        const ownExist = await existInOwn(user_id, book_id)
+        return ownExist;
       case "favorites":
-        console.log('checking if type is favorites')
+        const favoriteExist = await existInFavorite(user_id, book_id)
+        return favoriteExist;
         break
       case "read":
-        console.log('checking if type is read');
-        break
+        const readExist = await existInRead(user_id, book_id)
+        return readExist;
       default:
-        console.log('return a type')
+        return
     }
   }
 
@@ -277,6 +366,7 @@ const App = (props) => {
               <img className="singleBookImage" src={props.singleBook.volumeInfo && props.singleBook.volumeInfo.imageLinks ? props.singleBook.volumeInfo.imageLinks.smallThumbnail : noCover } alt={props.singleBook.volumeInfo ? props.singleBook.volumeInfo.title: "No title"}  />
             </div>
             <div className="singleBookInfo">
+              {infoMessage.message && <h1> {infoMessage.message} </h1>}
               <h1><span> Title: </span> {props.singleBook.volumeInfo ? props.singleBook.volumeInfo.title: "No title"}</h1>
               <h1><span>{props.singleBook.volumeInfo && props.singleBook.volumeInfo.authors && props.singleBook.volumeInfo.authors.length === 1 ? "Author: " : "Authors: "}</span> {props.singleBook.volumeInfo && props.singleBook.volumeInfo.authors ? props.singleBook.volumeInfo.authors.join(', '): "Author unknown"}</h1>
               <h1><span> Published: </span> {props.singleBook.volumeInfo ? moment(props.singleBook.volumeInfo.publishedDate).format("MMMM DD, YYYY") : "Publish date unknown"}</h1>
@@ -381,8 +471,13 @@ const mapStateToProps = state => {
     error: state.search.error,
     bookId: state.book.book.id,
     bookError: state.book.error,
-    bookSuccess: state.book.success
+    bookSuccess: state.book.success,
+    addingCategory: state.category.addingCategory,
+    ownedAdded: state.category.ownedAdded,
+    favoriteAdded: state.category.favoriteAdded,
+    readAdded: state.category.readAdded,
+    categoryError: state.category.categoryError
   }
 }
 
-export default withRouter(connect(mapStateToProps, {openModal, closeModal, openBookModal, closeBookModal, addBook, successAdd, addReview})(App));
+export default withRouter(connect(mapStateToProps, {openModal, closeModal, openBookModal, closeBookModal, addBook, successAdd, addReview, addToOwn, addToRead, addToFavorite})(App));

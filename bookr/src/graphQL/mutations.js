@@ -68,3 +68,36 @@ export const ADD_REVIEW_MUTATION = gql`
     }
   }
 `;
+
+export const ADD_BOOK_TO_OWN = gql`
+  mutation addBooksOwned($input: BooksOwnedInput!){
+    addBooksOwned(input: $input){
+      book_id{
+        id
+        title
+      }
+    }
+  }
+`;
+
+export const ADD_BOOK_TO_READ = gql`
+  mutation addBooksRead($input: BooksReadInput!){
+    addBooksRead(input: $input){
+      book_id{
+        id
+        title
+      }
+    }
+  }
+`;
+
+export const ADD_BOOK_TO_FAVORITE = gql`
+  mutation  addFavoriteBook($input: FavoriteBooksInput!){
+     addFavoriteBook(input: $input){
+      book_id{
+        id
+        title
+      }
+    }
+  }
+`;

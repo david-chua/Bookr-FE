@@ -59,3 +59,39 @@ export const REVIEW_EXIST_BY_USER_ID = gql`
     }
   }
 `;
+
+export const BOOK_OWNED_EXIST_IN_USER = gql`
+  query getBooksOwnedByUserId($userId: ID!){
+    getBooksOwnedByUserId(userId: $userId){
+      book_id{
+        id
+        book_api_id
+        title
+      }
+    }
+  }
+`;
+
+export const BOOK_READ_EXIST_IN_USER = gql`
+  query getBooksReadByUserId($userId: ID!){
+     getBooksReadByUserId(userId: $userId){
+      book_id{
+        id
+        book_api_id
+        title
+      }
+    }
+  }
+`;
+
+export const FAVORITE_BOOK_EXIST_IN_USER = gql`
+  query getFavoriteBooksByUserId($userId: ID!){
+     getFavoriteBooksByUserId(userId: $userId){
+      book_id{
+        id
+        book_api_id
+        title
+      }
+    }
+  }
+`;
