@@ -40,7 +40,3 @@ class Book extends React.Component {
 
 
 export default Book;
-
-        // <img className="bookImage" src={this.props..book.urlToImage} alt="book" />
-// + "&key=" + apiKey
-  // var img = data.items[0].volumeInfo.imageLinks.thumbnail;    img = img.replace(/^http:\/\//i, 'https://');    $('#cover-' + id).attr('src', img);  })

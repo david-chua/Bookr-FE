@@ -13,7 +13,13 @@ import LogInOrRegister from "./Components/Auth/Login";
 import SearchResult from "./Components/SearchResult/SearchResult";
 import Footer from './Footer';
 import noCover from "./public/images/noCover.jpg";
-import { GET_CURRENT_USER_QUERY, BOOK_EXIST_CHECK, REVIEW_EXIST_BY_USER_ID, BOOK_OWNED_EXIST_IN_USER, BOOK_READ_EXIST_IN_USER, FAVORITE_BOOK_EXIST_IN_USER} from './graphQL/queries';
+import {
+  GET_CURRENT_USER_QUERY,
+  BOOK_EXIST_CHECK,
+  REVIEW_EXIST_BY_USER_ID,
+  BOOK_OWNED_EXIST_IN_USER,
+  BOOK_READ_EXIST_IN_USER,
+  FAVORITE_BOOK_EXIST_IN_USER} from './graphQL/queries';
 import { openModal, closeModal, openBookModal, closeBookModal } from './actions/searchActions';
 import { addBook, successAdd } from './actions/bookActions';
 import { addReview } from './actions/reviewActions';

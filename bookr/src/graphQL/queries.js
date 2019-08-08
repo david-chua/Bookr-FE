@@ -95,3 +95,44 @@ export const FAVORITE_BOOK_EXIST_IN_USER = gql`
     }
   }
 `;
+
+export const GET_ALL_COLLECTION = gql`
+  query getUserById($userId: ID!){
+    getUserById(userId: $userId){
+      id 
+      booksRead{
+        book_id{
+          id
+          title
+          description
+          image
+        }
+      }
+      favoriteBooks{
+        book_id{
+          id
+          title
+          description
+          image
+        }
+      }
+      booksOwned{
+        book_id{
+          id
+          title
+          description
+          image
+        }
+      }
+    	reviews{
+        id
+        book_id{
+          id
+          title
+          description
+          image
+        }
+      }
+    }
+  }
+`;
