@@ -6,6 +6,7 @@ export const DELETING_BOOK = "DELETING_BOOK";
 export const BOOK_ADDED = "BOOK_ADDED";
 export const BOOK_DELETED = "BOOK_DELETED";
 export const BOOK_ERROR = "BOOK_ERROR";
+export const BOOK_ADDED_SUCCESSFULLY = "BOOK_ADDED_SUCCESSFULLY";
 
 
 export function addBook(book){
@@ -35,5 +36,13 @@ export function addBook(book){
           payload: "Unable to add book"
         })
       })
+  }
+}
+
+export function successAdd(){
+  return dispatch => {
+    dispatch({
+      type: BOOK_ADDED_SUCCESSFULLY
+    })
   }
 }

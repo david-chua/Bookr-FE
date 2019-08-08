@@ -15,7 +15,7 @@ import Footer from './Footer';
 import noCover from "./public/images/noCover.jpg";
 import { GET_CURRENT_USER_QUERY, BOOK_EXIST_CHECK, REVIEW_EXIST_BY_USER_ID } from './graphQL/queries';
 import { openModal, closeModal, openBookModal, closeBookModal } from './actions/searchActions';
-import { addBook } from './actions/bookActions';
+import { addBook, successAdd } from './actions/bookActions';
 import { addReview } from './actions/reviewActions';
 
 import Form from 'react-bootstrap/Form';
@@ -136,7 +136,7 @@ const App = (props) => {
   const addReview = async () => {
     const bookInfo = {
       title: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.title: "No title",
-      author: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.authors.join(', '): "Author unknown",
+      author: props.singleBook.volumeInfo && props.singleBook.volumeInfo.authors ? props.singleBook.volumeInfo.authors.join(', '): "Author unknown",
       publisher: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.publisher : "Publisher Unknown",
       image: props.singleBook.volumeInfo.imageLinks? props.singleBook.volumeInfo.imageLinks.smallThumbnail :"No Image",
       book_api_id: props.singleBook.id,
@@ -157,9 +157,7 @@ const App = (props) => {
           content: values.review
         }
         const reviewCheck = await checkIfUserReviewed(userId, bookId);
-        console.log(reviewCheck, 'reviewCheck function');
         if (reviewCheck) {
-          console.log('You have already reviewed this book')
         } else {
           props.addReview(newReview);
         }
@@ -169,20 +167,97 @@ const App = (props) => {
     } else {
       try {
         props.addBook(bookInfo)
-        let newId = parseInt(props.bookId) + 1
+        const bookId = await getExistingBook(bookInfo.book_api_id)
         if (values.rating && values.review){
           let newBookReview = {
-            book_id: newId,
+            book_id: bookId,
             user_id: props.currentUser.id,
             rating: parseFloat(values.rating),
             content: values.review
           }
           props.addReview(newBookReview);
+          setValues({rating: null, review: ""})
         }
       }
       catch(error){
         console.log('you need to have a rating and a review');
       }
+    }
+  }
+
+  const addToCategory = async(type) => {
+    const bookInfo = {
+      title: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.title: "No title",
+      author: props.singleBook.volumeInfo && props.singleBook.volumeInfo.authors ? props.singleBook.volumeInfo.authors.join(', '): "Author unknown",
+      publisher: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.publisher : "Publisher Unknown",
+      image: props.singleBook.volumeInfo.imageLinks? props.singleBook.volumeInfo.imageLinks.smallThumbnail :"No Image",
+      book_api_id: props.singleBook.id,
+      category: props.singleBook.volumeInfo.categories ? props.singleBook.volumeInfo.categories.join(', '): "Category Unknown",
+      description: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.description : "This book has no description",
+      list_price: props.singleBook.saleInfo.retailPrice ? props.singleBook.saleInfo.retailPrice.amount : null
+    }
+
+    const initiateCheck = await checkIfBookExist(bookInfo.book_api_id);
+    if (initiateCheck){
+     const bookId = await getExistingBook(bookInfo.book_api_id)
+     switch(type){
+       case "own":
+         console.log('I want to own')
+         const owned = await checkIfInCategory(type)
+         if (owned){
+           console.log('already owned')
+         } else {
+           console.log("i'll add this")
+           //addToOwn
+         }
+         break
+       case "favorites":
+         console.log("It's a favorite")
+         checkIfInCategory(type)
+         break
+       case "read":
+         console.log("I've read this'")
+         checkIfInCategory(type)
+         break
+       default:
+         console.log('return a type')
+     }
+    } else {
+      props.addBook(bookInfo)
+
+      // check if ownership exist
+
+      const bookId = await getExistingBook(bookInfo.book_api_id)
+      //add review
+    }
+  }
+
+  const toOwn = async e => {
+    addToCategory("own")
+  }
+
+  const toRead = async e =>{
+    addToCategory("read")
+  }
+
+  const toFavorites = async e => {
+    addToCategory("favorites")
+  }
+
+  const checkIfInCategory = async (type) => {
+    switch(type){
+      case "own":
+        console.log('Checking if type is own?')
+        return false
+        // break
+      case "favorites":
+        console.log('checking if type is favorites')
+        break
+      case "read":
+        console.log('checking if type is read');
+        break
+      default:
+        console.log('return a type')
     }
   }
 
@@ -203,7 +278,7 @@ const App = (props) => {
             </div>
             <div className="singleBookInfo">
               <h1><span> Title: </span> {props.singleBook.volumeInfo ? props.singleBook.volumeInfo.title: "No title"}</h1>
-              <h1><span>{props.singleBook.volumeInfo && props.singleBook.volumeInfo.authors.length === 1 ? "Author: " : "Authors: "}</span> {props.singleBook.volumeInfo ? props.singleBook.volumeInfo.authors.join(', '): "Author unknown"}</h1>
+              <h1><span>{props.singleBook.volumeInfo && props.singleBook.volumeInfo.authors && props.singleBook.volumeInfo.authors.length === 1 ? "Author: " : "Authors: "}</span> {props.singleBook.volumeInfo && props.singleBook.volumeInfo.authors ? props.singleBook.volumeInfo.authors.join(', '): "Author unknown"}</h1>
               <h1><span> Published: </span> {props.singleBook.volumeInfo ? moment(props.singleBook.volumeInfo.publishedDate).format("MMMM DD, YYYY") : "Publish date unknown"}</h1>
               <h1><span> Publisher: </span> {props.singleBook.volumeInfo ? props.singleBook.volumeInfo.publisher : "Publisher Unknown"} </h1>
               <h1><span> ISBN: </span>{props.singleBook.volumeInfo  ? props.singleBook.volumeInfo.industryIdentifiers[0].identifier : "no isbn"}</h1>
@@ -240,13 +315,13 @@ const App = (props) => {
 
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleBookClose}>
+          <Button variant="primary" onClick={toOwn}>
             Add to Own
           </Button>
-          <Button variant="primary" onClick={handleBookClose}>
+          <Button variant="primary" onClick={toFavorites}>
             Add to Favorites
           </Button>
-          <Button variant="primary" onClick={handleBookClose}>
+          <Button variant="primary" onClick={toRead}>
             Add to Read
           </Button>
           <Button variant="secondary" onClick={handleShow}>
@@ -310,4 +385,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, {openModal, closeModal, openBookModal, closeBookModal, addBook, addReview})(App));
+export default withRouter(connect(mapStateToProps, {openModal, closeModal, openBookModal, closeBookModal, addBook, successAdd, addReview})(App));

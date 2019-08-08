@@ -1,4 +1,4 @@
-import { ADDING_BOOK, DELETING_BOOK, BOOK_ADDED, BOOK_DELETED, BOOK_ERROR } from '../actions/bookActions';
+import { ADDING_BOOK, DELETING_BOOK, BOOK_ADDED, BOOK_DELETED, BOOK_ERROR, BOOK_ADDED_SUCCESSFULLY } from '../actions/bookActions';
 
 const initialState = {
   addingBook: false,
@@ -24,13 +24,17 @@ export default function book(state = initialState, action){
         error: false,
         bookAdded: true,
         book: action.payload,
-        success: 'successfully added book'
       }
     case BOOK_ERROR:
       return{
         ...state,
         addingBook: false,
         error: action.payload
+      }
+    case BOOK_ADDED_SUCCESSFULLY:
+      return{
+        ...state,
+        success: 'successfully added book'
       }
     default:
       return state;
