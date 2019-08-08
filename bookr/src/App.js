@@ -1,4 +1,4 @@
-import  React, {useState, useEffect } from 'react';
+import  React, {useState} from 'react';
 import { Route, Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import moment from "moment";
@@ -99,7 +99,8 @@ const App = (props) => {
       return filteredBook;
     }
     catch (error) {
-      console.log('error)')
+      setInfoValues({message: "Unfortunately, I failed, please refresh. "})
+      setTimeout(() => setInfoValues({message: ""}), 3000);
     }
   }
 
@@ -115,7 +116,8 @@ const App = (props) => {
       return filteredBook[0].id
     }
     catch (error) {
-      console.log('error)')
+      setInfoValues({message: "Unfortunately, I failed, please refresh"})
+      setTimeout(() => setInfoValues({message: ""}), 3000);
     }
   }
 
@@ -131,7 +133,8 @@ const App = (props) => {
       return filteredReview
     }
     catch (error){
-      console.log(error)
+      setInfoValues({message: "Unfortunately, I failed, please refresh"})
+      setTimeout(() => setInfoValues({message: ""}), 3000);
     }
   }
 
@@ -164,7 +167,8 @@ const App = (props) => {
           props.addReview(newReview);
         }
       } else{
-        console.log('you need to have a rating and a review');
+        setInfoValues({message: "You need to have a rating and a review."})
+        setTimeout(() => setInfoValues({message: ""}), 3000);
       }
     } else {
       try {
@@ -179,10 +183,14 @@ const App = (props) => {
           }
           props.addReview(newBookReview);
           setValues({rating: null, review: ""})
+        } else{
+          setInfoValues({message: "You need to have a rating and a review"})
+          setTimeout(() => setInfoValues({message: ""}), 3000);
         }
       }
       catch(error){
-        console.log('you need to have a rating and a review');
+        setInfoValues({message: "Unfortunately, I failed, please refresh"})
+        setTimeout(() => setInfoValues({message: ""}), 3000);
       }
     }
   }
@@ -297,7 +305,8 @@ const App = (props) => {
       return filteredOwned
     }
     catch (error){
-      console.log(error)
+      setInfoValues({message: "Error in adding this book"})
+      setTimeout(() => setInfoValues({message: ""}), 3000);
     }
   }
 
@@ -313,7 +322,8 @@ const App = (props) => {
       return filteredRead
     }
     catch (error){
-      console.log(error)
+      setInfoValues({message: "Error in adding this book in read"})
+      setTimeout(() => setInfoValues({message: ""}), 3000);
     }
   }
 
@@ -329,7 +339,8 @@ const App = (props) => {
       return filteredFavorite
     }
     catch (error){
-      console.log(error)
+      setInfoValues({message: "Unable to add to favorites"})
+      setTimeout(() => setInfoValues({message: ""}), 3000);
     }
   }
 

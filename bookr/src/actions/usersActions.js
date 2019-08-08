@@ -197,7 +197,6 @@ export function registerUser(newUser){
 }
 
 export function logOut(){
-  console.log('logging out')
   return dispatch => {
     localStorage.removeItem("token");
     dispatch({
@@ -222,7 +221,6 @@ export function editUser(id, userInfo) {
       })
     })
     .then(response => {
-      console.log('edit response', response)
       dispatch({
         type: EDIT_USER_INFO,
         payload: response.data.updateUser

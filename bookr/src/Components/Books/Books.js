@@ -4,8 +4,12 @@ class Books extends React.Component{
   constructor(props){
     super(props)
     this.state = {
-
+      userCollection: []
     }
+  }
+
+  componentDidMount(){
+    
   }
 
   render(){
