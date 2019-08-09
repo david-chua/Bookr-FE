@@ -81,8 +81,9 @@ class Books extends React.Component{
           <div className="learnMore">
           <Link to={{
             pathname: '/booksCategory',
-            bookProps:{
-              books: books.booksOwned
+            state:{
+              books: books.booksOwned,
+              type: "owned"
             }
           }}><Button className="showMore"> Show More </Button></Link>
           </div>
@@ -95,8 +96,9 @@ class Books extends React.Component{
           <div className="learnMore">
           <Link to={{
             pathname: '/booksCategory',
-            bookProps:{
-              books: books.booksRead
+            state:{
+              books: books.booksRead,
+              type: "read"
             }
           }}><Button className="showMore"> Show More </Button></Link>
           </div>
@@ -109,8 +111,9 @@ class Books extends React.Component{
           <div className="learnMore">
             <Link to={{
               pathname: '/booksCategory',
-              bookProps:{
-                books: books.favoriteBooks
+              state:{
+                books: books.favoriteBooks,
+                type: "favorite"
               }
             }}><Button className="showMore"> Show More </Button></Link>
           </div>
