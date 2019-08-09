@@ -99,13 +99,14 @@ export const FAVORITE_BOOK_EXIST_IN_USER = gql`
 export const GET_ALL_COLLECTION = gql`
   query getUserById($userId: ID!){
     getUserById(userId: $userId){
-      id 
+      id
       booksRead{
         book_id{
           id
           title
           description
           image
+          author
         }
       }
       favoriteBooks{
@@ -114,6 +115,7 @@ export const GET_ALL_COLLECTION = gql`
           title
           description
           image
+          author
         }
       }
       booksOwned{
@@ -122,6 +124,7 @@ export const GET_ALL_COLLECTION = gql`
           title
           description
           image
+          author
         }
       }
     	reviews{
@@ -131,6 +134,7 @@ export const GET_ALL_COLLECTION = gql`
           title
           description
           image
+          author
         }
       }
     }

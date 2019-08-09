@@ -15,7 +15,7 @@ const NavBar = props => {
         <LinkContainer exact to="/news">
           <Nav.Link>News</Nav.Link>
         </LinkContainer>
-        <LinkContainer exact to="/books">
+        <LinkContainer exact to="/booksDashboard">
           <Nav.Link>Books</Nav.Link>
         </LinkContainer>
         <LinkContainer exact to="/settings">

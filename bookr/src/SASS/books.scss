@@ -1,0 +1,55 @@
+.bookCategory{
+  margin-top: 50px;
+  font-size: 2em;
+  font-family: $Lobster;
+}
+.booksOwnedLimited{
+  height: 400px;
+  width: 100%;
+  display: flex;
+  overflow-x: scroll;
+  overflow-y: none;
+  white-space: nowrap;
+  margin-top: 50px;
+  padding: 30px 0 0;
+}
+
+.learnMore{
+  display: block;
+  width: 100%;
+  min-width: 350px;
+  white-space: normal;
+  word-wrap:break-word;
+  align-self: center;
+
+  .showMore{
+    width: 70%;
+    min-width: 250px;
+    background-color: $faded_red;
+    font-size: 1.5em;
+    border: none;
+  }
+}
+
+.booksOwned{
+  display: block;
+  width: 350px;
+  min-width: 350px;
+  white-space: normal;
+  word-wrap:break-word;
+
+  h1{
+    font-weight: bold;
+  }
+
+  h1, h2{
+    line-height: 1.5em;
+    width: 250px;
+    margin: 0 auto;
+  }
+
+  img{
+    width: 150px;
+    height: 200px;
+  }
+}

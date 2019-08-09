@@ -9,6 +9,7 @@ import Home from './Home';
 import News from './Components/News/News';
 import Settings from './Components/Settings/Settings';
 import Books from './Components/Books/Books';
+import BooksCategoryAll from './Components/Books/BooksCategoryAll';
 import LogInOrRegister from "./Components/Auth/Login";
 import SearchResult from "./Components/SearchResult/SearchResult";
 import Footer from './Footer';
@@ -285,14 +286,14 @@ const App = (props) => {
       }
       switch(type){
         case "own":
-          props.addToOwn(addingToOwn);
-          break
+          const addToOwned = await props.addToOwn(addingToOwn);
+          return addToOwned;
         case "favorites":
-          props.addToFavorite(regularAdd);
-          break
+          const addToFav = props.addToFavorite(regularAdd);
+          return addToFav;
         case "read":
-          props.addToRead(regularAdd);
-          break
+          const addToAlreadyRead = props.addToRead(regularAdd);
+          return addToAlreadyRead
         default:
           return
       }
@@ -358,7 +359,6 @@ const App = (props) => {
       case "favorites":
         const favoriteExist = await existInFavorite(user_id, book_id)
         return favoriteExist;
-        break
       case "read":
         const readExist = await existInRead(user_id, book_id)
         return readExist;
@@ -388,7 +388,7 @@ const App = (props) => {
               <h1><span>{props.singleBook.volumeInfo && props.singleBook.volumeInfo.authors && props.singleBook.volumeInfo.authors.length === 1 ? "Author: " : "Authors: "}</span> {props.singleBook.volumeInfo && props.singleBook.volumeInfo.authors ? props.singleBook.volumeInfo.authors.join(', '): "Author unknown"}</h1>
               <h1><span> Published: </span> {props.singleBook.volumeInfo ? moment(props.singleBook.volumeInfo.publishedDate).format("MMMM DD, YYYY") : "Publish date unknown"}</h1>
               <h1><span> Publisher: </span> {props.singleBook.volumeInfo ? props.singleBook.volumeInfo.publisher : "Publisher Unknown"} </h1>
-              <h1><span> ISBN: </span>{props.singleBook.volumeInfo  ? props.singleBook.volumeInfo.industryIdentifiers[0].identifier : "no isbn"}</h1>
+              <h1><span> ISBN: </span>{props.singleBook.volumeInfo && props.singleBook.volumeInfo.industryIdentifiers ? props.singleBook.volumeInfo.industryIdentifiers[0].identifier : "no isbn"}</h1>
               <a target="_blank" rel="noopener noreferrer" href={props.singleBook.volumeInfo ? props.singleBook.volumeInfo.infoLink : null}><Button> Buy now </Button></a>
             </div>
           </div>
@@ -469,7 +469,8 @@ const App = (props) => {
       <Route exact path="/news" render={() => <News />} />
       <Route exact path="/login" render={() => <LogInOrRegister />} />
       <PrivateRoute exact path="/settings" render={() => <Settings />} />
-      <Route exact path="/books" render={() => <Books />} />
+      <Route exact path="/booksDashboard" render={() => <Books />} />
+      <Route exact path="/booksCategory" render={(props) => <BooksCategoryAll {...props}/> } />
       <Footer />
     </div>
   );
