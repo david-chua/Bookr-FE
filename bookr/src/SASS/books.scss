@@ -16,15 +16,14 @@
 
 .learnMore{
   display: block;
-  width: 100%;
   min-width: 350px;
   white-space: normal;
   word-wrap:break-word;
   align-self: center;
 
   .showMore{
-    width: 70%;
     min-width: 250px;
+    max-width: 250px;
     background-color: $faded_red;
     font-size: 1.5em;
     border: none;
