@@ -9,6 +9,7 @@ import Home from './Home';
 import News from './Components/News/News';
 import Settings from './Components/Settings/Settings';
 import Books from './Components/Books/Books';
+import Book from './Components/Books/Book';
 import BooksCategoryAll from './Components/Books/BooksCategoryAll';
 import LogInOrRegister from "./Components/Auth/Login";
 import SearchResult from "./Components/SearchResult/SearchResult";
@@ -471,6 +472,7 @@ const App = (props) => {
       <PrivateRoute exact path="/settings" render={() => <Settings />} />
       <Route exact path="/booksDashboard" render={() => <Books />} />
       <Route exact path="/booksCategory" render={(props) => <BooksCategoryAll {...props}/> } />
+      <Route exact path ="/book/:id" render={(props) => <Book {...props} />} />
       <Footer />
     </div>
   );

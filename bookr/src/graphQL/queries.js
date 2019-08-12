@@ -104,27 +104,40 @@ export const GET_ALL_COLLECTION = gql`
         book_id{
           id
           title
+          author
           description
           image
-          author
+          category
+          list_price
+          book_api_id
+          publisher
+
         }
       }
       favoriteBooks{
         book_id{
           id
           title
+          author
           description
           image
-          author
+          category
+          list_price
+          book_api_id
+          publisher
         }
       }
       booksOwned{
         book_id{
           id
           title
+          author
           description
           image
-          author
+          category
+          list_price
+          book_api_id
+          publisher
         }
       }
     	reviews{
@@ -132,9 +145,13 @@ export const GET_ALL_COLLECTION = gql`
         book_id{
           id
           title
+          author
           description
           image
-          author
+          category
+          list_price
+          book_api_id
+          publisher
         }
       }
     }

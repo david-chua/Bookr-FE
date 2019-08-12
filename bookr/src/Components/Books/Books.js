@@ -68,14 +68,14 @@ class Books extends React.Component{
 
   render(){
     const books = this.state;
-    const booksOwnedSix = books.booksOwned.reverse().slice(0,5)
-    const booksReadSix = books.booksRead.reverse().slice(0,5)
-    const favoriteSix = books.favoriteBooks.reverse().slice(0,5)
+    const booksOwnedTen = books.booksOwned.reverse().slice(0,9)
+    const booksReadTen = books.booksRead.reverse().slice(0,9)
+    const favoriteTen = books.favoriteBooks.reverse().slice(0,9)
     return(
       <div>
         <h1 className="bookCategory"> Books Owned </h1>
         <div className="booksOwnedLimited">
-          {booksOwnedSix.map(book => {
+          {booksOwnedTen.map(book => {
             return <BooksOwnedLimited key={book.book_id.id} book={book}/>
           })}
           <div className="learnMore">
@@ -90,7 +90,7 @@ class Books extends React.Component{
         </div>
         <h1 className="bookCategory"> Books Read </h1>
         <div className="booksOwnedLimited">
-          {booksReadSix.map(book => {
+          {booksReadTen.map(book => {
             return <BooksOwnedLimited key={book.book_id.id} book={book}/>
           })}
           <div className="learnMore">
@@ -105,7 +105,7 @@ class Books extends React.Component{
         </div>
         <h1 className="bookCategory"> Favorite Books </h1>
         <div className="booksOwnedLimited">
-          {favoriteSix.map(book => {
+          {favoriteTen.map(book => {
             return <BooksOwnedLimited key={book.book_id.id} book={book}/>
           })}
           <div className="learnMore">

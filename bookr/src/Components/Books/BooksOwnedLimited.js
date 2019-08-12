@@ -1,11 +1,18 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const BooksOwnedLimited = (props)=> {
+  const book = props.book.book_id;
   return(
     <div className="booksOwned">
-      <img src={props.book.book_id.image} alt={props.book.book_id.title}/>
-      <h1>{props.book.book_id.title}</h1>
-      <h2>{props.book.book_id.author}</h2>
+    <Link to={{
+      pathname: `/book/${book.book_api_id}`,
+      state:{
+        book: book,
+      }
+    }}><img src={book.image} alt={book.title}/></Link>
+      <h1>{book.title}</h1>
+      <h2>{book.author}</h2>
     </div>
   )
 }
