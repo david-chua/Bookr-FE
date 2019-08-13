@@ -147,10 +147,12 @@ const App = (props) => {
   }
 
   const addReview = async () => {
+    console.log(props.singleBook.volumeInfo.publishedDate)
     const bookInfo = {
       title: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.title: "No title",
       author: props.singleBook.volumeInfo && props.singleBook.volumeInfo.authors ? props.singleBook.volumeInfo.authors.join(', '): "Author unknown",
       publisher: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.publisher : "Publisher Unknown",
+      publish_date: props.singleBook.volumeInfo && props.singleBook.volumeInfo.publishedDate ? moment(props.singleBook.volumeInfo.publishedDate).format("MMMM DD, YYYY") : null,
       image: props.singleBook.volumeInfo.imageLinks? props.singleBook.volumeInfo.imageLinks.smallThumbnail :"No Image",
       book_api_id: props.singleBook.id,
       category: props.singleBook.volumeInfo.categories ? props.singleBook.volumeInfo.categories.join(', '): "Category Unknown",
@@ -204,6 +206,9 @@ const App = (props) => {
   }
 
   const toOwn = async e => {
+    const theDate = moment(props.singleBook.volumeInfo.publishedDate).format("MMMM DD, YYYY")
+    console.log(moment(props.singleBook.volumeInfo.publishedDate).format("MMMM DD, YYYY"))
+    console.log(theDate, typeof(theDate))
     addToCategory("own")
   }
 
@@ -220,6 +225,7 @@ const App = (props) => {
       title: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.title: "No title",
       author: props.singleBook.volumeInfo && props.singleBook.volumeInfo.authors ? props.singleBook.volumeInfo.authors.join(', '): "Author unknown",
       publisher: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.publisher : "Publisher Unknown",
+      publish_date: props.singleBook.volumeInfo && props.singleBook.volumeInfo.publishedDate ? moment(props.singleBook.volumeInfo.publishedDate).format("MMMM DD, YYYY") : null,
       image: props.singleBook.volumeInfo.imageLinks? props.singleBook.volumeInfo.imageLinks.smallThumbnail :"No Image",
       book_api_id: props.singleBook.id,
       category: props.singleBook.volumeInfo.categories ? props.singleBook.volumeInfo.categories.join(', '): "Category Unknown",

@@ -111,6 +111,7 @@ export const GET_ALL_COLLECTION = gql`
           list_price
           book_api_id
           publisher
+          publish_date
 
         }
       }
@@ -125,6 +126,7 @@ export const GET_ALL_COLLECTION = gql`
           list_price
           book_api_id
           publisher
+          publish_date
         }
       }
       booksOwned{
@@ -138,6 +140,7 @@ export const GET_ALL_COLLECTION = gql`
           list_price
           book_api_id
           publisher
+          publish_date
         }
       }
     	reviews{
@@ -152,6 +155,7 @@ export const GET_ALL_COLLECTION = gql`
           list_price
           book_api_id
           publisher
+          publish_date
         }
       }
     }

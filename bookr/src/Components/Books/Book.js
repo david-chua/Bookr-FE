@@ -20,7 +20,8 @@ class Book extends React.Component{
           <h1><span>Title:</span> {book.title} </h1>
           <h1><span>Author:</span> {book.author} </h1>
           <h1><span>Publisher:</span> {book.publisher} </h1>
-          <h1><span>List Price:</span> {book.list_price}</h1>
+          <h1><span>Published Date:</span>{book.publish_date}</h1>
+          <h1><span>List Price:</span> {book.list_price ? book.list_price: "Value Unknown"}</h1>
           <div className="bookDescription">
             <h1> <span> Description:</span>{bookDescription}</h1>
           </div>

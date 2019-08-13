@@ -75,10 +75,13 @@ class Books extends React.Component{
       <div>
         <h1 className="bookCategory"> Books Owned </h1>
         <div className="booksOwnedLimited">
-          {booksOwnedTen.map(book => {
+          {booksOwnedTen.length > 0 ? booksOwnedTen.map(book => {
             return <BooksOwnedLimited key={book.book_id.id} book={book}/>
-          })}
-          <div className="learnMore">
+          }): <div className="learnMore">
+                <h1> You do not own a book</h1>
+              </div>
+          }
+          {booksOwnedTen.length > 0 ?<div className="learnMore">
           <Link to={{
             pathname: '/booksCategory',
             state:{
@@ -87,13 +90,18 @@ class Books extends React.Component{
             }
           }}><Button className="showMore"> Show More </Button></Link>
           </div>
+          : null
+          }
         </div>
         <h1 className="bookCategory"> Books Read </h1>
         <div className="booksOwnedLimited">
-          {booksReadTen.map(book => {
+          {booksReadTen.length > 0 ? booksReadTen.map(book => {
             return <BooksOwnedLimited key={book.book_id.id} book={book}/>
-          })}
-          <div className="learnMore">
+          }): <div className="learnMore">
+                <h1> You have not favorited a book</h1>
+              </div>
+          }
+          {booksReadTen.length > 0 ? <div className="learnMore">
           <Link to={{
             pathname: '/booksCategory',
             state:{
@@ -101,14 +109,17 @@ class Books extends React.Component{
               type: "read"
             }
           }}><Button className="showMore"> Show More </Button></Link>
-          </div>
+      </div> : null }
         </div>
         <h1 className="bookCategory"> Favorite Books </h1>
         <div className="booksOwnedLimited">
-          {favoriteTen.map(book => {
+          {favoriteTen.length > 0 ? favoriteTen.map(book => {
             return <BooksOwnedLimited key={book.book_id.id} book={book}/>
-          })}
-          <div className="learnMore">
+          }): <div className="learnMore">
+                <h1> You have not favorited a book</h1>
+              </div>
+          }
+          {favoriteTen.length > 0 ? <div className="learnMore">
             <Link to={{
               pathname: '/booksCategory',
               state:{
@@ -117,6 +128,7 @@ class Books extends React.Component{
               }
             }}><Button className="showMore"> Show More </Button></Link>
           </div>
+          : null}
         </div>
       </div>
     )
