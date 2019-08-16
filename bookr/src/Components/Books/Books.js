@@ -38,6 +38,9 @@ class Books extends React.Component{
         reviewedBooks: data.reviews
       })
     })
+    .catch(error => {
+      console.log(error)
+    });
   }
 
   componentDidUpdate(prevState, prevProps){
@@ -65,6 +68,7 @@ class Books extends React.Component{
       })
     }
   }
+
 
   render(){
     const books = this.state;

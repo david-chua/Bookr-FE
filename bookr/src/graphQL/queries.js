@@ -60,6 +60,20 @@ export const REVIEW_EXIST_BY_USER_ID = gql`
   }
 `;
 
+export const GET_REVIEWS_BY_BOOK_ID = gql`
+  query getReviewsBy($param: String!, $value: ID!){
+    getReviewsBy(param: $param, value: $value){
+      id
+      rating
+      content
+      user_id{
+        id
+        username
+      }
+    }
+  }
+`;
+
 export const BOOK_OWNED_EXIST_IN_USER = gql`
   query getBooksOwnedByUserId($userId: ID!){
     getBooksOwnedByUserId(userId: $userId){
