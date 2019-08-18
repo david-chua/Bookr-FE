@@ -47,7 +47,7 @@ class Book extends React.Component{
   getReviews = async () =>{
     const bookId = this.props.history.location.state.book.id;
     const client = new ApolloClient({
-      uri: "http://localhost:9090"
+      uri: "https://bookr-back-end.herokuapp.com/"
     });
     const reviews = await client.query({
       query:GET_REVIEWS_BY_BOOK_ID,
@@ -59,7 +59,7 @@ class Book extends React.Component{
 
   existInOwn = async (user_id, book_id) => {
     const client = new ApolloClient({
-      uri: "http://localhost:9090"
+      uri: "https://bookr-back-end.herokuapp.com/"
     });
     try {
       const ownedCheck = await client.query({query: BOOK_OWNED_EXIST_IN_USER, variables: {userId: user_id}});
@@ -76,7 +76,7 @@ class Book extends React.Component{
 
   existInRead = async (user_id, book_id) => {
     const client = new ApolloClient({
-      uri: "http://localhost:9090"
+      uri: "https://bookr-back-end.herokuapp.com/"
     });
     try {
       const readCheck = await client.query({query: BOOK_READ_EXIST_IN_USER, variables: {userId: user_id}});
@@ -93,7 +93,7 @@ class Book extends React.Component{
 
   existInFavorite = async (user_id, book_id) => {
     const client = new ApolloClient({
-      uri: "http://localhost:9090"
+      uri: "https://bookr-back-end.herokuapp.com/"
     });
     try {
       const favoriteCheck = await client.query({query: FAVORITE_BOOK_EXIST_IN_USER, variables: {userId: user_id}});
@@ -110,7 +110,7 @@ class Book extends React.Component{
 
   checkIfUserReviewed = async (user_id, book_id) => {
     const client = new ApolloClient({
-      uri: "http://localhost:9090"
+      uri: "https://bookr-back-end.herokuapp.com/"
     });
     try {
       const reviewCheck = await client.query({query: REVIEW_EXIST_BY_USER_ID, variables: {userId: user_id}});
