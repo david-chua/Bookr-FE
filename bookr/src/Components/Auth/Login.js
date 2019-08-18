@@ -23,6 +23,7 @@ class LogInOrRegister extends React.Component {
   }
 
   onSuccess = googleUser => {
+    console.log(googleUser, "googleUser")
     this.loginUser(googleUser, "google");
   };
 
@@ -57,6 +58,7 @@ class LogInOrRegister extends React.Component {
   };
 
   loginUser = async(userInfo, auth) => {
+    console.log(auth, 'auth');
     let email, last_name, first_name, token;
     if (auth === "google"){
       email = userInfo.profileObj.email;
