@@ -14,7 +14,7 @@ export function addBook(book){
     dispatch({type: ADDING_BOOK});
     const token = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "http://localhost:9090",
+      uri: "https://bookr-back-end.herokuapp.com/",
       headers: { authorization: token }
     });
     client

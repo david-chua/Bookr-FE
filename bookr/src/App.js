@@ -34,7 +34,7 @@ import Modal from 'react-bootstrap/Modal';
 const PrivateRoute = ({ component: Component, render, ...rest }) => {
   const token = localStorage.getItem("token");
   const client = new ApolloClient({
-    uri: "http://localhost:9090",
+    uri: "https://bookr-back-end.herokuapp.com/",
     headers: { authorization: token}
   })
   client.query({ query: GET_CURRENT_USER_QUERY })
@@ -97,7 +97,7 @@ const App = (props) => {
 
   const checkIfBookExist = async (book_api_id) => {
     const client = new ApolloClient({
-      uri: "http://localhost:9090"
+      uri: "https://bookr-back-end.herokuapp.com/"
     });
     try {
       const bookCheck = await client.query({query: BOOK_EXIST_CHECK});
@@ -114,7 +114,7 @@ const App = (props) => {
 
   const getExistingBook = async (book_api_id) => {
     const client = new ApolloClient({
-      uri: "http://localhost:9090"
+      uri: "https://bookr-back-end.herokuapp.com/"
     });
     try {
       const bookCheck = await client.query({query: BOOK_EXIST_CHECK});
@@ -131,7 +131,7 @@ const App = (props) => {
 
   const checkIfUserReviewed = async (user_id, book_id) => {
     const client = new ApolloClient({
-      uri: "http://localhost:9090"
+      uri: "https://bookr-back-end.herokuapp.com/"
     });
     try {
       const reviewCheck = await client.query({query: REVIEW_EXIST_BY_USER_ID, variables: {userId: user_id}});
@@ -309,7 +309,7 @@ const App = (props) => {
 
   const existInOwn = async (user_id, book_id) => {
     const client = new ApolloClient({
-      uri: "http://localhost:9090"
+      uri: "https://bookr-back-end.herokuapp.com/"
     });
     try {
       const ownedCheck = await client.query({query: BOOK_OWNED_EXIST_IN_USER, variables: {userId: user_id}});
@@ -326,7 +326,7 @@ const App = (props) => {
 
   const existInRead = async (user_id, book_id) => {
     const client = new ApolloClient({
-      uri: "http://localhost:9090"
+      uri: "https://bookr-back-end.herokuapp.com/"
     });
     try {
       const readCheck = await client.query({query: BOOK_READ_EXIST_IN_USER, variables: {userId: user_id}});
@@ -343,7 +343,7 @@ const App = (props) => {
 
   const existInFavorite = async (user_id, book_id) => {
     const client = new ApolloClient({
-      uri: "http://localhost:9090"
+      uri: "https://bookr-back-end.herokuapp.com/"
     });
     try {
       const favoriteCheck = await client.query({query: FAVORITE_BOOK_EXIST_IN_USER, variables: {userId: user_id}});
