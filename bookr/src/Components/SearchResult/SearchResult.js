@@ -4,6 +4,9 @@ import { connect } from "react-redux";
 import Button from 'react-bootstrap/Button';
 import noCover from "../../public/images/noCover.jpg";
 import { setBook, openBookModal, closeBookModal } from '../../actions/searchActions';
+import { BOOK_EXIST_CHECK } from '../../graphQL/queries';
+import { ADD_BOOK_MUTATION } from '../../graphQL/mutations';
+import ApolloClient from "apollo-boost";
 
 
 class SearchResult extends React.Component{
@@ -14,9 +17,68 @@ class SearchResult extends React.Component{
     }
   }
 
-  chooseBook = (book) => {
-   this.props.setBook(book);
-   this.props.openBookModal();
+  checkIfBookExist = async (book_api_id) => {
+     const idToken = localStorage.getItem("token");
+    const client = new ApolloClient({
+      // uri: "https://bookr-back-end.herokuapp.com/",
+      uri: "http://localhost:9090/",
+      headers: { authorization: idToken }
+    });
+    try {
+      const bookCheck = await client.query({query: BOOK_EXIST_CHECK});
+      const filteredBook = bookCheck.data.getBooks.some(book => {
+        return book.book_api_id === book_api_id
+      })
+      return filteredBook;
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+
+  chooseBook = async(book) => {
+    const bookInfo = {
+      title: book.volumeInfo ? book.volumeInfo.title: "No title",
+      author: book.volumeInfo && book.volumeInfo.authors ? book.volumeInfo.authors.join(', '): "Author unknown",
+      publisher: book.volumeInfo ? book.volumeInfo.publisher : "Publisher Unknown",
+      publish_date: book.volumeInfo && book.volumeInfo.publishedDate ? moment(book.volumeInfo.publishedDate).format("MMMM DD, YYYY") : null,
+      image: book.volumeInfo.imageLinks? book.volumeInfo.imageLinks.smallThumbnail :"No Image",
+      book_api_id: book.id,
+      category: book.volumeInfo.categories ? book.volumeInfo.categories.join(', '): "Category Unknown",
+      description: book.volumeInfo ? book.volumeInfo.description : "This book has no description",
+      list_price: book.saleInfo.retailPrice ? book.saleInfo.retailPrice.amount : null
+    }
+    const checkBook = await this.checkIfBookExist(book.id)
+    if (!checkBook){
+      this.addBook(bookInfo)
+      this.props.setBook(book);
+      this.props.openBookModal();
+
+    } else {
+      this.props.setBook(book);
+      this.props.openBookModal();
+    }
+  }
+
+  addBook = book => {
+    const token = localStorage.getItem("token");
+    const client = new ApolloClient({
+      uri: "http://localhost:9090/",
+      headers: { authorization: token }
+    });
+    client
+      .mutate({
+        mutation: ADD_BOOK_MUTATION,
+        variables: {
+          input: book
+        }
+      })
+      .then(response => {
+        return
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   render(){

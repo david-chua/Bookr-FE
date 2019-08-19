@@ -20,7 +20,7 @@ class Books extends React.Component{
   componentDidMount(){
     const token = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "https://bookr-back-end.herokuapp.com/",
+      uri: "http://localhost:9090/",
       headers: { authorization: token }
     });
     client.query({
@@ -48,7 +48,7 @@ class Books extends React.Component{
     if (prevState.addingCategory !== this.props.addingCategory){
       const token = localStorage.getItem("token");
       const client = new ApolloClient({
-        uri: "https://bookr-back-end.herokuapp.com/",
+        uri: "http://localhost:9090/",
         headers: { authorization: token }
       });
       client.query({

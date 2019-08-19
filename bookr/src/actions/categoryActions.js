@@ -12,7 +12,8 @@ export function addToOwn(input){
     dispatch({type: ADDING_CATEGORY});
     const token = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "https://bookr-back-end.herokuapp.com/",
+      // uri: "https://bookr-back-end.herokuapp.com/",
+      uri: "http://localhost:9090/",
       headers: { authorization: token }
     });
     client
@@ -45,7 +46,8 @@ export function addToRead(input){
     dispatch({type: ADDING_CATEGORY});
     const token = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "https://bookr-back-end.herokuapp.com/",
+      // uri: "https://bookr-back-end.herokuapp.com/",
+      uri: "http://localhost:9090/",
       headers: { authorization: token }
     });
     client
@@ -75,7 +77,8 @@ export function addToFavorite(input){
     dispatch({type: ADDING_CATEGORY});
     const token = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "https://bookr-back-end.herokuapp.com/",
+      // uri: "https://bookr-back-end.herokuapp.com/",
+      uri: "http://localhost:9090/",
       headers: { authorization: token }
     });
     client

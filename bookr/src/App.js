@@ -34,7 +34,7 @@ import Modal from 'react-bootstrap/Modal';
 const PrivateRoute = ({ component: Component, render, ...rest }) => {
   const token = localStorage.getItem("token");
   const client = new ApolloClient({
-    uri: "https://bookr-back-end.herokuapp.com/",
+    uri: "http://localhost:9090/",
     headers: { authorization: token}
   })
   client.query({ query: GET_CURRENT_USER_QUERY })
@@ -97,7 +97,7 @@ const App = (props) => {
 
   const checkIfBookExist = async (book_api_id) => {
     const client = new ApolloClient({
-      uri: "https://bookr-back-end.herokuapp.com/"
+      uri: "http://localhost:9090/"
     });
     try {
       const bookCheck = await client.query({query: BOOK_EXIST_CHECK});
@@ -113,14 +113,17 @@ const App = (props) => {
   }
 
   const getExistingBook = async (book_api_id) => {
+    console.log(book_api_id)
     const client = new ApolloClient({
-      uri: "https://bookr-back-end.herokuapp.com/"
+      uri: "http://localhost:9090/"
     });
     try {
       const bookCheck = await client.query({query: BOOK_EXIST_CHECK});
+      console.log('bookCheck', bookCheck)
       const filteredBook = bookCheck.data.getBooks.filter(book => {
         return book.book_api_id === book_api_id
       })
+      console.log('filteredBook', filteredBook)
       return filteredBook[0].id
     }
     catch (error) {
@@ -131,7 +134,7 @@ const App = (props) => {
 
   const checkIfUserReviewed = async (user_id, book_id) => {
     const client = new ApolloClient({
-      uri: "https://bookr-back-end.herokuapp.com/"
+      uri: "http://localhost:9090/"
     });
     try {
       const reviewCheck = await client.query({query: REVIEW_EXIST_BY_USER_ID, variables: {userId: user_id}});
@@ -182,7 +185,6 @@ const App = (props) => {
       }
     } else {
       try {
-        props.addBook(bookInfo)
         const bookId = await getExistingBook(bookInfo.book_api_id)
         if (values.rating && values.review){
           let newBookReview = {
@@ -206,9 +208,6 @@ const App = (props) => {
   }
 
   const toOwn = async e => {
-    const theDate = moment(props.singleBook.volumeInfo.publishedDate).format("MMMM DD, YYYY")
-    console.log(moment(props.singleBook.volumeInfo.publishedDate).format("MMMM DD, YYYY"))
-    console.log(theDate, typeof(theDate))
     addToCategory("own")
   }
 
@@ -232,22 +231,19 @@ const App = (props) => {
       description: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.description : "This book has no description",
       list_price: props.singleBook.saleInfo.retailPrice ? props.singleBook.saleInfo.retailPrice.amount : null
     }
+    const bookId = await getExistingBook(bookInfo.book_api_id)
+    const userId = props.currentUser.id
+    const addingToOwn = {
+     user_id: userId,
+     book_id: bookId,
+     borrowed: false
+    }
+    const regularAdd = {
+     user_id: userId,
+     book_id: bookId,
+    }
 
-    const initiateCheck = await checkIfBookExist(bookInfo.book_api_id);
-    if (initiateCheck){
-     const bookId = await getExistingBook(bookInfo.book_api_id)
-     const userId = props.currentUser.id
-     const addingToOwn = {
-       user_id: userId,
-       book_id: bookId,
-       borrowed: false
-     }
-     const regularAdd = {
-       user_id: userId,
-       book_id: bookId,
-     }
-
-     switch(type){
+    switch(type){
        case "own":
          const owned = await checkIfInCategory(type, userId, bookId)
          if (owned){
@@ -277,40 +273,12 @@ const App = (props) => {
          break
        default:
          return
-     }
-    } else {
-      props.addBook(bookInfo)
-      const bookId = await getExistingBook(bookInfo.book_api_id)
-      const userId = props.currentUser.id
-      const addingToOwn = {
-        user_id: userId,
-        book_id: bookId,
-        borrowed: false
-      }
-      const regularAdd = {
-        user_id: userId,
-        book_id: bookId,
-      }
-      console.log(bookId, userId)
-      switch(type){
-        case "own":
-          const addToOwned = await props.addToOwn(addingToOwn);
-          return addToOwned;
-        case "favorites":
-          const addToFav = props.addToFavorite(regularAdd);
-          return addToFav;
-        case "read":
-          const addToAlreadyRead = props.addToRead(regularAdd);
-          return addToAlreadyRead
-        default:
-          return
-      }
-    }
+   }
   }
 
   const existInOwn = async (user_id, book_id) => {
     const client = new ApolloClient({
-      uri: "https://bookr-back-end.herokuapp.com/"
+      uri: "http://localhost:9090/"
     });
     try {
       const ownedCheck = await client.query({query: BOOK_OWNED_EXIST_IN_USER, variables: {userId: user_id}});
@@ -327,7 +295,7 @@ const App = (props) => {
 
   const existInRead = async (user_id, book_id) => {
     const client = new ApolloClient({
-      uri: "https://bookr-back-end.herokuapp.com/"
+      uri: "http://localhost:9090/"
     });
     try {
       const readCheck = await client.query({query: BOOK_READ_EXIST_IN_USER, variables: {userId: user_id}});
@@ -344,7 +312,7 @@ const App = (props) => {
 
   const existInFavorite = async (user_id, book_id) => {
     const client = new ApolloClient({
-      uri: "https://bookr-back-end.herokuapp.com/"
+      uri: "http://localhost:9090/"
     });
     try {
       const favoriteCheck = await client.query({query: FAVORITE_BOOK_EXIST_IN_USER, variables: {userId: user_id}});

@@ -20,7 +20,7 @@ export function googleLogin(email, last_name, first_name, token){
   return dispatch => {
     dispatch({type: FETCHING_DATA });
     const client = new ApolloClient({
-      uri: "https://bookr-back-end.herokuapp.com/",
+      uri: "http://localhost:9090/",
       headers: { authorization: token }
     });
     client
@@ -62,7 +62,7 @@ export function jwtLogin(email, password){
   return dispatch => {
     dispatch({type: FETCHING_DATA });
     const client = new ApolloClient({
-      uri: "https://bookr-back-end.herokuapp.com/",
+      uri: "http://localhost:9090/",
     });
     client
       .mutate({
@@ -75,7 +75,7 @@ export function jwtLogin(email, password){
         localStorage.setItem("token", response.data.loginUser.token);
         const token = localStorage.getItem("token");
         const jwtClient = new ApolloClient({
-          uri: "https://bookr-back-end.herokuapp.com/",
+          uri: "http://localhost:9090/",
           headers: { authorization: token}
         })
         jwtClient
@@ -137,7 +137,7 @@ export function registerUser(newUser){
   return dispatch => {
     dispatch({ type: FETCHING_DATA})
     const client = new ApolloClient({
-      uri: "https://bookr-back-end.herokuapp.com/",
+      uri: "http://localhost:9090/",
     });
     client
       .mutate({
@@ -162,7 +162,7 @@ export function registerUser(newUser){
             localStorage.setItem("token", response.data.loginUser.token);
             const token = localStorage.getItem("token");
             const jwtClient = new ApolloClient({
-              uri: "https://bookr-back-end.herokuapp.com/",
+              uri: "http://localhost:9090/",
               headers: { authorization: token}
             })
             jwtClient
@@ -210,7 +210,7 @@ export function editUser(id, userInfo) {
     dispatch({type: FETCHING_DATA})
     const token = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "https://bookr-back-end.herokuapp.com/",
+      uri: "http://localhost:9090/",
       headers: { authorization: token}
     });
     client.mutate({
@@ -236,7 +236,7 @@ export function editPassword(id, input){
   return dispatch => {
     const token = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "https://bookr-back-end.herokuapp.com/",
+      uri: "http://localhost:9090/",
       headers: { authorization: token}
     });
     client.mutate({
