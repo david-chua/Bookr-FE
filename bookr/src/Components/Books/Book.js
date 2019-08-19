@@ -189,10 +189,11 @@ class Book extends React.Component{
           </div>
         </div>
         <div className="bookFunctionality">
+          <h1 className="reviewTitle"> Reviews </h1>
           {!this.state.reviewed &&
           <div className="bookReviewForm">
             <h1> Add your review </h1>
-            <div className="bookReactRating">
+            <div className="bookReactRatingReview">
               <h2> Rating: </h2>
               <ReactStars
                 className="reactStars"
@@ -215,26 +216,26 @@ class Book extends React.Component{
           </div>}
           {this.state.reviews.length > 0
           ? this.state.reviews.map(review => {
-            return <div>
-              <h1>Review by: {review.user_id.username}</h1>
-              <div className="bookReactRating">
-                <h2> I give this book a rating of: </h2>
-                <ReactStars
-                  className="reactStars"
-                  count={5}
-                  color2={'#FFC914'}
-                  size={25}
-                  edit={false}
-                  value={review.rating}
-                  />
-              </div>
-              <h1> What I think of this book: </h1>
-              <h1> {review.content}</h1>
-
-
-            </div>
+            return <div className="writtenReview">
+                      <div className="bookReactRating">
+                        <h1>Review by: {review.user_id.username}</h1>
+                        <ReactStars
+                          className="reactStars"
+                          count={5}
+                          color2={'#FFC914'}
+                          size={25}
+                          edit={false}
+                          value={review.rating}
+                        />
+                      </div>
+                      <div className="reviewContent">
+                        <h1> {review.content}</h1>
+                      </div>
+                  </div>
           })
-            : <h1> This book has no reviews </h1>
+            : <div className="noReviews">
+                <h1>   This book has no reviews </h1>
+              </div>
           }
         </div>
       </div>

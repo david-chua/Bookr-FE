@@ -1,6 +1,8 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { connect } from "react-redux";
+import { mainLoginPage, registerUser, signInError } from '../../actions/usersActions';
 
 
 class LoginForm extends React.Component{
@@ -10,7 +12,8 @@ class LoginForm extends React.Component{
       username: '',
       gender: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      gender: '',
     }
   }
 
@@ -59,7 +62,17 @@ class LoginForm extends React.Component{
               <Form.Label className="registerGoogle">Confirm Password</Form.Label>
               <Form.Control onChange={this.handleChange} value={this.state.confirmPassword} name="confirmPassword" type="password" placeholder="Confirm password" />
             </Form.Group>
+            <Form.Group>
+              <Form.Label className="registerValues">Select Gender </Form.Label>
+              <Form.Control name="gender" onChange={this.handleChange} as="select">
+                <option>Select an option</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="n/a">Decline to Answer</option>
+              </Form.Control>
+            </Form.Group>
             <Button className="signupBtn" type="submit"> Submit</Button>
+            <Button onClick={() => this.props.mainLoginPage()} className="signupBtn" type="button">I have an account</Button>
           </Form>
         ):(
           <div> Loading ...</div>
@@ -69,4 +82,14 @@ class LoginForm extends React.Component{
   }
 }
 
-export default LoginForm;
+const mapStateToProps = state => {
+  return {
+    currentUser: state.users.currentUser,
+    loggedIn: state.users.loggedIn,
+    toHome: state.users.toHome,
+    checkExistence: state.users.checkExistence,
+    error: state.users.error
+  }
+}
+
+export default connect(mapStateToProps, {mainLoginPage, registerUser, signInError})(LoginForm);

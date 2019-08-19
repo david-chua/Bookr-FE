@@ -221,6 +221,7 @@ export function editUser(id, userInfo) {
       })
     })
     .then(response => {
+      console.log(response)
       dispatch({
         type: EDIT_USER_INFO,
         payload: response.data.updateUser

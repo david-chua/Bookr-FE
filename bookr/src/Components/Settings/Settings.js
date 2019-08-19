@@ -15,6 +15,7 @@ class Settings extends React.Component{
         password: '',
         confirmPassword: '',
         oldPassword: '',
+        gender: '',
         message: '',
         error: ''
     }
@@ -65,7 +66,8 @@ class Settings extends React.Component{
       first_name: this.state.first_name,
       last_name: this.state.last_name,
       email: this.state.email,
-      username: this.state.username
+      username: this.state.username,
+      gender: this.state.gender
     }
     this.props.editUser(id, userInfo);
     this.setState({
@@ -160,6 +162,15 @@ class Settings extends React.Component{
               <Form.Group >
                 <Form.Label className="registerGoogle">Edit Username</Form.Label>
                 <Form.Control onChange={this.handleChange} value={this.state.username} name="username" type="text" placeholder="Edit Username" />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label className="registerValues">Select Gender </Form.Label>
+                <Form.Control name="gender" onChange={this.handleChange} as="select">
+                  <option>Select an option</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="n/a">Decline to Answer</option>
+                </Form.Control>
               </Form.Group>
             </Form>
           </Modal.Body>

@@ -80,13 +80,12 @@
   padding: 50px;
   min-width: 400px;
   width: 50%;
-  height: 80vh;
-  min-height: 1100px;
+  height: 1200px;
   text-align: left;
 
 
   h1{
-    font-size: 1.4em;
+    font-size: 1.2em;
     line-height: 2em;
   }
 
@@ -120,9 +119,10 @@
 }
 
 .addButton{
-  width: 30%;
-  height: 100px;
-  font-size: 1.3em;
+  width: 25%;
+  height: 75px;
+  font-size: 1.2em;
+  margin: 15px 0;
 }
 
 .addCategories{
@@ -132,8 +132,8 @@
 }
 
 .removebtn{
-  width: 30%;
-  height: 100px;
+  width: 25%;
+  height: 75px;
   background-color: $faded_red;
   border-color: $faded_red;
 }
@@ -144,12 +144,43 @@
 
 .bookReviewForm{
   width: 90%;
+  margin: 0 auto;
+}
+
+.reviewTitle{
+  font-size: 1.5em;
+  text-align: center;
+  line-height: 2em;
+  font-weight: bold;
 }
 
 .bookReactRating{
-  margin: 10px 0;
   display: flex;
-  height: 30px;
+  margin: 0 30px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.bookReactRatingReview{
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  align-self: center;
+  font-size: 1.13em;
+}
+
+.noReviews{
+  height: 100px;
+  padding-top: 40px;
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+.writtenReview{
+  margin-top: 50px;
+  text-align: left;
+  display: flex;
+}
+
+.reviewContent{
+  font-size: 1.1em;
 }

@@ -85,7 +85,7 @@ class Books extends React.Component{
                 <h1> You do not own a book</h1>
               </div>
           }
-          {booksOwnedTen.length > 0 ?<div className="learnMore">
+          {booksOwnedTen.length > 10 ?<div className="learnMore">
           <Link to={{
             pathname: '/booksCategory',
             state:{
@@ -105,7 +105,7 @@ class Books extends React.Component{
                 <h1> You have not favorited a book</h1>
               </div>
           }
-          {booksReadTen.length > 0 ? <div className="learnMore">
+          {booksReadTen.length > 10 ? <div className="learnMore">
           <Link to={{
             pathname: '/booksCategory',
             state:{
@@ -123,7 +123,7 @@ class Books extends React.Component{
                 <h1> You have not favorited a book</h1>
               </div>
           }
-          {favoriteTen.length > 0 ? <div className="learnMore">
+          {favoriteTen.length > 10 ? <div className="learnMore">
             <Link to={{
               pathname: '/booksCategory',
               state:{
