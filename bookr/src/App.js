@@ -291,6 +291,7 @@ const App = (props) => {
         user_id: userId,
         book_id: bookId,
       }
+      console.log(bookId, userId)
       switch(type){
         case "own":
           const addToOwned = await props.addToOwn(addingToOwn);
