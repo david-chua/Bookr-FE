@@ -75,6 +75,16 @@ export const DELETE_REVIEW_MUTATION = gql`
   }
 `;
 
+export const EDIT_REVIEW_MUTATION = gql`
+  mutation editReview($id: ID!, $input: ReviewInput!){
+    editReview(id: $id, input: $input){
+      id
+      content
+      rating
+    }
+  }
+`;
+
 export const ADD_BOOK_TO_OWN = gql`
   mutation addBooksOwned($input: BooksOwnedInput!){
     addBooksOwned(input: $input){

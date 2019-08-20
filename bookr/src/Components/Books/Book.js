@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import ReactStars from 'react-stars';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 import {
   GET_CURRENT_USER_QUERY,
   BOOK_EXIST_CHECK,
@@ -13,7 +14,7 @@ import {
   FAVORITE_BOOK_EXIST_IN_USER,
   GET_REVIEWS_BY_BOOK_ID} from '../../graphQL/queries';
 import { addToOwn, addToRead, addToFavorite, removeFromOwn, removeFromRead, removeFromFavorite } from '../../actions/categoryActions';
-import { addReview, deleteReview } from '../../actions/reviewActions';
+import { addReview, deleteReview, editReview } from '../../actions/reviewActions';
 import editIcon from '../../public/images/editIcon2.png';
 import deleteIcon from '../../public/images/deleteIcon.png';
 
@@ -21,12 +22,14 @@ class Book extends React.Component{
   constructor(props){
     super(props)
     this.state ={
+      openModal: false,
       rating: null,
       review: '',
       read: false,
       owned: false,
       favorited: false,
       reviewed: false,
+      editedReview: [],
       reviews: []
     }
   }
@@ -49,6 +52,22 @@ class Book extends React.Component{
     })
   }
 
+  openModal = (review) => {
+    this.setState({
+      openModal: true,
+      editedReview: review,
+      review: review.content,
+      rating: review.rating
+    })
+    console.log(review, 'review')
+  }
+
+  closeModal = () =>{
+    this.setState({
+      openModal: false
+    })
+  }
+
   async componentDidUpdate(prevState, prevProps){
     if (prevState.addingCategory !== this.props.addingCategory || prevState.deletingCategory !== this.props.deletingCategory){
       console.log('trueee')
@@ -67,7 +86,7 @@ class Book extends React.Component{
       })
     }
 
-    if (prevState.addingReview !== this.props.addingReview || prevState.deletingReview !== this.props.deletingReview){
+    if (prevState.addingReview !== this.props.addingReview || prevState.deletingReview !== this.props.deletingReview || prevState.editingReview !== this.props.editingReview){
       const bookId = this.props.history.location.state.book.id;
       const userId = this.props.currentUser.id
       const reviewed = await this.checkIfUserReviewed(userId, bookId)
@@ -98,6 +117,21 @@ class Book extends React.Component{
       console.log('make sure review has both content and rating')
     }
   }
+
+  editReview= () => {
+    const id = this.state.editedReview.id
+    const bookId = this.props.location.state.book.id;
+    const userId = this.props.currentUser.id
+    const input = {
+      content: this.state.review,
+      rating: this.state.rating,
+      user_id: userId,
+      book_id: bookId
+    }
+    this.props.editReview(id, input)
+
+  }
+
 
   deleteReview = async(id) => {
     console.log(id)
@@ -261,6 +295,40 @@ class Book extends React.Component{
     const bookDescription = book.description ? book.description : "This book has no description"
     return(
       <div className="individualBook">
+        <Modal show={this.state.openModal} onHide={this.closeModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Search Results</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="reviewForm">
+              <div className="reactRating">
+                <h2> Rating: </h2>
+                <ReactStars
+                  className="reactStars"
+                  count={5}
+                  color2={'#FFC914'}
+                  size={25}
+                  onChange={this.ratingChange}
+                  value={this.state.rating}
+                  />
+              </div>
+            </div>
+            <Form>
+              <Form.Group controlId="exampleForm.ControlTextarea1">
+              <Form.Control onChange={this.handleInputChange} value={this.state.review} name="review"
+              as="textarea" rows="4" placeholder="Add your review"/>
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => this.editReview()} variant="primary">
+              Add Review
+            </Button>
+            <Button variant="secondary" onClick={this.closeModal}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
         <div className="oneBook">
           <img className="individualBookImage" src={book.image} alt={book.title} />
           <h1><span>Title:</span> {book.title} </h1>
@@ -351,7 +419,7 @@ class Book extends React.Component{
                         </div>
                       </div>
                       { this.props.currentUser.id === review.user_id.id && <div  className="editAndDelete">
-                        <div className="editing">
+                        <div onClick={() => this.openModal(review)} className="editing">
                           <img className="editReviewIcon" src={editIcon} alt="edit icon"/>
                         </div>
                         <div onClick={() =>this.deleteReview(review.id)} className="deleting">
@@ -380,7 +448,7 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { addToOwn, addToRead, addToFavorite, removeFromOwn, removeFromRead, removeFromFavorite, addReview, deleteReview})(Book);
+export default connect(mapStateToProps, { addToOwn, addToRead, addToFavorite, removeFromOwn, removeFromRead, removeFromFavorite, addReview, deleteReview, editReview})(Book);
 
 //
 // {this.state.reviewed &&
