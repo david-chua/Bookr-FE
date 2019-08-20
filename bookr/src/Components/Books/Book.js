@@ -12,6 +12,10 @@ import {
   BOOK_READ_EXIST_IN_USER,
   FAVORITE_BOOK_EXIST_IN_USER,
   GET_REVIEWS_BY_BOOK_ID} from '../../graphQL/queries';
+import { addToOwn, addToRead, addToFavorite, removeFromOwn, removeFromRead, removeFromFavorite } from '../../actions/categoryActions';
+import { addReview, deleteReview } from '../../actions/reviewActions';
+import editIcon from '../../public/images/editIcon2.png';
+import deleteIcon from '../../public/images/deleteIcon.png';
 
 class Book extends React.Component{
   constructor(props){
@@ -28,6 +32,7 @@ class Book extends React.Component{
   }
 
   async componentDidMount(){
+    console.log('this.props.addingCategory', this.props.addingCategory)
     const bookId = this.props.history.location.state.book.id;
     const userId = this.props.currentUser.id
     const owned = await this.existInOwn(userId, bookId)
@@ -44,6 +49,121 @@ class Book extends React.Component{
     })
   }
 
+  async componentDidUpdate(prevState, prevProps){
+    if (prevState.addingCategory !== this.props.addingCategory || prevState.deletingCategory !== this.props.deletingCategory){
+      console.log('trueee')
+      const bookId = this.props.history.location.state.book.id;
+      const userId = this.props.currentUser.id
+      const owned = await this.existInOwn(userId, bookId)
+      console.log('owned', owned)
+      const read = await this.existInRead(userId, bookId)
+      console.log('read', read)
+      const favorited = await this.existInFavorite(userId, bookId)
+      console.log('favorited', favorited)
+      this.setState({
+        owned: owned,
+        read: read,
+        favorited: favorited,
+      })
+    }
+
+    if (prevState.addingReview !== this.props.addingReview || prevState.deletingReview !== this.props.deletingReview){
+      const bookId = this.props.history.location.state.book.id;
+      const userId = this.props.currentUser.id
+      const reviewed = await this.checkIfUserReviewed(userId, bookId)
+      const reviews = await this.getReviews()
+      this.setState({
+        reviewed: reviewed,
+        reviews: reviews
+      })
+    }
+  }
+
+  addReview = async () => {
+    if (this.state.review && this.state.rating){
+      const bookId = this.props.history.location.state.book.id;
+      const userId = this.props.currentUser.id
+      let newReview = {
+        book_id: bookId,
+        user_id: userId,
+        rating: parseFloat(this.state.rating),
+        content: this.state.review
+      }
+      this.props.addReview(newReview);
+      this.setState({
+        review: '',
+        rating: 0
+      })
+    } else {
+      console.log('make sure review has both content and rating')
+    }
+  }
+
+  deleteReview = async(id) => {
+    console.log(id)
+    console.log('deleting')
+    this.props.deleteReview(id)
+    this.setState({
+      review: '',
+      rating: 0
+    })
+  }
+
+  addBook = async(type) =>{
+    const bookId = this.props.location.state.book.id;
+    const userId = this.props.currentUser.id
+    const addToOwnInput = {
+      user_id: userId,
+      book_id: bookId,
+      borrowed: false,
+    }
+    const input = {
+      user_id: userId,
+      book_id: bookId
+    }
+    switch(type){
+      case "own":
+        console.log("adding to own")
+        this.props.addToOwn(addToOwnInput)
+        break
+      case "favorites":
+        console.log("adding to favorite")
+        this.props.addToFavorite(input)
+        break
+      case "read":
+        console.log("adding to read")
+        this.props.addToRead(input)
+        break
+      default:
+        return
+    }
+  }
+
+  removeBook = async(type) =>{
+    const bookId = this.props.location.state.book.id;
+    const userId = this.props.currentUser.id
+    const input = {
+      user_id: userId,
+      book_id: bookId
+    }
+    switch(type){
+      case "own":
+        console.log("removing from own")
+        this.props.removeFromOwn(input)
+        break
+      case "favorites":
+        console.log("removing from favorite")
+        this.props.removeFromFavorite(input)
+        break
+      case "read":
+        console.log("removing from read")
+        this.props.removeFromRead(input)
+        break
+      default:
+        return
+    }
+  }
+
   getReviews = async () =>{
     const bookId = this.props.history.location.state.book.id;
     const client = new ApolloClient({
@@ -54,7 +174,6 @@ class Book extends React.Component{
       variables: { param: "book_id", value: bookId }
       })
     return reviews.data.getReviewsBy
-
   }
 
   existInOwn = async (user_id, book_id) => {
@@ -125,8 +244,6 @@ class Book extends React.Component{
     }
   }
 
-
-
   handleInputChange = e => {
     this.setState({
       [e.target.name]: e.target.value
@@ -140,7 +257,6 @@ class Book extends React.Component{
   }
 
   render(){
-    console.log(this.props.location.state.book)
     const book = this.props.location.state.book
     const bookDescription = book.description ? book.description : "This book has no description"
     return(
@@ -157,32 +273,32 @@ class Book extends React.Component{
           </div>
           <div className="addCategories">
             {!this.state.owned &&
-            <Button className="addButton" variant="primary">
+            <Button onClick={() => this.addBook("own")} className="addButton" variant="primary">
               Add to Own
             </Button>
             }
             {this.state.owned &&
-            <Button className="addButton removebtn">
+            <Button onClick={() => this.removeBook("own")} className="addButton removebtn">
               Remove from Owned
             </Button>
             }
             {!this.state.favorited &&
-            <Button className="addButton" variant="primary">
+            <Button onClick={() => this.addBook("favorites")} className="addButton" variant="primary">
               Add to Favorites
             </Button>
             }
             {this.state.favorited &&
-            <Button className="addButton removebtn">
+            <Button onClick={() => this.removeBook("favorites")} className="addButton removebtn">
               Remove from Favorites
             </Button>
             }
             {!this.state.read &&
-            <Button className="addButton" variant="primary">
+            <Button onClick={() => this.addBook("read")}className="addButton" variant="primary">
               Add to Read
             </Button>
             }
             {this.state.read &&
-            <Button className="addButton removebtn">
+            <Button onClick={() => this.removeBook("read")} className="addButton removebtn">
               Remove from Read
             </Button>
             }
@@ -210,17 +326,19 @@ class Book extends React.Component{
               as="textarea" rows="4" placeholder="Add your review"/>
               </Form.Group>
             </Form>
-            <Button variant="primary">
+            <Button onClick={() => this.addReview()} variant="primary">
               Add Review
             </Button>
           </div>}
           {this.state.reviews.length > 0
           ? this.state.reviews.map(review => {
-            return <div className="writtenReview">
+            console.log('review', review)
+            return <div>
+                    <div className="writtenReview">
                       <div className="bookReactRating">
                         <h1>Review by: {review.user_id.username}</h1>
                         <ReactStars
-                          className="reactStars"
+                          className="reactStars-reviews"
                           count={5}
                           color2={'#FFC914'}
                           size={25}
@@ -228,10 +346,19 @@ class Book extends React.Component{
                           value={review.rating}
                         />
                       </div>
-                      <div className="reviewContent">
-                        <h1> {review.content}</h1>
+                        <div className="reviewContent">
+                          <h1> {review.content}</h1>
+                        </div>
                       </div>
-                  </div>
+                      { this.props.currentUser.id === review.user_id.id && <div  className="editAndDelete">
+                        <div className="editing">
+                          <img className="editReviewIcon" src={editIcon} alt="edit icon"/>
+                        </div>
+                        <div onClick={() =>this.deleteReview(review.id)} className="deleting">
+                          <img className="editReviewIcon" src={deleteIcon} alt="delete icon"/>
+                        </div>
+                      </div>}
+                    </div>
           })
             : <div className="noReviews">
                 <h1>   This book has no reviews </h1>
@@ -245,11 +372,15 @@ class Book extends React.Component{
 
 const mapStateToProps = state => {
   return{
-    currentUser: state.users.currentUser
+    currentUser: state.users.currentUser,
+    addingCategory: state.category.addingCategory,
+    deletingCategory: state.category.deletingCategory,
+    addingReview: state.review.addingReview,
+    deletingReview: state.review.deletingReview
   }
 }
 
-export default connect(mapStateToProps, {})(Book);
+export default connect(mapStateToProps, { addToOwn, addToRead, addToFavorite, removeFromOwn, removeFromRead, removeFromFavorite, addReview, deleteReview})(Book);
 
 //
 // {this.state.reviewed &&

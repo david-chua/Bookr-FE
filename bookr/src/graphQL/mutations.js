@@ -69,6 +69,12 @@ export const ADD_REVIEW_MUTATION = gql`
   }
 `;
 
+export const DELETE_REVIEW_MUTATION = gql`
+  mutation deleteReview($id: ID!){
+    deleteReview(id: $id)
+  }
+`;
+
 export const ADD_BOOK_TO_OWN = gql`
   mutation addBooksOwned($input: BooksOwnedInput!){
     addBooksOwned(input: $input){
@@ -77,6 +83,12 @@ export const ADD_BOOK_TO_OWN = gql`
         title
       }
     }
+  }
+`;
+
+export const REMOVED_BOOK_FROM_OWN = gql`
+  mutation deleteBooksOwned($input: DeleteBookInput!){
+    deleteBooksOwned(input: $input)
   }
 `;
 
@@ -91,6 +103,12 @@ export const ADD_BOOK_TO_READ = gql`
   }
 `;
 
+export const REMOVED_BOOK_FROM_READ = gql`
+  mutation deleteBooksRead($input: BooksReadInput!){
+    deleteBooksRead(input: $input)
+  }
+`;
+
 export const ADD_BOOK_TO_FAVORITE = gql`
   mutation  addFavoriteBook($input: FavoriteBooksInput!){
      addFavoriteBook(input: $input){
@@ -99,5 +117,11 @@ export const ADD_BOOK_TO_FAVORITE = gql`
         title
       }
     }
+  }
+`;
+
+export const REMOVED_BOOK_FROM_FAVORITE = gql`
+  mutation deleteFavoriteBook($input: FavoriteBooksInput!){
+    deleteFavoriteBook(input: $input)
   }
 `;

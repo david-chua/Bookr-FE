@@ -1,5 +1,5 @@
 import ApolloClient from "apollo-boost";
-import { ADD_REVIEW_MUTATION } from "../graphQL/mutations";
+import { ADD_REVIEW_MUTATION, DELETE_REVIEW_MUTATION } from "../graphQL/mutations";
 
 export const ADDING_REVIEW = "ADDING_REVIEW";
 export const EDITING_REVIEW = "EDITING_REVIEW";
@@ -37,6 +37,37 @@ export function addReview(review){
         dispatch({
           type: REVIEW_ERROR,
           payload: "Unable to add a review"
+        })
+      })
+  }
+}
+
+export function deleteReview(id){
+  return dispatch => {
+    dispatch({type: DELETING_REVIEW });
+    const token = localStorage.getItem("token");
+    const client = new ApolloClient({
+      // uri: "https://bookr-back-end.herokuapp.com/",
+      uri: "http://localhost:9090/",
+      headers: { authorization: token }
+    });
+    client
+      .mutate({
+        mutation: DELETE_REVIEW_MUTATION,
+        variables:{
+          id: id
+        }
+      })
+      .then(response =>{
+        console.log('review deleted', response)
+        dispatch({
+          type: REVIEW_DELETED
+        })
+      })
+      .catch(error =>{
+        console.log('delete error', error)
+        dispatch({
+          type: REVIEW_ERROR
         })
       })
   }

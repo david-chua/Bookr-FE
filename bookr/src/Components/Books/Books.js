@@ -44,7 +44,6 @@ class Books extends React.Component{
   }
 
   componentDidUpdate(prevState, prevProps){
-
     if (prevState.addingCategory !== this.props.addingCategory){
       const token = localStorage.getItem("token");
       const client = new ApolloClient({
