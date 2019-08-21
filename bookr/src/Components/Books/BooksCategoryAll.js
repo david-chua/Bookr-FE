@@ -10,7 +10,6 @@ class BooksCategoryAll extends React.Component{
   }
 
   render(){
-    console.log(this.props.location.state.books)
     const books = this.props.location.state.books;
     return(
       <div>

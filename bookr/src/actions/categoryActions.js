@@ -28,14 +28,12 @@ export function addToOwn(input){
         }
       })
       .then(response => {
-        console.log('success in adding to own', response)
         dispatch({
           type: OWNED_ADDED,
           payload: response.data.addBooksOwned
         })
       })
       .catch(error => {
-        console.log('review error',error)
         dispatch({
           type: CATEGORY_ERROR,
           payload: "Unable to add to owned book"
@@ -66,7 +64,6 @@ export function removeFromOwn(input){
         })
       })
       .catch(error => {
-        console.log('review error',error)
         dispatch({
           type: CATEGORY_ERROR,
           payload: "Unable to remove book from owned book"
@@ -129,7 +126,6 @@ export function removeFromRead(input){
         })
       })
       .catch(error => {
-        console.log('review error',error)
         dispatch({
           type: CATEGORY_ERROR,
           payload: "Unable to delete book from owned book"
@@ -155,14 +151,12 @@ export function addToFavorite(input){
         }
       })
       .then(response => {
-        console.log('success in adding to favorite', response)
         dispatch({
           type: FAVORITE_ADDED,
           payload: response.data.addFavoriteBook
         })
       })
       .catch(error => {
-        console.log('review error',error)
         dispatch({
           type: CATEGORY_ERROR,
           payload: "Unable to add to favorite book"
@@ -193,7 +187,6 @@ export function removeFromFavorite(input){
         })
       })
       .catch(error => {
-        console.log('review error',error)
         dispatch({
           type: CATEGORY_ERROR,
           payload: "Unable to delete book from favorites"

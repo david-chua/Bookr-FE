@@ -8,7 +8,8 @@ class News extends React.Component{
   constructor(props){
     super(props)
     this.state ={
-      articles: []
+      articles: [],
+      error: ''
     }
   }
 
@@ -20,14 +21,29 @@ class News extends React.Component{
         })
       })
       .catch(error => {
-        console.log(error);
+        this.setState({
+          error: 'Unable to load news'
+        })
       })
   }
+
+  componentDidUpdate(prevState, prevProps){
+    if (prevState.error !== this.state.error){
+      setTimeout(() => this.setState({error: ''}), 9000);
+    }
+  }
+
+  componentWillUnmount(){
+    setTimeout(() => this.setState({error: ''}), 9000);
+  }
+
   render(){
     return(
       <div>
         <h1 className="bookrNews"> Bookr News </h1>
+        {this.state.error && <div className="bookError"><h1> {this.state.error}</h1></div>}
         <div className="NewsContainer">
+          {this.state.error && <div className="bookError"><h1> {this.state.error}</h1></div>}
           { this.state.articles.map(article => {
             return <Article key={article.url} article={article} />
           })}

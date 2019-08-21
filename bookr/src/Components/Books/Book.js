@@ -6,8 +6,6 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import {
-  GET_CURRENT_USER_QUERY,
-  BOOK_EXIST_CHECK,
   REVIEW_EXIST_BY_USER_ID,
   BOOK_OWNED_EXIST_IN_USER,
   BOOK_READ_EXIST_IN_USER,
@@ -32,12 +30,16 @@ class Book extends React.Component{
       reviewed: false,
       editedReview: [],
       reviewToDelete: [],
-      reviews: []
+      reviews: [],
+      error: ''
     }
   }
 
+  componentWillUnmount(){
+    setTimeout(() => this.setState({message:'', error: ''}), 9000);
+  }
+
   async componentDidMount(){
-    console.log('this.props.addingCategory', this.props.addingCategory)
     const bookId = this.props.history.location.state.book.id;
     const userId = this.props.currentUser.id
     const owned = await this.existInOwn(userId, bookId)
@@ -61,7 +63,6 @@ class Book extends React.Component{
       review: review.content,
       rating: review.rating
     })
-    console.log(review, 'review')
   }
 
   closeModal = () =>{
@@ -76,15 +77,11 @@ class Book extends React.Component{
 
   async componentDidUpdate(prevState, prevProps){
     if (prevState.addingCategory !== this.props.addingCategory || prevState.deletingCategory !== this.props.deletingCategory){
-      console.log('trueee')
       const bookId = this.props.history.location.state.book.id;
       const userId = this.props.currentUser.id
       const owned = await this.existInOwn(userId, bookId)
-      console.log('owned', owned)
       const read = await this.existInRead(userId, bookId)
-      console.log('read', read)
       const favorited = await this.existInFavorite(userId, bookId)
-      console.log('favorited', favorited)
       this.setState({
         owned: owned,
         read: read,
@@ -101,6 +98,10 @@ class Book extends React.Component{
         reviewed: reviewed,
         reviews: reviews
       })
+    }
+
+    if (prevState.error !== this.state.error){
+      setTimeout(() => this.setState({error: ''}), 9000);
     }
   }
 
@@ -120,7 +121,9 @@ class Book extends React.Component{
         rating: 0
       })
     } else {
-      console.log('make sure review has both content and rating')
+      this.setState({
+        erorr: 'Please make sure review has both a review and a rating'
+      })
     }
   }
 
@@ -144,12 +147,10 @@ class Book extends React.Component{
   }
 
   openDeleteModal = (review) => {
-    console.log('id', review)
     this.setState({
       openDeleteModal: true,
       reviewToDelete: review
     })
-    console.log('open deletemodal');
   }
 
   closeDeleteModal = () => {
@@ -242,8 +243,9 @@ class Book extends React.Component{
       return filteredOwned
     }
     catch (error){
-      // setInfoValues({message: "Error in adding this book"})
-      // setTimeout(() => setInfoValues({message: ""}), 3000);
+      this.setState({
+        error: "Unable to check book in system"
+      })
     }
   }
 
@@ -259,8 +261,9 @@ class Book extends React.Component{
       return filteredRead
     }
     catch (error){
-      // setInfoValues({message: "Error in adding this book in read"})
-      // setTimeout(() => setInfoValues({message: ""}), 3000);
+      this.setState({
+        error: "Unable to check book in system"
+      })
     }
   }
 
@@ -276,8 +279,9 @@ class Book extends React.Component{
       return filteredFavorite
     }
     catch (error){
-      // setInfoValues({message: "Unable to add to favorites"})
-      // setTimeout(() => setInfoValues({message: ""}), 3000);
+      this.setState({
+        error: "Unable to check book in system"
+      })
     }
   }
 
@@ -293,8 +297,9 @@ class Book extends React.Component{
       return filteredReview
     }
     catch (error){
-      // setInfoValues({message: "Unfortunately, I failed, please refresh"})
-      // setTimeout(() => setInfoValues({message: ""}), 3000);
+      this.setState({
+        error: "Unable to check book in system"
+      })
     }
   }
 
@@ -365,6 +370,7 @@ class Book extends React.Component{
         </Modal>
 
         <div className="oneBook">
+          {this.state.error && <div className="bookError"><h1> {this.state.error}</h1></div>}
           <img className="individualBookImage" src={book.image} alt={book.title} />
           <h1><span>Title:</span> {book.title} </h1>
           <h1><span>Author:</span> {book.author} </h1>
@@ -435,7 +441,7 @@ class Book extends React.Component{
           </div>}
           {this.state.reviews.length > 0
           ? this.state.reviews.map(review => {
-            return <div>
+            return <div key={review.id}>
                     <div className="writtenReview">
                       <div className="bookReactRating">
                         <h1>Review by: {review.user_id.username}</h1>

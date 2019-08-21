@@ -12,8 +12,7 @@ class LoginForm extends React.Component{
       username: '',
       gender: '',
       password: '',
-      confirmPassword: '',
-      gender: '',
+      confirmPassword: ''
     }
   }
 

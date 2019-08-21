@@ -437,9 +437,9 @@ const App = (props) => {
       <Route exact path="/news" render={() => <News />} />
       <Route exact path="/login" render={() => <LogInOrRegister />} />
       <PrivateRoute exact path="/settings" render={() => <Settings />} />
-      <Route exact path="/booksDashboard" render={() => <Books />} />
-      <Route exact path="/booksCategory" render={(props) => <BooksCategoryAll {...props}/> } />
-      <Route exact path ="/book/:id" render={(props) => <Book {...props} />} />
+      <PrivateRoute exact path="/booksDashboard" render={() => <Books />} />
+      <PrivateRoute exact path="/booksCategory" render={(props) => <BooksCategoryAll {...props}/> } />
+      <PrivateRoute exact path ="/book/:id" render={(props) => <Book {...props} />} />
       <Footer />
     </div>
   );

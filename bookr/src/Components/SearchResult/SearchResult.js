@@ -13,7 +13,7 @@ class SearchResult extends React.Component{
   constructor(props){
     super(props)
     this.state = {
-
+      error: ''
     }
   }
 
@@ -32,7 +32,9 @@ class SearchResult extends React.Component{
       return filteredBook;
     }
     catch (error) {
-      console.log(error)
+      this.setState({
+        error: 'Unable to check book in database'
+      })
     }
   }
 
@@ -81,11 +83,23 @@ class SearchResult extends React.Component{
       })
   }
 
+  componentDidUpdate(prevState, prevProps){
+    if (prevState.error !== this.state.error){
+      setTimeout(() => this.setState({error: ''}), 9000);
+    }
+  }
+
+  componentWillUnmount(){
+    setTimeout(() => this.setState({error: ''}), 9000);
+  }
+
+
   render(){
     const book = this.props.result.volumeInfo;
     const trimmedDescription = book.description ? book.description.substring(0, 150) : "no description here";
     return(
       <div className="searchResultsContainer">
+        {this.state.error && <div className="bookError"><h1> {this.state.error}</h1></div>}
         <div className="searchResultBookImage">
           <img className="searchResultThumbnail" src={book.imageLinks ? book.imageLinks.smallThumbnail: noCover} alt={book.title} />
         </div>

@@ -44,10 +44,12 @@ class Home extends React.Component{
             <div sm={6} className="icon_info col-sm-6 col-md-3">
               <img src={sharing} alt="reader icon" />
               <h3>Share books among friends</h3>
+              <h3> (Future Release)</h3>
             </div>
             <div sm={6} className="icon_info col-sm-6 col-md-3">
               <img src={discussion} alt="reader icon" />
               <h3>Discuss books with friends and colleagues</h3>
+              <h3> (Future Release)</h3>
             </div>
           </div>
 

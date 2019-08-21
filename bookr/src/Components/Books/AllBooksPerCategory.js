@@ -11,7 +11,6 @@ class AllBooksPerCategory extends React.Component{
 
   render(){
     const book = this.props.book.book_id;
-    console.log(book)
     return(
       <div className="booksOwned allBooks">
       <Link to={{

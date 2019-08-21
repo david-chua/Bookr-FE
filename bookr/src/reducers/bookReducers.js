@@ -1,4 +1,4 @@
-import { ADDING_BOOK, DELETING_BOOK, BOOK_ADDED, BOOK_DELETED, BOOK_ERROR, BOOK_ADDED_SUCCESSFULLY } from '../actions/bookActions';
+import { ADDING_BOOK, BOOK_ADDED, BOOK_ERROR, BOOK_ADDED_SUCCESSFULLY } from '../actions/bookActions';
 
 const initialState = {
   addingBook: false,

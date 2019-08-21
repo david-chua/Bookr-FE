@@ -13,7 +13,8 @@ class Books extends React.Component{
       booksRead: [],
       booksOwned: [],
       favoriteBooks: [],
-      reviewedBooks: []
+      reviewedBooks: [],
+      error: ''
     }
   }
 
@@ -39,7 +40,9 @@ class Books extends React.Component{
       })
     })
     .catch(error => {
-      console.log(error)
+      this.setState({
+        error: "Unable to check book in system"
+      })
     });
   }
 
@@ -66,6 +69,13 @@ class Books extends React.Component{
         })
       })
     }
+    if (prevState.error !== this.state.error){
+      setTimeout(() => this.setState({error: ''}), 9000);
+    }
+  }
+
+  componentWillUnmount(){
+    setTimeout(() => this.setState({error: ''}), 9000);
   }
 
 

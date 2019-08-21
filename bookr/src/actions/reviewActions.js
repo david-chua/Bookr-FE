@@ -14,7 +14,6 @@ export function addReview(review){
     dispatch({type: ADDING_REVIEW});
     const token = localStorage.getItem("token");
     const client = new ApolloClient({
-      // uri: "https://bookr-back-end.herokuapp.com/",
       uri: "http://localhost:9090/",
       headers: { authorization: token }
     });
@@ -26,14 +25,12 @@ export function addReview(review){
         }
       })
       .then(response => {
-        console.log('success', response)
         dispatch({
           type: REVIEW_ADDED,
           payload: response.data.addReview
         })
       })
       .catch(error => {
-        console.log('review error',error)
         dispatch({
           type: REVIEW_ERROR,
           payload: "Unable to add a review"
@@ -60,13 +57,11 @@ export function editReview(id, input){
         }
       })
       .then(response =>{
-        console.log('review edited', response)
         dispatch({
           type: REVIEW_EDITED
         })
       })
       .catch(error =>{
-        console.log('delete error', error)
         dispatch({
           type: REVIEW_ERROR
         })
@@ -91,13 +86,11 @@ export function deleteReview(id){
         }
       })
       .then(response =>{
-        console.log('review deleted', response)
         dispatch({
           type: REVIEW_DELETED
         })
       })
       .catch(error =>{
-        console.log('delete error', error)
         dispatch({
           type: REVIEW_ERROR
         })
