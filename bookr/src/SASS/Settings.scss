@@ -79,3 +79,26 @@
   width: 20px;
   height: 20px;
 }
+
+@media(max-width: $bootstrapMD){
+  .settingsContainer{
+    height: 100%;
+    min-height: 900px;
+    display: flex;
+    flex-direction: column;
+    margin: 50px 10%;
+    justify-content: flex-start;
+  }
+
+  .settingOptions{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 400px;
+  }
+
+  .accountInfo{
+    width: 100%;
+    padding-top: 30px;
+  }
+}

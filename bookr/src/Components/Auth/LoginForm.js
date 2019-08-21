@@ -66,9 +66,9 @@ class LoginForm extends React.Component{
               <Form.Label className="registerValues">Select Gender </Form.Label>
               <Form.Control name="gender" onChange={this.handleChange} as="select">
                 <option>Select an option</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="n/a">Decline to Answer</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="N/A">Decline to Answer</option>
               </Form.Control>
             </Form.Group>
             <Button className="signupBtn" type="submit"> Submit</Button>

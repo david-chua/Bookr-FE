@@ -156,8 +156,7 @@
 
 .bookReactRating{
   display: flex;
-  width: 220px;
-  margin: 0 30px;
+  min-width:200px;
   flex-direction: column;
   align-items: flex-start;
 }
@@ -183,7 +182,10 @@
 }
 
 .reviewContent{
-  font-size: 1.1em;
+  font-size: 1.3em;
+  line-height: 1.5em;
+  width: 75%;
+  min-width: 400px;
 }
 
 .editReviewIcon{
@@ -193,10 +195,71 @@
 
 .editAndDelete{
   text-align: left;
-  margin: 0 30px;
   display: flex;
 }
 
-.deleting,.editing{
+.editing, .deleting{
   margin: 0 5px;
+}
+
+
+
+// @media(max-width: $media1200){
+//   .individualBook{
+//     flex-direction: column;
+//     border: 1px solid blue;
+//     width: 100%;
+//     height: 1400px;
+//   }
+//   .addCategories{
+//     display: flex;
+//     flex-direction: column;
+//   }
+//
+//   .addButton{
+//     width: 90%;
+//     margin: 10px auto;
+//   }
+// }
+
+@media(max-width: $media1200){
+  .individualBook{
+    flex-direction: column;
+    height: 1400px;
+    width: 100%;
+    min-height: 1900px;
+    overflow: auto;
+  }
+
+  .addCategories{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .addButton{
+    width: 90%;
+    margin: 10px auto;
+  }
+
+  .oneBook{
+    width: 90%;
+    min-height: 1300px;
+    margin: 50px auto;
+    padding: 0;
+  }
+
+  .bookFunctionality{
+    margin: 0 auto;
+    margin-bottom: 30px;
+    width: 90%;
+    height: 40%;
+    max-height: 1500px;
+    overflow: auto;
+  }
+
+  // .reviewContent{
+  //   border: 1px solid blue;
+  //   height: 500px;
+  //   overflow: auto;
+  // }
 }

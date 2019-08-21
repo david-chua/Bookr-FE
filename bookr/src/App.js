@@ -84,8 +84,8 @@ const App = (props) => {
   }
 
   const handleInputChange = e => {
-      const {name, value} = e.target
-      setValues({...values, [name]: value})
+    const {name, value} = e.target
+    setValues({...values, [name]: value})
   }
 
   const ratingChange = newRating => {
@@ -113,17 +113,14 @@ const App = (props) => {
   }
 
   const getExistingBook = async (book_api_id) => {
-    console.log(book_api_id)
     const client = new ApolloClient({
       uri: "http://localhost:9090/"
     });
     try {
       const bookCheck = await client.query({query: BOOK_EXIST_CHECK});
-      console.log('bookCheck', bookCheck)
       const filteredBook = bookCheck.data.getBooks.filter(book => {
         return book.book_api_id === book_api_id
       })
-      console.log('filteredBook', filteredBook)
       return filteredBook[0].id
     }
     catch (error) {
@@ -150,7 +147,6 @@ const App = (props) => {
   }
 
   const addReview = async () => {
-    console.log(props.singleBook.volumeInfo.publishedDate)
     const bookInfo = {
       title: props.singleBook.volumeInfo ? props.singleBook.volumeInfo.title: "No title",
       author: props.singleBook.volumeInfo && props.singleBook.volumeInfo.authors ? props.singleBook.volumeInfo.authors.join(', '): "Author unknown",
@@ -345,10 +341,6 @@ const App = (props) => {
 
   return (
     <div className="App">
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button>
-
       <Modal className="singleBookModal" show={props.openBook} onHide={handleBookClose}>
         <Modal.Header closeButton>
           <Modal.Title>{props.singleBook.volumeInfo ? props.singleBook.volumeInfo.title: "No title"}</Modal.Title>

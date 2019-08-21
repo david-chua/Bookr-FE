@@ -23,6 +23,7 @@ class Book extends React.Component{
     super(props)
     this.state ={
       openModal: false,
+      openDeleteModal: false,
       rating: null,
       review: '',
       read: false,
@@ -30,6 +31,7 @@ class Book extends React.Component{
       favorited: false,
       reviewed: false,
       editedReview: [],
+      reviewToDelete: [],
       reviews: []
     }
   }
@@ -64,9 +66,13 @@ class Book extends React.Component{
 
   closeModal = () =>{
     this.setState({
-      openModal: false
+      openModal: false,
+      review: '',
+      rating: ''
     })
   }
+
+
 
   async componentDidUpdate(prevState, prevProps){
     if (prevState.addingCategory !== this.props.addingCategory || prevState.deletingCategory !== this.props.deletingCategory){
@@ -137,14 +143,29 @@ class Book extends React.Component{
 
   }
 
+  openDeleteModal = (review) => {
+    console.log('id', review)
+    this.setState({
+      openDeleteModal: true,
+      reviewToDelete: review
+    })
+    console.log('open deletemodal');
+  }
 
-  deleteReview = async(id) => {
-    console.log(id)
-    console.log('deleting')
-    this.props.deleteReview(id)
+  closeDeleteModal = () => {
+    this.setState({
+      openDeleteModal: false
+    })
+  }
+
+
+  deleteReview = async() => {
+    this.props.deleteReview(this.state.reviewToDelete.id)
     this.setState({
       review: '',
-      rating: 0
+      rating: 0,
+      openDeleteModal: false,
+      reviewToDelete: []
     })
   }
 
@@ -162,15 +183,12 @@ class Book extends React.Component{
     }
     switch(type){
       case "own":
-        console.log("adding to own")
         this.props.addToOwn(addToOwnInput)
         break
       case "favorites":
-        console.log("adding to favorite")
         this.props.addToFavorite(input)
         break
       case "read":
-        console.log("adding to read")
         this.props.addToRead(input)
         break
       default:
@@ -187,15 +205,12 @@ class Book extends React.Component{
     }
     switch(type){
       case "own":
-        console.log("removing from own")
         this.props.removeFromOwn(input)
         break
       case "favorites":
-        console.log("removing from favorite")
         this.props.removeFromFavorite(input)
         break
       case "read":
-        console.log("removing from read")
         this.props.removeFromRead(input)
         break
       default:
@@ -334,6 +349,21 @@ class Book extends React.Component{
             </Button>
           </Modal.Footer>
         </Modal>
+
+        <Modal show={this.state.openDeleteModal} onHide={this.closeDeleteModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Delete Your Review? </Modal.Title>
+          </Modal.Header>
+          <Modal.Footer>
+            <Button onClick={() => this.deleteReview()} variant="primary">
+              Delete Review
+            </Button>
+            <Button variant="secondary" onClick={this.closeDeleteModal}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
         <div className="oneBook">
           <img className="individualBookImage" src={book.image} alt={book.title} />
           <h1><span>Title:</span> {book.title} </h1>
@@ -405,7 +435,6 @@ class Book extends React.Component{
           </div>}
           {this.state.reviews.length > 0
           ? this.state.reviews.map(review => {
-            console.log('review', review)
             return <div>
                     <div className="writtenReview">
                       <div className="bookReactRating">
@@ -418,19 +447,20 @@ class Book extends React.Component{
                           edit={false}
                           value={review.rating}
                         />
+                        { this.props.currentUser.id === review.user_id.id && <div  className="editAndDelete">
+                          <div onClick={() => this.openModal(review)} className="editing">
+                            <img className="editReviewIcon" src={editIcon} alt="edit icon"/>
+                          </div>
+                          <div onClick={() =>this.openDeleteModal(review)} className="deleting">
+                            <img className="editReviewIcon" src={deleteIcon} alt="delete icon"/>
+                          </div>
+                        </div>}
                       </div>
                         <div className="reviewContent">
                           <h1> {review.content}</h1>
                         </div>
                       </div>
-                      { this.props.currentUser.id === review.user_id.id && <div  className="editAndDelete">
-                        <div onClick={() => this.openModal(review)} className="editing">
-                          <img className="editReviewIcon" src={editIcon} alt="edit icon"/>
-                        </div>
-                        <div onClick={() =>this.deleteReview(review.id)} className="deleting">
-                          <img className="editReviewIcon" src={deleteIcon} alt="delete icon"/>
-                        </div>
-                      </div>}
+
                     </div>
           })
             : <div className="noReviews">

@@ -88,7 +88,6 @@ class Settings extends React.Component{
           editingPW: false,
           message: 'your password has been updated'
         })
-        console.log(this.state);
     } else {
       this.setState({
         error: "Passwords do not match",
@@ -113,7 +112,7 @@ class Settings extends React.Component{
       <div className="settingsContainer">
       <Modal show={this.state.editingPW} onHide={this.closeEdit}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit User Info</Modal.Title>
+          <Modal.Title>Edit Password</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -165,11 +164,11 @@ class Settings extends React.Component{
               </Form.Group>
               <Form.Group>
                 <Form.Label className="registerValues">Select Gender </Form.Label>
-                <Form.Control name="gender" onChange={this.handleChange} as="select">
+                <Form.Control value={this.state.gender} name="gender" onChange={this.handleChange} as="select">
                   <option>Select an option</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
-                  <option value="n/a">Decline to Answer</option>
+                  <option value="N/A">Decline to Answer</option>
                 </Form.Control>
               </Form.Group>
             </Form>
@@ -187,6 +186,9 @@ class Settings extends React.Component{
         <div className="settingOptions">
           <div className="settingOption">
             <h2> Account Information </h2>
+          </div>
+          <div className="settingOption">
+            <h2> Billing (Coming Soon) </h2>
           </div>
         </div>
 
