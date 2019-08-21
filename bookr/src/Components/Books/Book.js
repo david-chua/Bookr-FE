@@ -129,6 +129,11 @@ class Book extends React.Component{
       book_id: bookId
     }
     this.props.editReview(id, input)
+    this.setState({
+      review: '',
+      rating: 0,
+      openModal: false
+    })
 
   }
 
@@ -322,7 +327,7 @@ class Book extends React.Component{
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={() => this.editReview()} variant="primary">
-              Add Review
+              Edit Review
             </Button>
             <Button variant="secondary" onClick={this.closeModal}>
               Close
@@ -444,7 +449,8 @@ const mapStateToProps = state => {
     addingCategory: state.category.addingCategory,
     deletingCategory: state.category.deletingCategory,
     addingReview: state.review.addingReview,
-    deletingReview: state.review.deletingReview
+    deletingReview: state.review.deletingReview,
+    editingReview: state.review.editingReview
   }
 }
 
