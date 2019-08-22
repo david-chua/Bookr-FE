@@ -92,6 +92,7 @@ class Books extends React.Component{
             return <BooksOwnedLimited key={book.book_id.id} book={book}/>
           }): <div className="learnMore">
                 <h1> You do not own a book</h1>
+                <h1> To start adding a book, search for a book to add.</h1>
               </div>
           }
           {booksOwnedTen.length > 10 ?<div className="learnMore">
@@ -112,6 +113,7 @@ class Books extends React.Component{
             return <BooksOwnedLimited key={book.book_id.id} book={book}/>
           }): <div className="learnMore">
                 <h1> You have not favorited a book</h1>
+                <h1> To start adding a book, search for a book to add.</h1>
               </div>
           }
           {booksReadTen.length > 10 ? <div className="learnMore">
@@ -130,6 +132,7 @@ class Books extends React.Component{
             return <BooksOwnedLimited key={book.book_id.id} book={book}/>
           }): <div className="learnMore">
                 <h1> You have not favorited a book</h1>
+                <h1> To start adding a book, search for a book to add.</h1>
               </div>
           }
           {favoriteTen.length > 10 ? <div className="learnMore">

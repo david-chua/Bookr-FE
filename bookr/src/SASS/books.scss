@@ -20,14 +20,20 @@
   white-space: normal;
   word-wrap:break-word;
   align-self: center;
+  margin: 0 auto;
+  font-size: 1.5em;
+  line-height: 1.5em;
+  font-weight: bold;
 
-  .showMore{
-    min-width: 250px;
-    max-width: 250px;
-    background-color: $faded_red;
-    font-size: 1.5em;
-    border: none;
-  }
+
+}
+
+.showMore{
+  min-width: 250px;
+  max-width: 250px;
+  background-color: $faded_red;
+  font-size: 1.5em;
+  border: none;
 }
 
 .booksOwned{

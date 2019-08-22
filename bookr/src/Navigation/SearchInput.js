@@ -18,7 +18,8 @@ class Search extends React.Component{
       input: e.target.value
     })
   }
-  searchBook = () => {
+  searchBook = e => {
+    e.preventDefault();
     this.props.searchBook(this.state.input);
     this.setState({
       input: ''
@@ -27,9 +28,9 @@ class Search extends React.Component{
 
   render(){
     return(
-      <Form inline>
+      <Form inline onSubmit={this.searchBook}>
         <Form.Control type="text" onChange={this.searchInputChange} placeholder="Search for a book" value={this.state.input} className="mr-sm-2" />
-        <Button onClick={this.searchBook} type="button">Search</Button>
+        <Button type="button">Search</Button>
       </Form>
     )
   }
