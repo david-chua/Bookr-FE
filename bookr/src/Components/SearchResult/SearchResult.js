@@ -20,8 +20,7 @@ class SearchResult extends React.Component{
   checkIfBookExist = async (book_api_id) => {
      const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
-      // uri: "https://bookr-back-end.herokuapp.com/",
-      uri: "http://localhost:9090/",
+      uri: "https://bookr-back-end.herokuapp.com/",
       headers: { authorization: idToken }
     });
     try {
@@ -65,7 +64,7 @@ class SearchResult extends React.Component{
   addBook = book => {
     const token = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "http://localhost:9090/",
+      uri: "https://bookr-back-end.herokuapp.com/",
       headers: { authorization: token }
     });
     client

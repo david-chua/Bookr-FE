@@ -17,7 +17,7 @@ export function addToOwn(input){
     const token = localStorage.getItem("token");
     const client = new ApolloClient({
       // uri: "https://bookr-back-end.herokuapp.com/",
-      uri: "http://localhost:9090/",
+      uri: "https://bookr-back-end.herokuapp.com/",
       headers: { authorization: token }
     });
     client
@@ -48,7 +48,7 @@ export function removeFromOwn(input){
     const token = localStorage.getItem("token");
     const client = new ApolloClient({
       // uri: "https://bookr-back-end.herokuapp.com/",
-      uri: "http://localhost:9090/",
+      uri: "https://bookr-back-end.herokuapp.com/",
       headers: { authorization: token }
     });
     client
@@ -79,7 +79,7 @@ export function addToRead(input){
     const token = localStorage.getItem("token");
     const client = new ApolloClient({
       // uri: "https://bookr-back-end.herokuapp.com/",
-      uri: "http://localhost:9090/",
+      uri: "https://bookr-back-end.herokuapp.com/",
       headers: { authorization: token }
     });
     client
@@ -110,7 +110,7 @@ export function removeFromRead(input){
     const token = localStorage.getItem("token");
     const client = new ApolloClient({
       // uri: "https://bookr-back-end.herokuapp.com/",
-      uri: "http://localhost:9090/",
+      uri: "https://bookr-back-end.herokuapp.com/",
       headers: { authorization: token }
     });
     client
@@ -140,7 +140,7 @@ export function addToFavorite(input){
     const token = localStorage.getItem("token");
     const client = new ApolloClient({
       // uri: "https://bookr-back-end.herokuapp.com/",
-      uri: "http://localhost:9090/",
+      uri: "https://bookr-back-end.herokuapp.com/",
       headers: { authorization: token }
     });
     client
@@ -171,7 +171,7 @@ export function removeFromFavorite(input){
     const token = localStorage.getItem("token");
     const client = new ApolloClient({
       // uri: "https://bookr-back-end.herokuapp.com/",
-      uri: "http://localhost:9090/",
+      uri: "https://bookr-back-end.herokuapp.com/",
       headers: { authorization: token }
     });
     client
