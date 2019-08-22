@@ -28,7 +28,7 @@ class Footer extends React.Component {
       <div className="footerContainer">
         <section className="companySection">
           <img className="footerLogo" src={logo} alt="logo"/>
-          <div>
+          <div className="allRights">
             <h4>Bookr</h4>
             <h4>Copyright © 2019 All rights reserved</h4>
           </div>

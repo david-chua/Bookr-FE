@@ -86,3 +86,14 @@
     width: 100%;
   }
 }
+
+@media(max-width: $sMobile){
+  .topNav{
+    flex-direction: column;
+    margin: 0 auto;
+  }
+
+  .LogoContainer{
+    padding-left: 0;
+  }
+}

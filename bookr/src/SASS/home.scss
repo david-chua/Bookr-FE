@@ -85,6 +85,10 @@
 }
 
 @media(max-width: $mediaTabletWidth){
+  .capabilities{
+    min-height: 700px;
+    align-self: center;
+  }
   .headline{
     top: 32%;
   }
@@ -92,11 +96,14 @@
 
 @media(max-width: $bootstrapMD){
   .capabilities{
-    min-height: 800px;
+    min-height: 1000px;
   }
 
   .icon_container{
-    width: 90%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
   }
 
   .icon_info{
@@ -107,4 +114,43 @@
     flex-direction: column;
     padding-top: 50px;
   }
+  .bookrInfoImage{
+    width: 100%;
+  }
+}
+
+@media(max-width: $lMobile){
+  .capabilities{
+    min-height: 1400px;
+  }
+
+  .headline{
+    top: 20%
+  }
+
+  .bookrInfoImage{
+    width: 100%;
+  }
+
+  .icon_container{
+    width: 80%;
+  }
+}
+
+@media(max-width: $sMobile){
+  .headline{
+    top: 10%;
+  }
+}
+
+@media(max-width: $xsMobile){
+  .headline{
+    top: 5%;
+  }
+
+  .jumbotron{
+    min-height: 1100px;
+  }
+
+
 }

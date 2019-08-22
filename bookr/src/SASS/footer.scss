@@ -1,4 +1,5 @@
 .footerContainer{
+  width: 100%;
   background-color: $mint-cream;
   min-height: 500px;
   height: 40vh;
@@ -77,5 +78,19 @@
 
   .emailMessage{
     width: 80%;
+  }
+}
+
+@media(max-width: $xsMobile){
+  .allRights{
+    width: 85%;
+  }
+
+  .emailMessage{
+
+    .btn{
+      padding: 0;
+      width: 250px;
+    }
   }
 }
