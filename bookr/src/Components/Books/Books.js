@@ -95,7 +95,7 @@ class Books extends React.Component{
                 <h1> To start adding a book, search for a book to add.</h1>
               </div>
           }
-          {booksOwnedTen.length > 10 ?<div className="learnMore">
+          {books.booksOwned.length > 10 ?<div className="learnMore">
           <Link to={{
             pathname: '/booksCategory',
             state:{
@@ -116,7 +116,7 @@ class Books extends React.Component{
                 <h1> To start adding a book, search for a book to add.</h1>
               </div>
           }
-          {booksReadTen.length > 10 ? <div className="learnMore">
+          {books.booksRead.length > 10 ? <div className="learnMore">
           <Link to={{
             pathname: '/booksCategory',
             state:{
@@ -135,7 +135,7 @@ class Books extends React.Component{
                 <h1> To start adding a book, search for a book to add.</h1>
               </div>
           }
-          {favoriteTen.length > 10 ? <div className="learnMore">
+          {books.favoriteBooks.length > 10 ? <div className="learnMore">
             <Link to={{
               pathname: '/booksCategory',
               state:{
