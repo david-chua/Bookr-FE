@@ -50,26 +50,26 @@ class RegisterForm extends React.Component{
     }
     return(
       <div className="registerForm">
-      <Form onSubmit={this.registerUser}>
+      <Form className="registerMainForm" onSubmit={this.registerUser}>
         <Form.Group>
           <Form.Label className="registerValues">Username </Form.Label>
-          <Form.Control onChange={this.handleChange} value={this.state.username} name="username" type="text" placeholder="What do you want for your screen name? " />
+          <Form.Control onChange={this.handleChange} className="registerInput" value={this.state.username} name="username" type="text" placeholder="Choose a screen name? " />
         </Form.Group>
         <Form.Group>
           <Form.Label className="registerValues">Email </Form.Label>
-          <Form.Control onChange={this.handleChange} value={this.state.email} name="email" type="text" placeholder="What's your email?" />
+          <Form.Control onChange={this.handleChange} className="registerInput" value={this.state.email} name="email" type="text" placeholder="What's your email?" />
         </Form.Group>
         <Form.Group>
           <Form.Label className="registerValues">First name </Form.Label>
-          <Form.Control onChange={this.handleChange} value={this.state.first_name} name="first_name" type="text" placeholder="What's your first name?" />
+          <Form.Control onChange={this.handleChange} className="registerInput" value={this.state.first_name} name="first_name" type="text" placeholder="What's your first name?" />
         </Form.Group>
         <Form.Group>
           <Form.Label className="registerValues">Last name </Form.Label>
-          <Form.Control onChange={this.handleChange} value={this.state.last_name} name="last_name" type="text" placeholder="What's your last name?" />
+          <Form.Control onChange={this.handleChange} className="registerInput" value={this.state.last_name} name="last_name" type="text" placeholder="What's your last name?" />
         </Form.Group>
         <Form.Group>
           <Form.Label className="registerValues">Select Gender </Form.Label>
-          <Form.Control name="gender" onChange={this.handleChange} as="select">
+          <Form.Control className="registerInput" name="gender" onChange={this.handleChange} as="select">
             <option>Select an option</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
@@ -77,12 +77,12 @@ class RegisterForm extends React.Component{
           </Form.Control>
         </Form.Group>
         <Form.Group>
-          <Form.Label className="registerValues">Password</Form.Label>
-          <Form.Control onChange={this.handleChange} value={this.state.password} name="password" type="password" placeholder="Enter password" />
+          <Form.Label className="registerInput"className="registerValues">Password</Form.Label>
+          <Form.Control onChange={this.handleChange} className="registerInput" value={this.state.password} name="password" type="password" placeholder="Enter password" />
         </Form.Group>
         <Form.Group>
           <Form.Label className="registerValues">Confirm Password</Form.Label>
-          <Form.Control onChange={this.handleChange} value={this.state.confirmPassword} name="confirmPassword" type="password" placeholder="Confirm password" />
+          <Form.Control onChange={this.handleChange} className="registerInput" value={this.state.confirmPassword} name="confirmPassword" type="password" placeholder="Confirm password" />
         </Form.Group>
         <Button className="signupBtn" type="submit"> Submit</Button>
       </Form>

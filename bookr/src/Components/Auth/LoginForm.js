@@ -45,33 +45,35 @@ class LoginForm extends React.Component{
 
   render(){
     return(
-      <div>
+      <div className="mainRegisterGoogleForm">
         { this.props.addUser ? (
           <Form onSubmit={this.bundleUserInfo} className="registerGoogleForm">
             <h1> To complete your registration</h1>
             <Form.Group >
               <Form.Label className="registerGoogle">Enter Username </Form.Label>
-              <Form.Control onChange={this.handleChange} value={this.state.username} name="username" type="text" placeholder="Enter a username" />
+              <Form.Control onChange={this.handleChange} className="registerGoogleInput" value={this.state.username} name="username" type="text" placeholder="Enter a username" />
             </Form.Group>
             <Form.Group controlId="formGridPassword">
               <Form.Label className="registerGoogle">Enter Password</Form.Label>
-              <Form.Control onChange={this.handleChange} value={this.state.password} name="password" type="password" placeholder="Enter password" />
+              <Form.Control onChange={this.handleChange}  className="registerGoogleInput" value={this.state.password} name="password" type="password" placeholder="Enter password" />
             </Form.Group>
             <Form.Group>
               <Form.Label className="registerGoogle">Confirm Password</Form.Label>
-              <Form.Control onChange={this.handleChange} value={this.state.confirmPassword} name="confirmPassword" type="password" placeholder="Confirm password" />
+              <Form.Control onChange={this.handleChange} className="registerGoogleInput" value={this.state.confirmPassword} name="confirmPassword" type="password" placeholder="Confirm password" />
             </Form.Group>
             <Form.Group>
               <Form.Label className="registerValues">Select Gender </Form.Label>
-              <Form.Control name="gender" onChange={this.handleChange} as="select">
+              <Form.Control className="registerGoogleInput" name="gender" onChange={this.handleChange} as="select">
                 <option>Select an option</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
                 <option value="N/A">Decline to Answer</option>
               </Form.Control>
             </Form.Group>
-            <Button className="signupBtn" type="submit"> Submit</Button>
-            <Button onClick={() => this.props.mainLoginPage()} className="signupBtn" type="button">I have an account</Button>
+            <div className="btnGroup">
+              <Button className="registerBtn" type="submit"> Submit</Button>
+              <Button className="registerBtn" onClick={() => this.props.mainLoginPage()}  type="button">I have an account</Button>
+            </div>
           </Form>
         ):(
           <div> Loading ...</div>
