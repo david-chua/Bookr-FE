@@ -30,7 +30,7 @@ class Search extends React.Component{
     return(
       <Form inline onSubmit={this.searchBook}>
         <Form.Control type="text" onChange={this.searchInputChange} placeholder="Search for a book" value={this.state.input} className="mr-sm-2" />
-        <Button type="button">Search</Button>
+        <Button onClick={this.searchBook} type="button">Search</Button>
       </Form>
     )
   }
