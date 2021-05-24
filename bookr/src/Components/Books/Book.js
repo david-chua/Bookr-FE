@@ -15,6 +15,7 @@ import { addToOwn, addToRead, addToFavorite, removeFromOwn, removeFromRead, remo
 import { addReview, deleteReview, editReview } from '../../actions/reviewActions';
 import editIcon from '../../public/images/editIcon2.png';
 import deleteIcon from '../../public/images/deleteIcon.png';
+import noCover from "../../public/images/noCover.jpg";
 
 class Book extends React.Component{
   constructor(props){
@@ -40,6 +41,7 @@ class Book extends React.Component{
   }
 
   async componentDidMount(){
+    console.log('image', this.props.history.location.state.book.image)
     const bookId = this.props.history.location.state.book.id;
     const userId = this.props.currentUser.id
     const owned = await this.existInOwn(userId, bookId)
@@ -318,6 +320,7 @@ class Book extends React.Component{
   render(){
     const book = this.props.location.state.book
     const bookDescription = book.description ? book.description : "This book has no description"
+    const bookImage = book.image !== "No Image"? book.image: noCover;
     return(
       <div className="individualBook">
         <Modal show={this.state.openModal} onHide={this.closeModal}>
@@ -371,7 +374,7 @@ class Book extends React.Component{
 
         <div className="oneBook">
           {this.state.error && <div className="bookError"><h1> {this.state.error}</h1></div>}
-          <img className="individualBookImage" src={book.image} alt={book.title} />
+          <img className="individualBookImage" src={bookImage} alt={book.title} />
           <h1><span>Title:</span> {book.title} </h1>
           <h1><span>Author:</span> {book.author} </h1>
           <h1><span>Publisher:</span> {book.publisher} </h1>
