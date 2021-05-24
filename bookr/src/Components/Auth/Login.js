@@ -105,11 +105,11 @@ class LogInOrRegister extends React.Component {
               <Form onSubmit={this.onRegularLogin}>
                 <Form.Group>
                   <Form.Label className="loginEmail">Enter Email </Form.Label>
-                  <Form.Control className="inputForm" onChange={this.handleChange} className="registeredUserInput" value={this.state.email} name="email" type="text" placeholder="Enter email" />
+                  <Form.Control className="inputForm registeredUserInput" onChange={this.handleChange} value={this.state.email} name="email" type="text" placeholder="Enter email" />
                 </Form.Group>
                 <Form.Group>
                   <Form.Label className="loginPassword">Enter Password</Form.Label>
-                  <Form.Control className="inputForm" onChange={this.handleChange} className="registeredUserInput" value={this.state.password} name="password" type="password" placeholder="Enter password" />
+                  <Form.Control className="inputForm registeredUserInput" onChange={this.handleChange} value={this.state.password} name="password" type="password" placeholder="Enter password" />
                 </Form.Group>
                 <Button className="signupBtn" type="submit"> Submit</Button>
               </Form>

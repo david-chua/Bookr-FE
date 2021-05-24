@@ -77,7 +77,7 @@ class RegisterForm extends React.Component{
           </Form.Control>
         </Form.Group>
         <Form.Group>
-          <Form.Label className="registerInput"className="registerValues">Password</Form.Label>
+          <Form.Label className="registerInput registerValues">Password</Form.Label>
           <Form.Control onChange={this.handleChange} className="registerInput" value={this.state.password} name="password" type="password" placeholder="Enter password" />
         </Form.Group>
         <Form.Group>
