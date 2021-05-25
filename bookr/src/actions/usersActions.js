@@ -21,7 +21,7 @@ export function googleLogin(email, last_name, first_name, token){
     dispatch({type: FETCHING_DATA });
     const client = new ApolloClient({
       uri: "https://bookr-back-end.herokuapp.com/",
-      headers: { authorization: token }
+      headers: { authorization: token, credentials: 'include' }
     });
     client
       .query({
