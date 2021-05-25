@@ -16,6 +16,7 @@ class News extends React.Component{
   componentDidMount(){
     axios.get(`https://newsapi.org/v2/everything?q=(books AND authors)&domains=nytimes.com,wsj.com&apiKey=${REACT_APP_NEWS_API_KEY}`)
       .then(response => {
+        console.log(response);
         this.setState({
           articles: response.data.articles
         })
